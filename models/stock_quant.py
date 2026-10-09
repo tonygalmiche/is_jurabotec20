@@ -1,7 +1,6 @@
 
 # -*- coding: utf-8 -*-
 from odoo import _, api, fields, models                          # type: ignore
-from odoo.tools.float_utils import float_compare, float_is_zero  # type: ignore
 from odoo.exceptions import UserError, ValidationError           # type: ignore
 import os
 import logging
@@ -76,44 +75,4 @@ class StockQuant(models.Model):
             _logger.info(msg)
             os.system(cmd)
             ct+=1
-
-
-    @api.model
-    def _update_reserved_quantity(self, product_id, location_id, quantity, lot_id=None, package_id=None, owner_id=None, strict=False):
-        self = self.sudo()
-        rounding = product_id.uom_id.rounding
-        quants = self._gather(product_id, location_id, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=strict)
-        reserved_quants = []
-
-        if float_compare(quantity, 0, precision_rounding=rounding) > 0:
-            # if we want to reserve
-            available_quantity = sum(quants.filtered(lambda q: float_compare(q.quantity, 0, precision_rounding=rounding) > 0).mapped('quantity')) - sum(quants.mapped('reserved_quantity'))
-            # Contrôle d'Odoo retiré : réservation possible au-delà de la quantité disponible
-        elif float_compare(quantity, 0, precision_rounding=rounding) < 0:
-            # if we want to unreserve
-            available_quantity = sum(quants.mapped('reserved_quantity'))
-            # Contrôle d'Odoo retiré : annulation de réservation possible au-delà de la quantité réservée
-        else:
-            return reserved_quants
-
-        for quant in quants:
-            if float_compare(quantity, 0, precision_rounding=rounding) > 0:
-                max_quantity_on_quant = quant.quantity - quant.reserved_quantity
-                if float_compare(max_quantity_on_quant, 0, precision_rounding=rounding) <= 0:
-                    continue
-                max_quantity_on_quant = min(max_quantity_on_quant, quantity)
-                quant.reserved_quantity += max_quantity_on_quant
-                reserved_quants.append((quant, max_quantity_on_quant))
-                quantity -= max_quantity_on_quant
-                available_quantity -= max_quantity_on_quant
-            else:
-                max_quantity_on_quant = min(quant.reserved_quantity, abs(quantity))
-                quant.reserved_quantity -= max_quantity_on_quant
-                reserved_quants.append((quant, -max_quantity_on_quant))
-                quantity += max_quantity_on_quant
-                available_quantity += max_quantity_on_quant
-
-            if float_is_zero(quantity, precision_rounding=rounding) or float_is_zero(available_quantity, precision_rounding=rounding):
-                break
-        return reserved_quants
 
