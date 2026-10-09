@@ -17,7 +17,6 @@
         <field name="state">code</field>
         <field name="code">model.init_prix_achat_ir_cron()</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
     </record>
     <record id="init_prix_achat_actions_server" model="ir.actions.server">
         <field name="name">Initialisation prix d'achat</field>
@@ -58,7 +57,8 @@
                 <field name="is_prix_achat"/>
                 <field name="is_valeur"/>
             </field>
-            <xpath expr="//group[@name='main_group']/group[2]" position="replace">
+            <!-- group[2] de main_group était vide en v16 (remplacé) ; en v20 c'est le groupe « Inventory » : ajout après -->
+            <group name="inventory_group" position="after">
                <group>
                     <field name="is_charge_associee_a_commande"/>
                     <field name="is_sale_order_id"/>
@@ -66,10 +66,11 @@
                     <field name="is_detail_charge_client"/>
                     <field name="is_pefc"/>
                 </group>
-            </xpath>
-            <notebook position="attributes">
+            </group>
+            <!-- Description : onglet (notebook) en v16, groupe en v20 -->
+            <group name="description" position="attributes">
                 <attribute name="invisible">1</attribute>
-            </notebook>            
+            </group>
         </field>
     </record>
     <record id="is_view_production_lot_tree" model="ir.ui.view">
@@ -77,15 +78,12 @@
         <field name="model">stock.lot</field>
         <field name="inherit_id" ref="stock.view_production_lot_tree"/>
         <field name="arch" type="xml">
-            <field name="product_id" position="attributes">
-                <attribute name="widget">many2one_clickable</attribute>
-            </field>
             <field name="create_date" position="before">
                 <field name="product_qty"             optional="show" sum="Total"/>
-                <field name="is_purchase_order_id"    optional="show" widget="many2one_clickable"/>
-                <field name="is_fournisseur_id"       optional="show" widget="many2one_clickable"/>
+                <field name="is_purchase_order_id"    optional="show"/>
+                <field name="is_fournisseur_id"       optional="show"/>
                 <field name="is_prix_achat"           optional="show"/>
-                <field name="is_sale_order_id"        optional="show" widget="many2one_clickable" sum="Total"/>
+                <field name="is_sale_order_id"        optional="show" sum="Total"/>
                 <field name="is_num_interne_client"   optional="show"/>
                 <field name="is_detail_charge_client" optional="show"/>
                 <field name="is_pefc"                 optional="show"/>
@@ -120,21 +118,17 @@
             <kanban create="0" quick_create="0">
                 <field name="name"/>
                 <templates>
-                    <t t-name="kanban-box">
-                        <div class="oe_kanban_card oe_kanban_global_click">
-                             <div class="oe_kanban_details">
-                                <div class="o_kanban_record_top mb-0">
-                                    <div class="o_kanban_record_headings">
-                                        <strong class="o_kanban_record_title">
-                                            <div style="font-size:24pt;text-align:center">
-                                                <field name="name"/><br />
-                                                <field name="product_id"/><br />
-                                                <field name="is_qt_lot_emplacement"/><br />
-                                                <button name="deplacer_cette_charge_action" string="Déplacer cette charge" type="object" class="btn btn-primary"/>
-                                            </div>
-                                        </strong>
+                    <t t-name="card">
+                        <div class="o_kanban_record_top mb-0">
+                            <div class="o_kanban_record_headings">
+                                <strong class="o_kanban_record_title">
+                                    <div style="font-size:24pt;text-align:center">
+                                        <field name="name"/><br />
+                                        <field name="product_id"/><br />
+                                        <field name="is_qt_lot_emplacement"/><br />
+                                        <button name="deplacer_cette_charge_action" string="Déplacer cette charge" type="object" class="btn btn-primary"/>
                                     </div>
-                                </div>
+                                </strong>
                             </div>
                         </div>
                     </t>
@@ -153,22 +147,18 @@
                 <field name="name"/>
                 <field name="is_sale_order_id"/>
                 <templates>
-                    <t t-name="kanban-box">
-                        <div class="oe_kanban_card oe_kanban_global_click">
-                             <div class="oe_kanban_details">
-                                <div class="o_kanban_record_top mb-0">
-                                    <div class="o_kanban_record_headings">
-                                        <strong class="o_kanban_record_title">
-                                            <div style="text-align:left">
-                                                <div style="background-color:LightYellow;font-weight: bold;">
-                                                    <field name="name"/> (<field name="product_qty"/>) (<field name="is_sale_order_id"/>)
-                                                </div>
-                                                <field name="product_id"/><br />
-                                                <field name="is_num_interne_client"/>
-                                            </div>
-                                        </strong>
+                    <t t-name="card">
+                        <div class="o_kanban_record_top mb-0">
+                            <div class="o_kanban_record_headings">
+                                <strong class="o_kanban_record_title">
+                                    <div style="text-align:left">
+                                        <div style="background-color:LightYellow;font-weight: bold;">
+                                            <field name="name"/> (<field name="product_qty"/>) (<field name="is_sale_order_id"/>)
+                                        </div>
+                                        <field name="product_id"/><br />
+                                        <field name="is_num_interne_client"/>
                                     </div>
-                                </div>
+                                </strong>
                             </div>
                         </div>
                     </t>
