@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="is_sale_order_colis_external_layout_standard">
-        <t t-set="company" t-value="res_company"/>
         <div t-attf-class="header" t-att-style="report_header_style">
 
 

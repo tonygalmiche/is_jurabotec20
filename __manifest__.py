@@ -39,17 +39,17 @@ Reprise d'is_jurabotec (Odoo 16).
         "views/is_scan_inventaire_view.xml",
         "views/is_scan_deplacement_charge_view.xml",
         "views/menu.xml",
+        "report/conditions_generales_de_vente_templates.xml",
+        "report/is_sale_order_colis_report.xml",
+        "report/is_stock_quant_report.xml",
+        "report/is_stock_location_report.xml",
 
-        # Migration v20 : vues, menus et rapports désactivés pour installer d'abord les modèles
-        # "report/conditions_generales_de_vente_templates.xml",
-        # "report/is_sale_order_colis_report.xml",
-        # "report/is_stock_quant_report.xml",
-        # "report/is_stock_location_report.xml",
+        # Migration v20 : rapports désactivés en attendant leur migration
         # "report/sale_report_templates.xml",
         # "report/report_deliveryslip.xml",
         # "report/report_stockpicking_operations.xml",
         # "report/report_invoice.xml",
-        # "report/report.xml",
+        "report/report.xml",
     ],
     'installable': True,
     'application': True,
