@@ -27,14 +27,6 @@ class is_export_compta(models.Model):
     file_ids           = fields.Many2many('ir.attachment', 'is_export_compta_attachment_rel', 'export_id', 'attachment_id', 'Pièces jointes')
 
 
-    # @api.model
-    # def create(self, vals):
-    #     vals['name'] = self.env['ir.sequence'].next_by_code('is.export.compta')
-    #     res = super(is_export_compta, self).create(vals)
-    #     return res
-
-
-
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:

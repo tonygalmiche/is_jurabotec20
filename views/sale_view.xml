@@ -240,9 +240,6 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_quotation_tree"/>
         <field name="arch" type="xml">
-            <!-- <field name="name" position="after">
-                <field name="is_devis_id" optional="show"/>
-            </field> -->
             <field name="user_id" position="before">
                 <field name="client_order_ref"  optional="hide"/>
                 <field name="is_num_cde_client" optional="hide"/>
@@ -352,12 +349,6 @@
                     name="lignes_colis_action" 
                     type="object" 
                 />
-                <!-- <button 
-                    string="Répartir les lignes de ce colis par le nombre indiqué dans le champ 'Répartition'" 
-                    name="repartir_par_x_colis_action" 
-                    type="object" 
-                    class="btn btn-info"
-                /> -->
                 <button 
                     string="Répartir les lignes de ce colis par 8 maximum" 
                     name="repartir_par8_colis_action" 
@@ -373,7 +364,6 @@
                 <group>
                     <field name="order_id" readonly="1"/>
                     <field name="name"     readonly="1"/>
-                    <!-- <field name="repartition"/> -->
                 </group>
             </sheet>
         </form>
@@ -525,7 +515,6 @@
         <field name="arch" type="xml">
             <pivot default_order="qty desc">
                 <field name="composant_id"         type="row"/>
-                <!-- <field name="invoice_date"       type="col"/> -->
                 <field name="qty"              type="measure"/>
             </pivot>
         </field>
@@ -536,7 +525,6 @@
         <field name="arch" type="xml">
             <graph order="desc">
                 <field name="composant_id"/>
-                <!-- <field name="invoice_date"       type="col"/> -->
                 <field name="qty"              type="measure"/>
             </graph>
         </field>

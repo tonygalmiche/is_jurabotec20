@@ -32,18 +32,6 @@
                                 <strong>Votre SIRET:</strong>
                                 <p class="m-0" t-field="o.partner_id.siret"/>
                             </div>
-                            <!-- <div class="col-auto col-3 mw-100 mb-2" t-if="o.invoice_origin" name="origin">
-                                <strong>Origine:</strong>
-                                <p class="m-0" t-field="o.invoice_origin"/>
-                            </div>
-                            <div class="col-auto col-3 mw-100 mb-2" t-if="o.partner_id.ref" name="customer_code">
-                                <strong>Code:</strong>
-                                <p class="m-0" t-field="o.partner_id.ref"/>
-                            </div>
-                            <div class="col-auto col-3 mw-100 mb-2" t-if="o.ref" name="reference">
-                                <strong>Référence:</strong>
-                                <p class="m-0" t-field="o.ref"/>
-                            </div> -->
                         </div>
 
                         <t t-set="display_discount" t-value="any(l.discount for l in o.invoice_line_ids)"/>
@@ -56,7 +44,6 @@
                                     <th name="th_price_unit" t-if="display_discount" t-attf-class="text-end {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
                                         <span>Disc.%</span>
                                     </th>
-                                    <!-- <th name="th_taxes" t-attf-class="text-start {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"><span>TVA</span></th> -->
                                     <th name="th_subtotal" class="text-end">
                                         <span groups="account.group_show_line_subtotals_tax_excluded">Montant HT</span>
                                         <span groups="account.group_show_line_subtotals_tax_included">Montant</span>
@@ -93,9 +80,6 @@
                                             <td t-if="display_discount" t-attf-class="text-end {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
                                                 <span class="text-nowrap" t-field="line.discount"/>
                                             </td>
-                                            <!-- <td t-attf-class="text-start {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
-                                                <span t-esc="', '.join(map(lambda x: (x.description or x.name), line.tax_ids))" id="line_tax_ids"/>
-                                            </td> -->
                                             <td class="text-end o_price_total">
                                                 <span class="text-nowrap" t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
                                                 <span class="text-nowrap" t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
@@ -134,7 +118,6 @@
 
                         <div class="clearfix mb-4">
                             <div id="total" class="row">
-                                <!-- <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ms-auto"> -->
                                 <div class="col-6">
                                     <i>Volume total : <span t-esc="round(o.is_volume_total,3)"/> m3</i>
                                 </div>
@@ -174,58 +157,16 @@
 
 
 
-                        <!-- <p t-if="o.move_type in ('out_invoice', 'in_refund') and o.payment_reference" name="payment_communication" class="mt-4">
-                            Please use the following communication for your payment : <b><span t-field="o.payment_reference"/></b>
-                        </p> -->
                         <t t-set="payment_term_details" t-value="o.payment_term_details"/>
                         <div t-field="o.invoice_payment_term_id.note" name="payment_term"/>
 
 
-                        <!-- <t t-if="o.invoice_payment_term_id.display_on_invoice and payment_term_details">
-                            <div t-if='o.show_payment_term_details' id="total_payment_term_details_table" class="row">
-                                <div t-attf-class="#{'col-7' if report_type != 'html' else 'col-sm-7 col-md-6'} mt-2 mb-2">
-                                    <table class="table table-sm" style="page-break-inside: avoid;">
-                                        <th class="border-black text-start">
-                                            Date d'échéance
-                                        </th>
-                                        <th class="border-black text-end">
-                                            Montant du
-                                        </th>
-                                        <th t-if="o.show_discount_details" class="border-black text-end">
-                                            Remise
-                                        </th>
-                                        <t t-foreach="payment_term_details" t-as="term">
-                                            <tr>
-                                                <td t-esc="term.get('date')" class="text-start"/>
-                                                <td t-options='{"widget": "monetary", "display_currency": o.currency_id}' t-esc="term.get('amount')" class="text-end"/>
-                                                <td t-if="term.get('discount_date')" class="text-end">
-                                                    <span t-options='{"widget": "monetary", "display_currency": o.currency_id}'
-                                                        t-esc="term.get('discount_amount_currency')"/> if paid before
-                                                    <span t-esc="term.get('discount_date')"/>
-                                                </td>
-                                            </tr>
-                                        </t>
-                                    </table>
-                                </div>
-                            </div>
-                        </t> -->
-                        <!-- <div t-if="not is_html_empty(o.narration)" name="comment">
-                            <span t-field="o.narration"/>
-                        </div> -->
                         <p t-if="not is_html_empty(o.fiscal_position_id.note)" name="note">
                             <span t-field="o.fiscal_position_id.note"/>
                         </p>
                         <p t-if="o.invoice_incoterm_id" name="incoterm">
                             <strong>Incoterm: </strong><span t-field="o.invoice_incoterm_id.code"/> - <span t-field="o.invoice_incoterm_id.name"/>
                         </p>
-                        <!-- <div id="qrcode" t-if="o.display_qr_code and o.amount_residual > 0">
-                            <t t-set="qr_code_url" t-value="o._generate_qr_code(silent_errors=True)"/>
-                            <p t-if="qr_code_url">
-                                <strong class="text-center">Scan me with your banking app.</strong><br/><br/>
-                                <img class="border border-dark rounded" t-att-src="qr_code_url"/>
-                            </p>
-                        </div>
-                    -->
 
                         <strong>Pour notre règlement par virement : </strong>
                         <p t-foreach="res_company.partner_id.bank_ids" t-as="line">

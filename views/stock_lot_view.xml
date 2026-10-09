@@ -149,8 +149,6 @@
         <field name="model">stock.lot</field>
         <field name="priority">1000</field>
         <field name="arch" type="xml">
-            <!-- <kanban create="0" quick_create="0"> -->
-
             <kanban default_group_by="is_charge_associee_a_commande" create="0" quick_create="0">
                 <field name="name"/>
                 <field name="is_sale_order_id"/>

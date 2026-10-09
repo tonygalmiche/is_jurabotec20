@@ -152,7 +152,6 @@ class ProductTemplate(models.Model):
     def import_plan_action(self):
         plans = {}
         dir_path = "/home/odoo/plans"
-        #dir_path = "/media/sf_dev_odoo/16.0/jurabotec/plans/"
         for filename in os.listdir(dir_path):
             if os.path.isfile(os.path.join(dir_path, filename)):
                 end = filename.find("-")
@@ -182,7 +181,6 @@ class ProductTemplate(models.Model):
             ligne1 = obj.is_ligne_etiquette1 or ''
             ligne2 = obj.is_ligne_etiquette2 or ''
             ligne3 = obj.is_ref_plan or ''
-            #^FO5,8^GB329,187,3^FS             ^FX Rectangle bordure de l'étiquette
             ZPL="""
 ^XA
 ^FWR
@@ -275,8 +273,6 @@ class ProductProduct(models.Model):
     def liste_charges_action(self):
         for obj in self:
             view_id = self.env.ref('is_jurabotec.charge_stock_quant_kanban_view', False)
-            #new_context = dict(self.env.context).copy()
-            #new_context["origine_id"] = obj.id
             return {
                 "name": obj.name,
                 "view_mode": "kanban",
@@ -287,7 +283,6 @@ class ProductProduct(models.Model):
                     ('location_id.usage','=', 'internal'),
                     ('quantity','>', 0),
                 ],
-                #"context": new_context,
                 "type": "ir.actions.act_window",
             }
 
@@ -301,7 +296,6 @@ class ProductProduct(models.Model):
             ids=[]
             for line in lines:
                 for product in line.product_id.product_variant_ids:
-                    #product_ids.append(product.id)
                     ids.append(product.id)
             args.append(['id','in',ids])
         product_ids = super()._name_search(name, args, operator, limit, name_get_uid)

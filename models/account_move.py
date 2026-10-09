@@ -22,15 +22,6 @@ class AccountMove(models.Model):
 
 
 
-
-    # def write(self, vals):
-    #     res = super(AccountMove, self).write(vals)
-    #     self.maj_synthese_valobat()
-    #     return res
-
-
-
-
     @api.depends('invoice_line_ids','invoice_line_ids.quantity')
     def _compute_is_volume_total(self):
         for obj in self:

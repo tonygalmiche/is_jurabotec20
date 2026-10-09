@@ -32,10 +32,6 @@ class IsSaleOrderColis(models.Model):
         self.repartir_par_colis_action(maxi=8)
 
 
-    # def repartir_par_x_colis_action(self):
-    #     self.repartir_par_colis_action(maxi=self.repartition)
-
-
     def repartir_par_colis_action(self,maxi=8):
         for obj in self:
             #** Test si supérieur à maxi
@@ -147,18 +143,6 @@ class IsSaleOrderColisageComposant(models.Model):
 
     @api.model
     def _group_expand_colis_id(self, stages, domain, order):
-        # # retrieve team_id from the context and write the domain
-        # # - ('id', 'in', stages.ids): add columns that should be present
-        # # - OR ('fold', '=', False): add default columns that are not folded
-        # # - OR ('team_ids', '=', team_id), ('fold', '=', False) if team_id: add team columns that are not folded
-        # team_id = self._context.get('default_team_id')
-        # if team_id:
-        #     search_domain = ['|', ('id', 'in', stages.ids), '|', ('team_id', '=', False), ('team_id', '=', team_id)]
-        # else:
-        #     search_domain = ['|', ('id', 'in', stages.ids), ('team_id', '=', False)]
-
-        # # perform search
-        # stage_ids = stages._search(search_domain, order=order, access_rights_uid=SUPERUSER_ID)
         colis = self.env['is.sale.order.colis'].search([])
         colis = stages.order_id.is_colis_ids
         return colis
@@ -685,8 +669,6 @@ class sale_order_line(models.Model):
             x = False
             if obj.is_quantite_saisie and  obj.is_epaisseur_saisie and obj.is_largeur_saisie:
                 x = "%.0f pièces de %.0fx%.0f. "%(obj.is_quantite_saisie, obj.is_epaisseur_saisie, obj.is_largeur_saisie)
-           # if obj.product_id.is_epaisseur and obj.product_id.is_largeur:
-           #     x = "Section %.0fx%.0f. "%(obj.product_id.is_epaisseur, obj.product_id.is_largeur)
             if obj.product_uom_qty and obj.is_longueur  and obj.is_longueur_totale and obj.is_surface_totale:
                 if not x:
                     x=""

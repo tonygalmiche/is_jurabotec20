@@ -220,7 +220,7 @@ class StockLot(models.Model):
     is_purchase_order_id    = fields.Many2one('purchase.order', string="Cde fournisseur", compute='_compute_is_purchase_order_id', store=False, readonly=True)
     is_detail_charge_client = fields.Char(string="Détail charge Client")
     is_num_interne_client   = fields.Char(string="N° interne Client")
-    is_sale_order_id        = fields.Many2one('sale.order', string="Cde client") #, compute='_compute_is_sale_order_id', store=True)
+    is_sale_order_id        = fields.Many2one('sale.order', string="Cde client")
     is_charge_associee_a_commande = fields.Selection([
         ('non', 'Non associée'), 
         ('oui', 'Associée'),
@@ -395,9 +395,7 @@ class IsDeplacementCharge(models.Model):
                 "product_uom_qty" : obj.quantity,
                 "product_id"      : context["product_id"],
                 "name"            : "Tablette",
-                #"move_line_ids"   : [[0,False,line_vals]],
             }
-            #move=self.env['stock.move'].create(move_vals)
             #TODO : La création du picking est facultative, mais je la garde pour avoir un exemple complet
             filtre=[('code', '=', 'internal')]
             picking_type_id = self.env['stock.picking.type'].search(filtre)[0]
@@ -460,7 +458,6 @@ class IsCreationCharge(models.Model):
                 "product_id"      : obj.product_id.id,
             }
             move_vals={
-                #"production_id"   : production_id, # Si j'indique ce champ avant la création du lot, j'ai message => La quantité de xxx débloquée ne peut pas être supérieure à la quantité en stock
                 "location_id"     : location_id,
                 "location_dest_id": location_dest_id,
                 "product_uom_qty" : obj.quantity,
@@ -470,23 +467,5 @@ class IsCreationCharge(models.Model):
             }
             move=self.env['stock.move'].with_context({}).create(move_vals) # Il faut effacer le context, sinon erreur avec le champ product_qty
             move._action_done()
-            #move.production_id = production_id # Permet d'associer le mouvement à l'ordre de fabrication après sa création
             #******************************************************************
-
-
-
-
-
-#    def action_generate_serial(self):
-#         self.ensure_one()
-#         self.lot_producing_id = self.env['stock.lot'].create({
-#             'product_id': self.product_id.id,
-#             'company_id': self.company_id.id,
-#             'name': self.env['stock.lot']._get_next_serial(self.company_id, self.product_id) or 
-# self.env['ir.sequence'].next_by_code('stock.lot.serial'),
-#         })
-#         if self.move_finished_ids.filtered(lambda m: m.product_id == self.product_id).move_line_ids:
-#             self.move_finished_ids.filtered(lambda m: m.product_id == self.product_id).move_line_ids.lot_id = self.lot_producing_id
-#         if self.product_id.tracking == 'serial':
-#             self._set_qty_producing()
 

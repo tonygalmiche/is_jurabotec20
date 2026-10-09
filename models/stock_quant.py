@@ -88,13 +88,11 @@ class StockQuant(models.Model):
         if float_compare(quantity, 0, precision_rounding=rounding) > 0:
             # if we want to reserve
             available_quantity = sum(quants.filtered(lambda q: float_compare(q.quantity, 0, precision_rounding=rounding) > 0).mapped('quantity')) - sum(quants.mapped('reserved_quantity'))
-            #if float_compare(quantity, available_quantity, precision_rounding=rounding) > 0:
-            #    raise UserError(_('It is not possible to reserve more products of %s than you have in stock.', product_id.display_name))
+            # Contrôle d'Odoo retiré : réservation possible au-delà de la quantité disponible
         elif float_compare(quantity, 0, precision_rounding=rounding) < 0:
             # if we want to unreserve
             available_quantity = sum(quants.mapped('reserved_quantity'))
-            #if float_compare(abs(quantity), available_quantity, precision_rounding=rounding) > 0:
-            #    raise UserError(_('It is not possible to unreserve more products of %s than you have in stock.', product_id.display_name))
+            # Contrôle d'Odoo retiré : annulation de réservation possible au-delà de la quantité réservée
         else:
             return reserved_quants
 

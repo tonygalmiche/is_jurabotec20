@@ -170,15 +170,4 @@
         </field>
     </record>
 
-<!-- 
-
-<pivot string="Inventory" sample="1">
-                <field name="product_id" type="row"/>
-                <field name="location_id" type="col"/>
-                <field name="quantity" type="measure"/>
-            </pivot>
-
-stock.view_stock_quant_pivot
- -->
-
 </odoo>
