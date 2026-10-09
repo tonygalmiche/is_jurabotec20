@@ -12,36 +12,36 @@
                             string="Saisie" 
                             type="object" 
                             class="btn-primary"
-                            attrs="{'invisible': [('state', '!=', 'emplacement')]}"
+                            invisible="state != 'emplacement'"
                         />
-                        <button 
-                            name="terminer_inventaire_action" 
-                            string="Terminer" 
-                            type="object" 
+                        <button
+                            name="terminer_inventaire_action"
+                            string="Terminer"
+                            type="object"
                             class="btn-primary"
-                            attrs="{'invisible': [('state', '!=', 'saisie')]}"
+                            invisible="state != 'saisie'"
                             confirm="Êtes-vous sûr de vouloir terminer cet inventaire ? Les lots seront déplacés vers l'emplacement de destination."
                         />
                         <button 
                             name="voir_lots_action" 
-                            string="Lots" 
-                            type="object" 
+                            string="Lots"
+                            type="object"
                             class="btn-secondary"
-                            attrs="{'invisible': [('nb_lignes', '=', 0)]}"
+                            invisible="nb_lignes == 0"
                         />
-                        <button 
-                            name="voir_stock_detaille_action" 
-                            string="Stock" 
-                            type="object" 
+                        <button
+                            name="voir_stock_detaille_action"
+                            string="Stock"
+                            type="object"
                             class="btn-secondary"
-                            attrs="{'invisible': [('nb_lignes', '=', 0)]}"
+                            invisible="nb_lignes == 0"
                         />
-                        <button 
-                            name="voir_lignes_mouvements_action" 
-                            string="Mouvements" 
-                            type="object" 
+                        <button
+                            name="voir_lignes_mouvements_action"
+                            string="Mouvements"
+                            type="object"
                             class="btn-secondary"
-                            attrs="{'invisible': [('state', '!=', 'termine')]}"
+                            invisible="state != 'termine'"
                         />
                         <field name="state" widget="statusbar"/>
                     </header>
@@ -55,14 +55,14 @@
                             <field 
                                 name="barcode_input" 
                                 widget="barcode_scan_widget" nolabel="1" colspan="2"
-                                attrs="{'invisible': [('state', '=', 'termine')]}"
+                                invisible="state == 'termine'"
                             />
                             <field name="barcode_scan" invisible="1"/>
-                            <field name="emplacement_dst_id"  force_save="1" attrs="{'readonly': [('state', '!=', 'emplacement')]}"/>
-                            <field name="nb_lignes" attrs="{'invisible': [('state', '=', 'emplacement')]}"/>
+                            <field name="emplacement_dst_id"  force_save="1" readonly="state != 'emplacement'"/>
+                            <field name="nb_lignes" invisible="state == 'emplacement'"/>
                         </group>
-                        
-                        <field name="ligne_ids" attrs="{'invisible': [('state', '=', 'emplacement')], 'readonly': [('state', '=', 'termine')]}">
+
+                        <field name="ligne_ids" invisible="state == 'emplacement'" readonly="state == 'termine'">
                             <list editable="bottom">
                                 <field name="lot_id"/>
                                 <field name="product_id"      force_save="1" optional="show"/>

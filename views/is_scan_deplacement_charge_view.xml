@@ -12,20 +12,20 @@
                             string="Terminer" 
                             type="object" 
                             class="btn-primary"
-                            attrs="{'invisible': [('state', '=', 'termine')]}"
+                            invisible="state == 'termine'"
                             confirm="Êtes-vous sûr de vouloir terminer cette session de déplacement de charges ?"
                         />
-                        <button 
-                            name="voir_mouvements_action" 
-                            string="Tous les mouvements" 
-                            type="object" 
+                        <button
+                            name="voir_mouvements_action"
+                            string="Tous les mouvements"
+                            type="object"
                             class="btn-secondary"
-                            attrs="{'invisible': [('move_ids', '=', [])]}"
+                            invisible="not move_ids"
                         />
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
-                        <group attrs="{'invisible': [('state', '!=', 'termine')]}">
+                        <group invisible="state != 'termine'">
                             <group>
                                 <field name="create_uid" string="Créé par" readonly="1"/>
                                 <field name="create_date" string="Date de création" readonly="1"/>
@@ -35,18 +35,18 @@
                             </group>
                         </group>
                         
-                        <div class="alert alert-success text-center" role="alert" attrs="{'invisible': [('state', '!=', 'lot')]}">
+                        <div class="alert alert-success text-center" role="alert" invisible="state != 'lot'">
                             <field name="message_scan" nolabel="1" readonly="1"/>
                         </div>
-                        <div class="alert alert-info text-center" role="alert" attrs="{'invisible': [('state', '!=', 'emplacement')]}">
+                        <div class="alert alert-info text-center" role="alert" invisible="state != 'emplacement'">
                             <field name="message_scan" nolabel="1" readonly="1"/>
                         </div>
 
                         <field name="alert_type" invisible="1"/>
-                        <div class="alert alert-success text-center" role="alert" attrs="{'invisible': ['|', ('alert_message', '=', False), ('alert_type', '!=', 'success')]}">
+                        <div class="alert alert-success text-center" role="alert" invisible="not alert_message or alert_type != 'success'">
                             <field name="alert_message" nolabel="1" readonly="1"/>
                         </div>
-                        <div class="alert alert-warning text-center" role="alert" attrs="{'invisible': ['|', ('alert_message', '=', False), ('alert_type', '!=', 'warning')]}">
+                        <div class="alert alert-warning text-center" role="alert" invisible="not alert_message or alert_type != 'warning'">
                             <field name="alert_message" nolabel="1" readonly="1"/>
                         </div>
                         
@@ -54,12 +54,12 @@
                             <field 
                                 name="barcode_input" 
                                 widget="barcode_scan_widget" nolabel="1" colspan="2"
-                                attrs="{'invisible': [('state', '=', 'termine')]}"
+                                invisible="state == 'termine'"
                             />
                             <field name="barcode_scan" invisible="1"/>
                         </group>
-                        
-                        <group col="4" attrs="{'invisible': [('lot_id', '=', False)]}">
+
+                        <group col="4" invisible="not lot_id">
                             <field name="lot_id" readonly="1"/>
                             <field name="product_id" readonly="1"/>
                             <field name="emplacement_src_id" readonly="1"/>
@@ -67,14 +67,15 @@
                         </group>
 
                         <notebook>
-                            <page string="10 derniers mouvements" attrs="{'invisible': [('move_count', '=', 0)]}">
+                            <page string="10 derniers mouvements" invisible="move_count == 0">
                                 <group>
                                     <field name="move_count"/>
                                 </group>
                                 <field name="move_ids" nolabel="1">
                                     <list limit="10">
                                         <field name="create_date" string="Date"/>
-                                        <field name="name"/>
+                                        <!-- stock.move.name supprimé en v20 : libellé dans description_picking -->
+                                        <field name="description_picking"/>
                                         <field name="product_id"/>
                                         <field name="product_uom_qty"/>
                                         <field name="location_id"/>
