@@ -8,7 +8,6 @@
         <field name="state">code</field>
         <field name="code">model.colisage_init_ir_cron()</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
     </record>
     <record id="init_colisage_actions_server" model="ir.actions.server">
         <field name="name">Initialisation du colisage</field>
@@ -38,10 +37,10 @@
 
             <button name="action_draft" position="after">
                 <field name="is_charge_ids" invisible="1"/>
-                <button name="associer_charges_action"  attrs="{'invisible':['|',('state', '!=', 'draft'),('is_emplacement_charge_id','=',False)]}" type="object" string="Associer des charges"/>
-                <button 
-                    name="actualiser_lignes_action" 
-                    attrs="{'invisible':['|',('state', '!=', 'draft'),('is_charge_ids','=',[])]}"               
+                <button name="associer_charges_action"  invisible="state != 'draft' or not is_emplacement_charge_id" type="object" string="Associer des charges"/>
+                <button
+                    name="actualiser_lignes_action"
+                    invisible="state != 'draft' or not is_charge_ids"
                     type="object" string="Actualiser les lignes avec les charges"
                     confirm="ATTENTION : Cela va supprimer les lignes de la commandes et les re-créer à partir des charges!"
                 />
@@ -49,25 +48,25 @@
             <xpath expr="//page[@name='order_lines']/field/list" position="attributes">
                 <attribute name="edit">0</attribute>
             </xpath>
-            <xpath expr="//page[@name='order_lines']/field/form/div[@name='invoice_lines']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
+            <!-- Factures de la ligne : déjà invisibles en v20 (plus de bloc div invoice_lines) -->
             <xpath expr="//page[@name='order_lines']/field/form/group/group[1]" position="attributes">
                 <attribute name="string">Commande</attribute>
             </xpath>
             <xpath expr="//page[@name='order_lines']/field/form/group/group[2]" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <xpath expr="//page[@name='order_lines']/field/form/group/group/label[2]" position="attributes">
+            <!-- Quantités livrée et facturée masquées (label[2]/div[2] et label[3]/div[3] en v16 : par leur nom en v20,
+                 un label a été ajouté avant pour l'article) -->
+            <xpath expr="//page[@name='order_lines']/field/form/group/group/label[@for='qty_delivered']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <xpath expr="//page[@name='order_lines']/field/form/group/group/div[2]" position="attributes">
+            <xpath expr="//page[@name='order_lines']/field/form/group/group/div[@name='delivered_qty']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <xpath expr="//page[@name='order_lines']/field/form/group/group/label[3]" position="attributes">
+            <xpath expr="//page[@name='order_lines']/field/form/group/group/label[@for='qty_invoiced']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <xpath expr="//page[@name='order_lines']/field/form/group/group/div[3]" position="attributes">
+            <xpath expr="//page[@name='order_lines']/field/form/group/group/div[@name='invoiced_qty']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
             <field name="payment_term_id" position="after">
@@ -102,21 +101,22 @@
             <xpath expr="//page[@name='order_lines']/field/form/group/group/field[@name='price_unit']" position="after">
                 <field name="price_subtotal"/>
             </xpath>
-            <xpath expr="//page[@name='order_lines']/field/form/group/group/field[@name='product_id']" position="after">
+            <!-- En v20, product_id est dans un div avec l'avertissement « article archivé » -->
+            <xpath expr="//page[@name='order_lines']/field/form/group/group/div[field[@name='product_id']]" position="after">
                 <field name="is_num_palette"/>
             </xpath>
              <xpath expr="//page[@name='order_lines']/field/form/group/group[2]" position="after">
                 <group string="Dimensions">
                     <field name="is_longueur_product" invisible="1"/>
-                    <field name="is_quantite_saisie"  attrs="{'invisible': [('is_longueur_product', '>', 0)]}"/>
-                    <field name="is_epaisseur_saisie" attrs="{'invisible': [('is_longueur_product', '>', 0)]}"/>
-                    <field name="is_largeur_saisie"   attrs="{'invisible': [('is_longueur_product', '>', 0)]}"/>
-                    <field name="is_longueur_saisie"  attrs="{'invisible': [('is_longueur_product', '>', 0)]}"/>
-                    <field name="is_longueur"         attrs="{'invisible': [('is_longueur', '=', 0)]}"/>
-                    <field name="is_surface"          attrs="{'invisible': [('is_surface' , '=', 0)]}"/>
-                    <field name="is_volume"           attrs="{'invisible': [('is_volume'  , '=', 0)]}"/>
+                    <field name="is_quantite_saisie"  invisible="is_longueur_product &gt; 0"/>
+                    <field name="is_epaisseur_saisie" invisible="is_longueur_product &gt; 0"/>
+                    <field name="is_largeur_saisie"   invisible="is_longueur_product &gt; 0"/>
+                    <field name="is_longueur_saisie"  invisible="is_longueur_product &gt; 0"/>
+                    <field name="is_longueur"         invisible="is_longueur == 0"/>
+                    <field name="is_surface"          invisible="is_surface == 0"/>
+                    <field name="is_volume"           invisible="is_volume == 0"/>
                     <field name="is_detail_quantite"/>
-                    <field name="is_charge_id"        attrs="{'invisible': [('is_charge_id', '=', False)]}"/>
+                    <field name="is_charge_id"        invisible="not is_charge_id"/>
                 </group>
                 <group string="Tarif Jurabotec">
                     <field name="is_prix_tarif"/>
@@ -131,7 +131,7 @@
             <field name="payment_term_id" position="before">
                 <field name="is_delai"/>
                 <field name="is_gestion_colisage"/>
-                <field name="is_detail_composants" attrs="{'invisible': [('is_gestion_colisage', '=', False)]}"/>
+                <field name="is_detail_composants" invisible="not is_gestion_colisage"/>
             </field>
             <field name="partner_id" position="after">
                 <field name="client_order_ref"/>
@@ -141,7 +141,7 @@
 
 
             <xpath expr="//page[@name='order_lines']/field/list/field[@name='product_uom_qty']" position="before">
-                <field name="is_charge_id"       optional="hide" widget="many2one_clickable"/>
+                <field name="is_charge_id"       optional="hide"/>
                 <field name="is_longueur"        optional="hide"/>
                 <field name="is_surface"         optional="hide"/>
                 <field name="is_volume"          optional="hide"/>
@@ -161,7 +161,7 @@
             </xpath>
 
             <xpath expr="//page[@name='order_lines']" position="after">
-                <page string="Colis"  attrs="{'invisible': [('is_gestion_colisage', '=', False)]}">
+                <page string="Colis"  invisible="not is_gestion_colisage">
                     <field name="is_colis_ids" nolabel="1">
                         <list editable="bottom">
                             <field name="sequence" widget="handle" />
@@ -169,13 +169,13 @@
                                 title="Voir le colis" 
                                 name="voir_colis_action" 
                                 type="object" 
-                                icon="fa-search" 
+                                icon="search"
                             />
                             <button 
                                 title="Fiche de colisage" 
                                 name="imprimer_fiche_colisage_action" 
                                 type="object" 
-                                icon="fa-print" 
+                                icon="print"
                             />
                             <field name="name"/>
                         </list>
@@ -314,7 +314,7 @@
                 hide_time="false" 
                 event_limit="100"
                 event_open_popup="false"
-                quick_add="false"
+                quick_create="false"
                 mode="month"
                 delete="false"
             >
@@ -382,18 +382,17 @@
     <record model="ir.ui.view" id="is_sale_order_colisage_composant_tree_view">
         <field name="name">is_sale_order_colisage_composant_tree_view</field>
         <field name="model">is.sale.order.colisage.composant</field>
-        <field name="type">tree</field>
         <field name="arch" type="xml">
             <list editable="bottom">
                 <button 
                     title="Dupliquer" 
                     name="dupliquer_colis_action" 
                     type="object" 
-                    icon="fa-copy" 
+                    icon="content_copy"
                 />
                 <field name="colis_id" domain="[('id', 'in', colis_ids)]"  widget="selection"/>
-                <field name="product_id"    readonly="1" widget="many2one_clickable"/>
-                <field name="composant_id"  readonly="1" widget="many2one_clickable"/>
+                <field name="product_id"    readonly="1"/>
+                <field name="composant_id"  readonly="1"/>
                 <field name="qty" sum="Total"/>
 
                 <field name="volume_article"/>
@@ -401,12 +400,12 @@
 
                 <field name="qty_bom"       readonly="1" optional="hide" />
                 <field name="qty_cde"       readonly="1" optional="hide" />
-                <field name="sale_line_id"  readonly="1" optional="hide" widget="many2one_clickable"/>
+                <field name="sale_line_id"  readonly="1" optional="hide"/>
                 <field name="colis_ids"     readonly="1" optional="hide" widget="many2many_tags"/>
-                <field name="order_id"   optional="hide" widget="many2one_clickable"/>
+                <field name="order_id"   optional="hide"/>
                 <field name="date_order" optional="hide"/>
                 <field name="state"      optional="hide"/>
-                <field name="partner_id" optional="hide" widget="many2one_clickable"/>
+                <field name="partner_id" optional="hide"/>
             </list>
         </field>
     </record>
@@ -458,34 +457,30 @@
                 <field name="composant_id"/>
                 <field name="sale_line_id"/>
                 <templates>
-                    <t t-name="kanban-box">
-                        <div class="oe_kanban_card oe_kanban_global_click">
-                             <div class="oe_kanban_details">
-                                <div class="o_kanban_record_top mb-0">
-                                    <div class="o_kanban_record_headings">
-                                        <strong class="o_kanban_record_title">
-                                            <field name="product_id"/>
-                                        </strong>
-                                    </div>
-                                </div>
-                                <div>Composant : <field name="composant_id"/></div>
-                                <div>Quantité :  <field name="qty"/></div>
-
-                                <div>
-                                    <button 
-                                        title="Dupliquer" 
-                                        name="dupliquer_colis_action" 
-                                        type="object" 
-                                        icon="fa-copy" 
-                                    />
-                                    <button 
-                                        title="Colis" 
-                                        name="voir_colis_action" 
-                                        type="object" 
-                                        icon="fa-archive" 
-                                    />
-                                </div>
+                    <t t-name="card">
+                        <div class="o_kanban_record_top mb-0">
+                            <div class="o_kanban_record_headings">
+                                <strong class="o_kanban_record_title">
+                                    <field name="product_id"/>
+                                </strong>
                             </div>
+                        </div>
+                        <div>Composant : <field name="composant_id"/></div>
+                        <div>Quantité :  <field name="qty"/></div>
+
+                        <div>
+                            <button
+                                title="Dupliquer"
+                                name="dupliquer_colis_action"
+                                type="object"
+                                icon="content_copy"
+                            />
+                            <button
+                                title="Colis"
+                                name="voir_colis_action"
+                                type="object"
+                                icon="archive"
+                            />
                         </div>
                     </t>
                 </templates>
