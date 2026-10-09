@@ -62,7 +62,7 @@
             <xpath expr="//div[@id='payment_term']" position="inside">
                 <strong>Pour notre règlement par virement : </strong>
                 <p t-foreach="company.partner_id.bank_ids" t-as="bank">
-                    IBAN : <span t-field="bank.acc_number" /> -  BIC : <span t-field="bank.bank_id.bic" />
+                    IBAN : <span t-field="bank.account_number" /> -  BIC : <span t-field="bank.bank_bic" />
                 </p>
             </xpath>
 
