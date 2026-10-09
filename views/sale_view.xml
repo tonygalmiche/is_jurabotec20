@@ -140,7 +140,8 @@
             </field>
 
 
-            <xpath expr="//page[@name='order_lines']/field/list/field[@name='product_uom_qty']" position="before">
+            <!-- En v20, product_uom_qty est dans <column name="sol_qty"> -->
+            <xpath expr="//page[@name='order_lines']/field/list/column[@name='sol_qty']" position="before">
                 <field name="is_charge_id"       optional="hide" widget="many2one"/>
                 <field name="is_longueur"        optional="hide"/>
                 <field name="is_surface"         optional="hide"/>
@@ -151,7 +152,7 @@
             </xpath>
 
 
-            <xpath expr="//page[@name='order_lines']/field/list/field[@name='product_uom_qty']" position="after">
+            <xpath expr="//page[@name='order_lines']/field/list/column[@name='sol_qty']" position="after">
                 <field name="is_bareme_valobat_id" optional="hide"/>
                 <field name="is_eco_contribution"  optional="show"/>
                 <field name="is_longueur_totale"   optional="show"/>

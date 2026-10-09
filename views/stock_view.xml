@@ -37,7 +37,8 @@
                 <field name="is_volume_total"/>
                 <field name="is_detail_charge"/>
             </xpath>
-            <xpath expr="//field[@name='move_ids']/list/field[@name='description_picking']" position="after">
+            <!-- En v20, description_picking est dans un <column> (avec l'article) -->
+            <xpath expr="//field[@name='move_ids']/list/column[field[@name='description_picking']]" position="after">
                 <field name="is_description_cde" optional="show"/>
                 <field name="is_lot_id"          optional="hide" widget="many2one"/>
             </xpath>
