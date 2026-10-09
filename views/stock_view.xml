@@ -2,6 +2,9 @@
 <odoo>
 
     <!-- stock.picking -->
+    <record id="stock.action_print_labels" model="ir.actions.server">
+        <field name="binding_model_id" eval="False"/>
+    </record>
     <record id="is_view_picking_form" model="ir.ui.view">
         <field name="name">is_view_picking_form</field>
         <field name="model">stock.picking</field>
@@ -14,29 +17,31 @@
                     }
                 </style>
             </xpath>
-            <button name="action_open_label_type" position="replace">
-                <button 
-                    string="Imprimer étiquette" 
-                    name="imprime_etiquette_action" 
-                    type="object" 
+            <!-- En v20, les étiquettes d'Odoo ne sont plus un bouton de l'en-tête (action_open_label_type) mais l'action
+                 « Labels » du menu Imprimer (retirée ci-dessous) : remplacées par l'étiquette Jurabotec -->
+            <button name="action_exchange" position="after">
+                <button
+                    string="Imprimer étiquette"
+                    name="imprime_etiquette_action"
+                    type="object"
                 />
             </button>
             <button name="action_cancel" position="after">
                 <button name="liste_charges_action" string="Liste des charges" type="object"/>
             </button>
             <xpath expr="//group/group/field[@name='origin']" position="after">
-                <field name="sale_id" attrs="{'invisible': [('sale_id', '=', False)]}"/>
+                <field name="sale_id" invisible="not sale_id"/>
                 <field name="is_bl_fournisseur"/>
             </xpath>
             <xpath expr="//group/field[@name='backorder_id']" position="after">
                 <field name="is_volume_total"/>
                 <field name="is_detail_charge"/>
             </xpath>
-            <xpath expr="//field[@name='move_ids_without_package']/list/field[@name='description_picking']" position="after">
+            <xpath expr="//field[@name='move_ids']/list/field[@name='description_picking']" position="after">
                 <field name="is_description_cde" optional="show"/>
-                <field name="is_lot_id"          optional="hide" widget="many2one_clickable"/>
+                <field name="is_lot_id"          optional="hide"/>
             </xpath>
-            <xpath expr="//field[@name='move_ids_without_package']/list/field[@name='lot_ids']" position="attributes">
+            <xpath expr="//field[@name='move_ids']/list/field[@name='lot_ids']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
         </field>
@@ -87,19 +92,15 @@
             <kanban create="0" quick_create="0">
                 <field name="name"/>
                 <templates>
-                    <t t-name="kanban-box">
-                        <div class="oe_kanban_card oe_kanban_global_click">
-                             <div class="oe_kanban_details">
-                                <div class="o_kanban_record_top mb-0">
-                                    <div class="o_kanban_record_headings">
-                                        <strong class="o_kanban_record_title">
-                                            <div style="font-size:24pt;text-align:center">
-                                                <field name="name"/><br />
-                                                <button name="emplacement_charge_action" string="Sélectionner cet emplacement d'origine" type="object" class="btn btn-primary"/>
-                                            </div>
-                                        </strong>
+                    <t t-name="card">
+                        <div class="o_kanban_record_top mb-0">
+                            <div class="o_kanban_record_headings">
+                                <strong class="o_kanban_record_title">
+                                    <div style="font-size:24pt;text-align:center">
+                                        <field name="name"/><br />
+                                        <button name="emplacement_charge_action" string="Sélectionner cet emplacement d'origine" type="object" class="btn btn-primary"/>
                                     </div>
-                                </div>
+                                </strong>
                             </div>
                         </div>
                     </t>
@@ -114,19 +115,15 @@
             <kanban create="0" quick_create="0">
                 <field name="name"/>
                 <templates>
-                    <t t-name="kanban-box">
-                        <div class="oe_kanban_card oe_kanban_global_click">
-                             <div class="oe_kanban_details">
-                                <div class="o_kanban_record_top mb-0">
-                                    <div class="o_kanban_record_headings">
-                                        <strong class="o_kanban_record_title">
-                                            <div style="font-size:24pt;text-align:center">
-                                                <field name="name"/><br />
-                                                <button name="destination_charge_action" string="Sélectionner cet emplacement de destinaton" type="object" class="btn btn-primary"/>
-                                            </div>
-                                        </strong>
+                    <t t-name="card">
+                        <div class="o_kanban_record_top mb-0">
+                            <div class="o_kanban_record_headings">
+                                <strong class="o_kanban_record_title">
+                                    <div style="font-size:24pt;text-align:center">
+                                        <field name="name"/><br />
+                                        <button name="destination_charge_action" string="Sélectionner cet emplacement de destinaton" type="object" class="btn btn-primary"/>
                                     </div>
-                                </div>
+                                </strong>
                             </div>
                         </div>
                     </t>
@@ -215,11 +212,7 @@
                     string="Créer cette charge" 
                     type="object" 
                     class="btn btn-primary"
-                    attrs="{'invisible':['|','|',
-                        ('product_id', '=', False),
-                        ('quantity'  , '=', 0),
-                        ('lot_id'    , '!=', False),
-                    ]}"
+                    invisible="not product_id or quantity == 0 or lot_id"
                 />
             </sheet>
         </form>
@@ -251,19 +244,14 @@
         <field name="model">stock.move.line</field>
         <field name="inherit_id" ref="stock.view_move_line_tree"/>
         <field name="arch" type="xml">
-            <field name="product_id" position="attributes">
-                <attribute name="widget">many2one_clickable</attribute>
-            </field>
-            <field name="lot_id" position="attributes">
-                <attribute name="widget">many2one_clickable</attribute>
-            </field>
             <field name="lot_id" position="before">
-                <field name="move_id" optional="hide" widget="many2one_clickable"/>
+                <field name="move_id" optional="hide"/>
             </field>
-            <field name="create_uid" position="after">
+            <!-- En v20, la colonne « Fait par » est write_uid (create_uid en v16) -->
+            <field name="write_uid" position="after">
+                <field name="create_uid"  optional="hide"/>
                 <field name="create_date" optional="hide"/>
-                <field name="write_uid"   optional="hide"/>
-                <field name="write_date"   optional="hide"/>
+                <field name="write_date"  optional="hide"/>
             </field>
         </field>
     </record>
