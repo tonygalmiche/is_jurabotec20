@@ -176,7 +176,7 @@ class IsScanDeplacementCharge(models.Model):
         for obj in self:
             return {
                 "name": f"Mouvements déplacement charge {obj.id}",
-                "view_mode": "tree,form",
+                "view_mode": "list,form",
                 "res_model": "stock.move.line",
                 "domain": [("move_id.is_scan_deplacement_charge_id", "=", obj.id)],
                 "type": "ir.actions.act_window",

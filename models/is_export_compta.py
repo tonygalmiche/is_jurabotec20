@@ -36,7 +36,7 @@ class is_export_compta(models.Model):
 
 
     def action_export_compta(self):
-        cr=self._cr
+        cr=self.env.cr
         for obj in self:
             invoices = self.env['account.move'].search([('is_export_compta_id','=',obj.id)])
             for invoice in invoices:

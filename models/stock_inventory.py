@@ -77,7 +77,7 @@ class stock_inventory(models.Model):
                 context["default_product_id"] = obj.product_id.id
             return {
                 'name': 'Lignes',
-                'view_mode': 'tree',
+                'view_mode': 'list',
                 'res_model': 'stock.inventory.line',
                 'domain': [
                     ('inventory_id','=',obj.id),
@@ -141,7 +141,7 @@ class stock_inventory(models.Model):
         for obj in self:
             return {
                 'name': 'Mouvements',
-                'view_mode': 'tree,form',
+                'view_mode': 'list,form',
                 'views': [[view_id.id, "list"], [False, "form"]],
                 'res_model': 'stock.move.line',
                 'domain': [

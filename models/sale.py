@@ -83,7 +83,7 @@ class IsSaleOrderColis(models.Model):
         for obj in self:
             return {
                 "name": obj.name,
-                "view_mode": "tree,form",
+                "view_mode": "list,form",
                 "res_model": "is.sale.order.colisage.composant",
                 "domain": [
                     ("colis_id","=",obj.id),
@@ -379,7 +379,7 @@ class sale_order(models.Model):
             invoice_vals['invoice_line_ids'] += invoice_line_vals
             invoice_vals_list.append(invoice_vals)
 
-        if not invoice_vals_list and self._context.get('raise_if_nothing_to_invoice', True):
+        if not invoice_vals_list and self.env.context.get('raise_if_nothing_to_invoice', True):
             raise UserError(self._nothing_to_invoice_error_message())
 
         # 2) Manage 'grouped' parameter: group by (partner_id, currency_id).
@@ -482,7 +482,7 @@ class sale_order(models.Model):
                 obj.colisage_init()
                 return {
                     "name": "Colisage des composants %s"%(obj.name),
-                    "view_mode": "kanban,tree,form",
+                    "view_mode": "kanban,list,form",
                     "res_model": "is.sale.order.colisage.composant",
                     "domain": [
                         ("order_id","=",obj.id),
@@ -547,7 +547,7 @@ class sale_order(models.Model):
         for obj in self:
            return {
                 "name": "Colis %s"%(obj.name),
-                "view_mode": "tree,form",
+                "view_mode": "list,form",
                 "res_model": "is.sale.order.colis",
                 "domain": [
                     ("order_id","=",obj.id),
@@ -574,8 +574,8 @@ class sale_order(models.Model):
             }
             return {
                 "name": "Charges",
-                "view_mode": "kanban,tree,form",
-                "views": [(view_id.id, 'kanban'),(False, 'tree'),(False, 'form')],
+                "view_mode": "kanban,list,form",
+                "views": [(view_id.id, 'kanban'),(False, 'list'),(False, 'form')],
                 "res_model": "stock.lot",
                 "domain": [
                     ("id","in",ids),

@@ -79,7 +79,7 @@ class IsScanInventaire(models.Model):
             
             return {
                 "name": f"Lots inventaire {obj.id}",
-                "view_mode": "tree,form",
+                "view_mode": "list,form",
                 "res_model": "stock.lot",
                 "domain": [
                     ("id", "in", lot_ids),
@@ -99,7 +99,7 @@ class IsScanInventaire(models.Model):
             
             return {
                 "name": f"Stock détaillé inventaire {obj.id}",
-                "view_mode": "tree,form",
+                "view_mode": "list,form",
                 "res_model": "stock.quant",
                 "domain": [
                     ("lot_id", "in", lot_ids),
@@ -116,7 +116,7 @@ class IsScanInventaire(models.Model):
         for obj in self:
             return {
                 "name": f"Mouvements inventaire {obj.id}",
-                "view_mode": "tree,form",
+                "view_mode": "list,form",
                 "res_model": "stock.move",
                 "domain": [
                     ("is_scan_inventaire_id", "=", obj.id),
@@ -131,7 +131,7 @@ class IsScanInventaire(models.Model):
         for obj in self:
             return {
                 "name": f"Lignes de mouvements inventaire {obj.id}",
-                "view_mode": "tree,form",
+                "view_mode": "list,form",
                 "res_model": "stock.move.line",
                 "domain": [
                     ("move_id.is_scan_inventaire_id", "=", obj.id),

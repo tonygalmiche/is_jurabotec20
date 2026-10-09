@@ -38,7 +38,7 @@ class StockPicking(models.Model):
                     ids.append(lot.id)
             return {
                 "name": "Charges",
-                "view_mode": "tree,form",
+                "view_mode": "list,form",
                 "res_model": "stock.lot",
                 "domain": [
                     ("id","in",ids),
@@ -233,7 +233,7 @@ class StockLot(models.Model):
         if charge_associee:
             order_id=False
             if charge_associee=='oui':
-                order_id = self._context.get('is_sale_order_id',False)
+                order_id = self.env.context.get('is_sale_order_id',False)
             vals['is_sale_order_id'] = order_id
         res = super(StockLot, self).write(vals)
         return res

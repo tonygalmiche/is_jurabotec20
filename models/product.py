@@ -213,7 +213,7 @@ class is_product_template_etiquette(models.TransientModel):
 
 
     def imprimer(self):
-        product_id = self._context.get('active_id')
+        product_id = self.env.context.get('active_id')
         product = self.env['product.template'].browse(product_id)
         if self.nb_etiquettes>0 and product:
            for i in range(0,self.nb_etiquettes):
@@ -290,7 +290,7 @@ class ProductProduct(models.Model):
     @api.model
     def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
         product_ids=[]
-        contrat_id = self._context.get('contrat_id')
+        contrat_id = self.env.context.get('contrat_id')
         if contrat_id:
             lines = self.env['is.contrat.fournisseur.ligne'].search([('contrat_id','=',contrat_id)])
             ids=[]
