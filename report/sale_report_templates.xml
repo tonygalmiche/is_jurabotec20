@@ -34,7 +34,7 @@
                     </thead>
                     <tbody class="sale_tbody">
                         <tr>
-                            <td class="text-center"><span t-esc="doc.date_order" t-options='{"widget": "date"}'/></td>
+                            <td class="text-center"><span t-out="doc.date_order" t-options='{"widget": "date"}'/></td>
                             <td class="text-center"><span t-field="doc.client_order_ref"/></td>
                             <td class="text-center"><span t-field="doc.user_id"/></td>
                             <td class="text-center"><span t-field="doc.is_delai" t-options='{"widget": "date"}'/></td>
@@ -133,7 +133,7 @@
                                     <td name="td_section_subtotal" colspan="99">
                                         <strong class="mr16">Sous-total : </strong>
                                         <span
-                                            t-esc="current_subtotal"
+                                            t-out="current_subtotal"
                                             t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'
                                         />
                                     </td>
@@ -147,7 +147,7 @@
                     <div id="total" class="row" name="total">
                         <div class="col-6">
                             <t t-if="doc.is_volume_total>0">
-                                <i>Volume total : <span t-esc="round(doc.is_volume_total,3)"/> m3</i>
+                                <i>Volume total : <span t-out="round(doc.is_volume_total,3)"/> m3</i>
                             </t>
 
                         </div>

@@ -3,7 +3,7 @@
     <template id="is_stock_location_report_document">
         <t t-call="web.html_container">
             <div class="footer" style="text-align:center; font-size:9pt; border-top:1px solid #ccc; padding-top:3px;">
-                Imprimé le <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                Imprimé le <span t-out="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
                 &amp;nbsp;&amp;nbsp;—&amp;nbsp;&amp;nbsp;
                 Page <span class="page"/> / <span class="topage"/>
             </div>

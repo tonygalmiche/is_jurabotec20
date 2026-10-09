@@ -63,7 +63,7 @@
                     </table>
 
                     <div>
-                        <i>Volume total : <span t-esc="round(o.is_volume_total,3)"/> m3</i>
+                        <i>Volume total : <span t-out="round(o.is_volume_total,3)"/> m3</i>
                     </div>
     
                 </div>

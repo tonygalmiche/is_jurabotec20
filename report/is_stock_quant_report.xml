@@ -3,7 +3,7 @@
     <template id="is_stock_quant_report_document">
         <t t-call="web.html_container">
             <div class="footer" style="text-align:center; font-size:9pt; border-top:1px solid #ccc; padding-top:3px;">
-                Imprimé le <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                Imprimé le <span t-out="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
                 &amp;nbsp;&amp;nbsp;—&amp;nbsp;&amp;nbsp;
                 Page <span class="page"/> / <span class="topage"/>
             </div>
@@ -31,7 +31,7 @@
                                     <td><span t-field="quant.lot_id"/></td>
                                     <td class="text-end">
                                         <span t-field="quant.quantity"/><br/>
-                                        <i t-esc="'(%.1f m3)' % quant.is_volume_total"/>
+                                        <i t-out="'(%.1f m3)' % quant.is_volume_total"/>
                                     </td>
                                     <td class="text-center">
                                         <t t-if="quant.lot_id.name">
