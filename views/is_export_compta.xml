@@ -56,7 +56,7 @@
                     <field name="piece"/>
                     <field name="libelle"/>
                     <field name="commentaire" />
-                    <group expand="0" string="Regrouper par...">
+                    <group>
                         <filter name="compte" string="Compte" context="{'group_by':'compte'}"/>
                         <filter name="piece"  string="Pièce"  context="{'group_by':'piece'}"/>
                     </group>
