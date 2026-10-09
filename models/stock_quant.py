@@ -76,3 +76,16 @@ class StockQuant(models.Model):
             os.system(cmd)
             ct+=1
 
+
+    @api.model
+    def _get_reserve_quantity(self, product_id, location_id, quantity, uom_id=None, lot_id=None, package_id=None, owner_id=None, strict=False):
+        # Remplace la surcharge v16 de _update_reserved_quantity, qui retirait les contrôles d'Odoo :
+        # - réservation au-delà de la quantité disponible : en v20, Odoo réserve ce qui est disponible, sans erreur
+        # - annulation de réservation au-delà de la quantité réservée : toujours en erreur en v20 (UserError),
+        #   d'où la quantité à annuler limitée à la quantité réservée, comme le faisait la v16
+        if product_id.uom_id.compare(quantity, 0) < 0:
+            quants = self.sudo()._gather(product_id, location_id, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=strict)
+            reserved_quantity = sum(quants.mapped('reserved_quantity'))
+            quantity = max(quantity, -reserved_quantity)
+        return super()._get_reserve_quantity(product_id, location_id, quantity, uom_id=uom_id, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=strict)
+
