@@ -32,16 +32,17 @@ class stock_inventory(models.Model):
         ('product', 'Un article seulement'),
     ]
 
-    name= fields.Char('Référence', required=True, readonly=True, states={'draft': [('readonly', False)]}, default="Inventaire")
-    date= fields.Datetime('Date' , required=True, readonly=True, states={'draft': [('readonly', False)]}, default=fields.Datetime.now, copy=False)
-    line_ids= fields.One2many('stock.inventory.line', 'inventory_id', 'Lignes', readonly=False, states={'done': [('readonly', True)]}, copy=False)
-    move_ids= fields.One2many('stock.move', 'inventory_id', 'Mouvements', help="Inventory Moves.", states={'done': [('readonly', True)]})
+    # states= supprimé en v17 : lecture seule selon l'état à mettre dans la vue (readonly="state != 'draft'" ou "state == 'done'")
+    name= fields.Char('Référence', required=True, default="Inventaire")
+    date= fields.Datetime('Date' , required=True, default=fields.Datetime.now, copy=False)
+    line_ids= fields.One2many('stock.inventory.line', 'inventory_id', 'Lignes', copy=False)
+    move_ids= fields.One2many('stock.move', 'inventory_id', 'Mouvements', help="Inventory Moves.")
     state= fields.Selection(INVENTORY_STATE_SELECTION, 'Etat', readonly=True, index=True, copy=False, default="draft")
     company_id= fields.Many2one('res.company', 'Société', required=True, index=True, readonly=True, default=1)
-    location_id= fields.Many2one('stock.location', 'Emplacement', domain=[("usage","=","internal")],  required=True, readonly=True, states={'draft': [('readonly', False)]})
-    product_id= fields.Many2one('product.product', 'Article', readonly=True, states={'draft': [('readonly', False)]})
-    lot_id= fields.Many2one('stock.lot', 'Lot', readonly=True, states={'draft': [('readonly', False)]}, copy=False)
-    filter=fields.Selection(INVENTORY_FILTER_SELECTION, 'Inventaire de', required=True, readonly=True, states={'draft': [('readonly', False)]}, default='none')
+    location_id= fields.Many2one('stock.location', 'Emplacement', domain=[("usage","=","internal")],  required=True)
+    product_id= fields.Many2one('product.product', 'Article')
+    lot_id= fields.Many2one('stock.lot', 'Lot', copy=False)
+    filter=fields.Selection(INVENTORY_FILTER_SELECTION, 'Inventaire de', required=True, default='none')
     inventaire_id = fields.Many2one('is.inventaire', 'Inventaire général', readonly=True)
 
 
