@@ -3,7 +3,6 @@ import re
 from odoo import api, fields, models, _
 from random import randint
 import os
-import base64
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -164,13 +163,12 @@ class ProductTemplate(models.Model):
                     filename = plans[obj.is_ref_plan]
                     path = os.path.join(dir_path, filename)    
                     r = open(path,'rb').read()
-                    r = base64.b64encode(r)
                     vals = {
                         'name':        filename,
                         'type':        'binary',
                         'res_model':   "product.template",
                         'res_id':      obj.id,
-                        'datas':       r,
+                        'raw':         r,
                     }
                     attachment = self.env['ir.attachment'].create(vals)
                     obj.is_plan_ids=[(6,0,[attachment.id])]

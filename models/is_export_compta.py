@@ -3,7 +3,6 @@ from odoo import models,fields,api
 import datetime
 from odoo.exceptions import AccessError, UserError, ValidationError
 import unicodedata
-import base64
 import csv
 import io
 
@@ -120,7 +119,7 @@ class is_export_compta(models.Model):
             'type':        'binary',
             'res_model':   model,
             'res_id':      self.id,
-            'datas':       base64.b64encode(contenu),
+            'raw':         contenu,
         }
         attachment = self.env['ir.attachment'].create(vals)
         self.file_ids=[(6,0,[attachment.id])]
