@@ -37,7 +37,7 @@ Reprise d'is_jurabotec (Odoo 16).
         # "views/account_move_view.xml",
         # "views/is_export_compta.xml",
         # "views/res_bank_views.xml",
-        # "views/stock_inventory_view.xml",
+        "views/stock_inventory_view.xml",
         # "views/is_scan_inventaire_view.xml",
         # "views/is_scan_deplacement_charge_view.xml",
         # "views/menu.xml",

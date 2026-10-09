@@ -32,17 +32,18 @@ class stock_inventory(models.Model):
         ('product', 'Un article seulement'),
     ]
 
-    # states= supprimé en v17 : lecture seule selon l'état à mettre dans la vue (readonly="state != 'draft'" ou "state == 'done'")
-    name= fields.Char('Référence', required=True, default="Inventaire")
-    date= fields.Datetime('Date' , required=True, default=fields.Datetime.now, copy=False)
-    line_ids= fields.One2many('stock.inventory.line', 'inventory_id', 'Lignes', copy=False)
+    # states= supprimé en v17 (readonly doit être un booléen) : lecture seule selon l'état dans la vue
+    # stock_inventory_form (readonly="state != 'draft'"), qui l'emporte sur le readonly du champ
+    name= fields.Char('Référence', required=True, readonly=True, default="Inventaire")
+    date= fields.Datetime('Date' , required=True, readonly=True, default=fields.Datetime.now, copy=False)
+    line_ids= fields.One2many('stock.inventory.line', 'inventory_id', 'Lignes', readonly=False, copy=False)
     move_ids= fields.One2many('stock.move', 'inventory_id', 'Mouvements', help="Inventory Moves.")
     state= fields.Selection(INVENTORY_STATE_SELECTION, 'Etat', readonly=True, index=True, copy=False, default="draft")
     company_id= fields.Many2one('res.company', 'Société', required=True, index=True, readonly=True, default=1)
-    location_id= fields.Many2one('stock.location', 'Emplacement', domain=[("usage","=","internal")],  required=True)
-    product_id= fields.Many2one('product.product', 'Article')
-    lot_id= fields.Many2one('stock.lot', 'Lot', copy=False)
-    filter=fields.Selection(INVENTORY_FILTER_SELECTION, 'Inventaire de', required=True, default='none')
+    location_id= fields.Many2one('stock.location', 'Emplacement', domain=[("usage","=","internal")],  required=True, readonly=True)
+    product_id= fields.Many2one('product.product', 'Article', readonly=True)
+    lot_id= fields.Many2one('stock.lot', 'Lot', readonly=True, copy=False)
+    filter=fields.Selection(INVENTORY_FILTER_SELECTION, 'Inventaire de', required=True, readonly=True, default='none')
     inventaire_id = fields.Many2one('is.inventaire', 'Inventaire général', readonly=True)
 
 

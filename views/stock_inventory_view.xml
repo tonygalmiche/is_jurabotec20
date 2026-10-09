@@ -52,7 +52,7 @@
                     <field name="filter"/>
                     <field name="product_id"/>
                     <field name="lot_id" invisible="1"/>
-                    <field name="inventaire_id" widget="many2one_clickable"/>
+                    <field name="inventaire_id"/>
                     <field name="state"/>
                     <field name="company_id" invisible="1"/>
                 </list>
@@ -68,50 +68,53 @@
                             name="demarrer_inventaire_action"
                             type="object"
                             string="Démarrer l'inventaire"
-                            class="btn-primary" 
-                            attrs="{'invisible':[('state', '!=', 'draft')]}"
+                            class="btn-primary"
+                            invisible="state != 'draft'"
                         />
                         <button
                             name="continuer_inventaire_action"
                             type="object"
                             string="Continuer l'inventaire"
-                            attrs="{'invisible':[('state', '!=', 'confirm')]}"
+                            invisible="state != 'confirm'"
                         />
                         <button
                             name="valider_inventaire_action"
                             type="object"
                             string="Valider l'inventaire"
-                            class="btn-primary" 
-                            attrs="{'invisible':[('state', '!=', 'confirm')]}"
+                            class="btn-primary"
+                            invisible="state != 'confirm'"
                         />
                         <button
                             name="continuer_inventaire_action"
                             type="object"
                             string="Voir les lignes"
-                            attrs="{'invisible':[('state', '!=', 'done')]}"
+                            invisible="state != 'done'"
                         />
                         <button
                             name="voir_mouvements_action"
                             type="object"
                             string="Voir les mouvements"
-                            attrs="{'invisible':[('state', '!=', 'done')]}"
+                            invisible="state != 'done'"
                         />
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
+                        <!-- Lecture seule selon l'état : paramètre states= des champs en v16 -->
                         <group>
                             <group>
-                                <field name="name"/>
-                                <field name="date"/>
-                                <field name="location_id"/>
-                                <field name="filter"/>
-                                <field 
-                                    name="product_id" 
-                                    attrs="{'invisible':[('filter', '!=', 'product')], 'required':[('filter', '=', 'product')]}"
+                                <field name="name"        readonly="state != 'draft'"/>
+                                <field name="date"        readonly="state != 'draft'"/>
+                                <field name="location_id" readonly="state != 'draft'"/>
+                                <field name="filter"      readonly="state != 'draft'"/>
+                                <field
+                                    name="product_id"
+                                    readonly="state != 'draft'"
+                                    invisible="filter != 'product'"
+                                    required="filter == 'product'"
                                 />
                             </group>
                             <group>
-                                <field name="inventaire_id" attrs="{'invisible':[('inventaire_id', '=', False)]}"/>
+                                <field name="inventaire_id" invisible="not inventaire_id"/>
                             </group>
                         </group>
                     </sheet>
@@ -156,20 +159,20 @@
                         <button 
                             name="creer_inventaires_action" 
                             type="object" string="Créer les inventaires par emplacement" class="btn-primary"
-                            attrs="{'invisible':[('inventory_ids', '!=', [])]}"
+                            invisible="inventory_ids"
                         />
                     </header>
                     <sheet>
                         <group>
                             <group>
-                                <field name="name"/> 
-                                <field name="date"/> 
+                                <field name="name"/>
+                                <field name="date"/>
                             </group>
                         </group>
-                        <group string="Inventaires" attrs="{'invisible':[('inventory_ids', '=', [])]}"/>
-                        <field name="inventory_ids" nolabel="1" attrs="{'invisible':[('inventory_ids', '=', [])]}">
+                        <group string="Inventaires" invisible="not inventory_ids"/>
+                        <field name="inventory_ids" nolabel="1" invisible="not inventory_ids">
                             <list>
-                                <button title="Inventaire" name="voir_inventory_action"  type="object" icon="fa-search-plus" />
+                                <button title="Inventaire" name="voir_inventory_action"  type="object" icon="zoom_in" />
                                 <field name="name"/>
                                 <field name="date"/>
                                 <field name="location_id" optional="show"/>
@@ -187,7 +190,6 @@
         <record model="ir.ui.view" id="is_inventaire_tree_view">
             <field name="name">is_inventaire_tree_view</field>
             <field name="model">is.inventaire</field>
-            <field name="type">tree</field>
             <field name="arch" type="xml">
                 <list>
                     <field name="name"/> 
