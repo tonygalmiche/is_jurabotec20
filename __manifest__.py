@@ -24,8 +24,9 @@ Reprise d'is_jurabotec (Odoo 16).
     'data' : [
         "security/ir.access.csv",
 
+        "views/product_view.xml",
+
         # Migration v20 : vues, menus et rapports désactivés pour installer d'abord les modèles
-        # "views/product_view.xml",
         # "views/product_pricelist_view.xml",
         # "views/purchase_view.xml",
         # "views/sale_view.xml",
