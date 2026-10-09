@@ -20,7 +20,7 @@ class IsSaleOrderColis(models.Model):
 
     def imprimer_fiche_colisage_action(self):
         for obj in self:
-            report=self.env.ref('is_jurabotec.is_sale_order_colis_reports')
+            report=self.env.ref('is_jurabotec20.is_sale_order_colis_reports')
             return report.report_action([obj.id])
 
 
@@ -568,7 +568,7 @@ class sale_order(models.Model):
                     order_id = quant.lot_id.is_sale_order_id.id
                     if order_id==obj.id or order_id==False:
                         ids.append(quant.lot_id.id)
-            view_id = self.env.ref('is_jurabotec.is_stock_lot_sale_order_kanban_view', False)
+            view_id = self.env.ref('is_jurabotec20.is_stock_lot_sale_order_kanban_view', False)
             ctx={
                 'is_sale_order_id':  obj.id,
             }

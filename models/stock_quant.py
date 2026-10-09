@@ -46,7 +46,7 @@ class StockQuant(models.Model):
             new_context["lot_id"]     = obj.lot_id.id
             new_context["product_id"] = obj.product_id.id
             new_context["quantity"]   = obj.quantity
-            view_id = self.env.ref('is_jurabotec.is_stock_location_kanban_view2', False)
+            view_id = self.env.ref('is_jurabotec20.is_stock_location_kanban_view2', False)
             return {
                 "name": "Lot %s"%(obj.lot_id.name),
                 "view_mode": "kanban",

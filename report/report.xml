@@ -22,11 +22,11 @@
             <field name="name">Fiche de colisage</field>
             <field name="model">is.sale.order.colis</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">is_jurabotec.is_sale_order_colis_report</field>
-            <field name="report_file">is_jurabotec.is_sale_order_colis_report</field>
+            <field name="report_name">is_jurabotec20.is_sale_order_colis_report</field>
+            <field name="report_file">is_jurabotec20.is_sale_order_colis_report</field>
             <field name="binding_model_id" ref="model_is_sale_order_colis"/>
             <field name="binding_type">report</field>
-            <field name="paperformat_id" ref="is_jurabotec.is_sale_order_colis_paperformat"/>
+            <field name="paperformat_id" ref="is_jurabotec20.is_sale_order_colis_paperformat"/>
             <field name="print_report_name">'Colisage %s - %s' % (object.order_id.name, object.name.replace('/','-'))</field>
         </record>
 
@@ -48,11 +48,11 @@
             <field name="name">État du stock</field>
             <field name="model">stock.quant</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">is_jurabotec.is_stock_quant_report_document</field>
-            <field name="report_file">is_jurabotec.is_stock_quant_report_document</field>
+            <field name="report_name">is_jurabotec20.is_stock_quant_report_document</field>
+            <field name="report_file">is_jurabotec20.is_stock_quant_report_document</field>
             <field name="binding_model_id" ref="stock.model_stock_quant"/>
             <field name="binding_type">report</field>
-            <field name="paperformat_id" ref="is_jurabotec.is_stock_quant_paperformat"/>
+            <field name="paperformat_id" ref="is_jurabotec20.is_stock_quant_paperformat"/>
         </record>
 
         <!-- Rapport stock.location : liste des emplacements -->
@@ -73,11 +73,11 @@
             <field name="name">Liste des emplacements avec code barre</field>
             <field name="model">stock.location</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">is_jurabotec.is_stock_location_report_document</field>
-            <field name="report_file">is_jurabotec.is_stock_location_report_document</field>
+            <field name="report_name">is_jurabotec20.is_stock_location_report_document</field>
+            <field name="report_file">is_jurabotec20.is_stock_location_report_document</field>
             <field name="binding_model_id" ref="stock.model_stock_location"/>
             <field name="binding_type">report</field>
-            <field name="paperformat_id" ref="is_jurabotec.is_stock_location_paperformat"/>
+            <field name="paperformat_id" ref="is_jurabotec20.is_stock_location_paperformat"/>
         </record>
     </data>
 </odoo>

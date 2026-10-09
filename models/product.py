@@ -272,7 +272,7 @@ class ProductProduct(models.Model):
 
     def liste_charges_action(self):
         for obj in self:
-            view_id = self.env.ref('is_jurabotec.charge_stock_quant_kanban_view', False)
+            view_id = self.env.ref('is_jurabotec20.charge_stock_quant_kanban_view', False)
             return {
                 "name": obj.name,
                 "view_mode": "kanban",

@@ -2,14 +2,14 @@
 <templates id="template" xml:space="preserve">
 
     <!-- PlusMoins -->
-    <t t-name="is_jurabotec.PlusMoins" owl="1">
+    <t t-name="is_jurabotec20.PlusMoins" owl="1">
         <button class="btn btn-primary" t-on-click="decrement">-</button>
         <span style="margin-left:10px;margin-right:10px"><t t-esc="props.value"/></span>
         <button class="btn btn-primary" t-on-click="increment">+</button>
     </t>
 
     <!-- PlusMoins10 -->
-    <t t-name="is_jurabotec.PlusMoins10" owl="1">
+    <t t-name="is_jurabotec20.PlusMoins10" owl="1">
         <button class="btn btn-primary" t-on-click="decrement10">-10</button>
         <span> </span>
         <button class="btn btn-primary" t-on-click="decrement">-</button>

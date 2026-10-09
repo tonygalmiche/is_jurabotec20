@@ -280,7 +280,7 @@
     <record id="is_view_order_hekipia_form" model="ir.ui.view">
         <field name="name">is_view_order_hekipia_form</field>
         <field name="model">sale.order</field>
-        <field name="inherit_id" ref="is_jurabotec.is_view_order_form"/>
+        <field name="inherit_id" ref="is_jurabotec20.is_view_order_form"/>
         <field name="mode">primary</field>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='order_lines']/field/tree" position="attributes">
@@ -374,8 +374,8 @@
     <!--is.sale.order.colisage.composant -->
     <record id="composant_update_volume_actions_server" model="ir.actions.server">
         <field name="name">Mise à jour du volume</field>
-        <field name="model_id" ref="is_jurabotec.model_is_sale_order_colisage_composant"/>
-        <field name="binding_model_id" ref="is_jurabotec.model_is_sale_order_colisage_composant"/>
+        <field name="model_id" ref="is_jurabotec20.model_is_sale_order_colisage_composant"/>
+        <field name="binding_model_id" ref="is_jurabotec20.model_is_sale_order_colisage_composant"/>
         <field name="state">code</field>
         <field name="code">records._compute()</field>
     </record>

@@ -119,7 +119,7 @@ class StockLocation(models.Model):
         for line in lines:
             if line.location_id.id not in ids:
                 ids.append(line.location_id.id )
-        view_id = self.env.ref('is_jurabotec.is_stock_location_kanban_view', False)
+        view_id = self.env.ref('is_jurabotec20.is_stock_location_kanban_view', False)
         return {
             "name": "Origine",
             "view_mode": "kanban",
@@ -140,7 +140,7 @@ class StockLocation(models.Model):
             for line in lines:
                 if line.lot_id.id not in ids:
                     ids.append(line.lot_id.id )
-            view_id = self.env.ref('is_jurabotec.is_stock_lot_kanban_view', False)
+            view_id = self.env.ref('is_jurabotec20.is_stock_lot_kanban_view', False)
             new_context = dict(self.env.context).copy()
             new_context["origine_id"] = obj.id
             return {
@@ -288,7 +288,7 @@ class StockLot(models.Model):
             new_context["lot_id"]     = obj.id
             new_context["product_id"] = obj.product_id.id
             new_context["quantity"]   = obj.is_qt_lot_emplacement
-            view_id = self.env.ref('is_jurabotec.is_stock_location_kanban_view2', False)
+            view_id = self.env.ref('is_jurabotec20.is_stock_location_kanban_view2', False)
             return {
                 "name": "Lot %s"%(obj.name),
                 "view_mode": "kanban",

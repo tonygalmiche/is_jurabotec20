@@ -49,13 +49,13 @@ InfoSaône - Module Odoo 16 pour Jurabotec
     ],
    'assets': {
         'web.assets_backend': [
-            'is_jurabotec/static/src/scss/styles.scss',
-            'is_jurabotec/static/src/script.js',
-            'is_jurabotec/static/src/templates.xml',
+            'is_jurabotec20/static/src/scss/styles.scss',
+            'is_jurabotec20/static/src/script.js',
+            'is_jurabotec20/static/src/templates.xml',
         ],
 
         'web.report_assets_common': [
-            'is_jurabotec/static/src/scss/report.scss',
+            'is_jurabotec20/static/src/scss/report.scss',
 
         ]
 

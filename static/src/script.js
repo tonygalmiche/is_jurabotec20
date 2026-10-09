@@ -44,7 +44,7 @@ export class PlusMoins extends Component {
         }
     }
 }
-PlusMoins.template = "is_jurabotec.PlusMoins";
+PlusMoins.template = "is_jurabotec20.PlusMoins";
 PlusMoins.props = standardFieldProps;
 registry.category("fields").add("plus_moins", PlusMoins);
 
@@ -99,7 +99,7 @@ export class PlusMoins10 extends Component {
         }
     }
 }
-PlusMoins10.template = "is_jurabotec.PlusMoins10";
+PlusMoins10.template = "is_jurabotec20.PlusMoins10";
 PlusMoins10.props = standardFieldProps;
 registry.category("fields").add("plus_moins10", PlusMoins10);
 
