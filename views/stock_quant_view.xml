@@ -126,7 +126,7 @@
                 <field name="is_cout_total"    optional="show" sum="Total"/>
              </field>
             <field name="lot_id" position="after">
-                <field name="is_sale_order_id" optional="show"/>
+                <field name="is_sale_order_id" optional="show" widget="many2one"/>
                 <field name="is_pefc" optional="show"/>
             </field>
         </field>

@@ -419,7 +419,7 @@
             <field name="model">is.product.template.calculateur.operation</field>
             <field name="arch" type="xml">
                 <list>
-                    <field name="product_id"/>
+                    <field name="product_id" widget="many2one"/>
                     <field name="sequence"/>
                     <field name="operation_id"/>
                     <field name="prix_revient"/>

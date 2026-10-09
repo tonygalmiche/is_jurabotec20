@@ -78,12 +78,15 @@
         <field name="model">stock.lot</field>
         <field name="inherit_id" ref="stock.view_production_lot_tree"/>
         <field name="arch" type="xml">
+            <field name="product_id" position="attributes">
+                <attribute name="widget">many2one</attribute>
+            </field>
             <field name="create_date" position="before">
                 <field name="product_qty"             optional="show" sum="Total"/>
-                <field name="is_purchase_order_id"    optional="show"/>
-                <field name="is_fournisseur_id"       optional="show"/>
+                <field name="is_purchase_order_id"    optional="show" widget="many2one"/>
+                <field name="is_fournisseur_id"       optional="show" widget="many2one"/>
                 <field name="is_prix_achat"           optional="show"/>
-                <field name="is_sale_order_id"        optional="show" sum="Total"/>
+                <field name="is_sale_order_id"        optional="show" widget="many2one" sum="Total"/>
                 <field name="is_num_interne_client"   optional="show"/>
                 <field name="is_detail_charge_client" optional="show"/>
                 <field name="is_pefc"                 optional="show"/>

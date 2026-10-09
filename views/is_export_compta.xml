@@ -17,7 +17,7 @@
                     <field name="credit" sum="Total"/>
                     <field name="devise" />
                     <field name="commentaire" />
-                    <field name="invoice_id"/>
+                    <field name="invoice_id" widget="many2one"/>
                 </list>
             </field>
         </record>
