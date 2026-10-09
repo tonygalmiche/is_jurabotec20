@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <!-- Fiche de colisage -->
+        <record id="is_sale_order_colis_paperformat" model="report.paperformat">
+            <field name="name">Fiche de colisage</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">25</field>
+            <field name="dpi">90</field>
+        </record>
+        <record id="is_sale_order_colis_reports" model="ir.actions.report">
+            <field name="name">Fiche de colisage</field>
+            <field name="model">is.sale.order.colis</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">is_jurabotec.is_sale_order_colis_report</field>
+            <field name="report_file">is_jurabotec.is_sale_order_colis_report</field>
+            <field name="binding_model_id" ref="model_is_sale_order_colis"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="is_jurabotec.is_sale_order_colis_paperformat"/>
+            <field name="print_report_name">'Colisage %s - %s' % (object.order_id.name, object.name.replace('/','-'))</field>
+        </record>
+
+        <!-- Rapport stock.quant : état du stock -->
+        <record id="is_stock_quant_paperformat" model="report.paperformat">
+            <field name="name">État du stock - marges min</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">7</field>
+            <field name="margin_bottom">12</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">7</field>
+            <field name="dpi">90</field>
+        </record>
+        <record id="is_stock_quant_report_action" model="ir.actions.report">
+            <field name="name">État du stock</field>
+            <field name="model">stock.quant</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">is_jurabotec.is_stock_quant_report_document</field>
+            <field name="report_file">is_jurabotec.is_stock_quant_report_document</field>
+            <field name="binding_model_id" ref="stock.model_stock_quant"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="is_jurabotec.is_stock_quant_paperformat"/>
+        </record>
+
+        <!-- Rapport stock.location : liste des emplacements -->
+        <record id="is_stock_location_paperformat" model="report.paperformat">
+            <field name="name">Liste des emplacements avec code barre</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">7</field>
+            <field name="margin_bottom">12</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">7</field>
+            <field name="dpi">90</field>
+        </record>
+        <record id="is_stock_location_report_action" model="ir.actions.report">
+            <field name="name">Liste des emplacements avec code barre</field>
+            <field name="model">stock.location</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">is_jurabotec.is_stock_location_report_document</field>
+            <field name="report_file">is_jurabotec.is_stock_location_report_document</field>
+            <field name="binding_model_id" ref="stock.model_stock_location"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="is_jurabotec.is_stock_location_paperformat"/>
+        </record>
+    </data>
+</odoo>

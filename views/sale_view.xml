@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- sale.order  -->
+    <record id="init_colisage_ir_cron" model="ir.cron">
+        <field name="name">Initialisation du colisage</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">model.colisage_init_ir_cron()</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+    </record>
+    <record id="init_colisage_actions_server" model="ir.actions.server">
+        <field name="name">Initialisation du colisage</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">records.colisage_init()</field>
+    </record>
+    <record id="is_view_order_form" model="ir.ui.view">
+        <field name="name">is_view_order_form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <style>
+                    .o_form_label{
+                        white-space: nowrap;
+                    }
+                    .btn-primary, .btn-secondary:not(.dropdown-toggle):not(.dropdown-item), .btn-secondary.o_arrow_button:not(.dropdown-item) {
+                        white-space: nowrap;
+                    }
+                    .modal-lg, .modal-xl {
+                        max-width: 1550px;
+                    }
+                </style>
+            </xpath>
+
+            <button name="action_draft" position="after">
+                <field name="is_charge_ids" invisible="1"/>
+                <button name="associer_charges_action"  attrs="{'invisible':['|',('state', '!=', 'draft'),('is_emplacement_charge_id','=',False)]}" type="object" string="Associer des charges"/>
+                <button 
+                    name="actualiser_lignes_action" 
+                    attrs="{'invisible':['|',('state', '!=', 'draft'),('is_charge_ids','=',[])]}"               
+                    type="object" string="Actualiser les lignes avec les charges"
+                    confirm="ATTENTION : Cela va supprimer les lignes de la commandes et les re-créer à partir des charges!"
+                />
+            </button>
+            <xpath expr="//page[@name='order_lines']/field/tree" position="attributes">
+                <attribute name="edit">0</attribute>
+            </xpath>
+            <xpath expr="//page[@name='order_lines']/field/form/div[@name='invoice_lines']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='order_lines']/field/form/group/group[1]" position="attributes">
+                <attribute name="string">Commande</attribute>
+            </xpath>
+            <xpath expr="//page[@name='order_lines']/field/form/group/group[2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='order_lines']/field/form/group/group/label[2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='order_lines']/field/form/group/group/div[2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='order_lines']/field/form/group/group/label[3]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='order_lines']/field/form/group/group/div[3]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <field name="payment_term_id" position="after">
+                <field name="is_eco_contribution"/>
+                <field name="is_emplacement_charge_id"/>
+                <field name="is_nombre_unites"/>
+                <field name="is_solde_commande"/>
+            </field>
+            <xpath expr="//page[@name='order_lines']/field/form/group/group/div[@name='ordered_qty']" position="after">
+                <label for="is_bareme_valobat_id"/>
+                <div class="o_row">
+                    <field name="is_bareme_valobat_id"/>
+                </div>
+                <label for="is_eco_contribution"/>
+                <div class="o_row">
+                    <field name="is_eco_contribution"/>
+                </div>
+
+                <label for="is_longueur_totale"/>
+                <div class="o_row">
+                    <field name="is_longueur_totale"/>
+                </div>
+                <label for="is_surface_totale"/>
+                <div class="o_row">
+                    <field name="is_surface_totale"/>
+                </div>
+                <label for="is_volume_total"/>
+                <div class="o_row">
+                    <field name="is_volume_total"/>
+                </div>
+            </xpath>
+            <xpath expr="//page[@name='order_lines']/field/form/group/group/field[@name='price_unit']" position="after">
+                <field name="price_subtotal"/>
+            </xpath>
+            <xpath expr="//page[@name='order_lines']/field/form/group/group/field[@name='product_id']" position="after">
+                <field name="is_num_palette"/>
+            </xpath>
+             <xpath expr="//page[@name='order_lines']/field/form/group/group[2]" position="after">
+                <group string="Dimensions">
+                    <field name="is_longueur_product" invisible="1"/>
+                    <field name="is_quantite_saisie"  attrs="{'invisible': [('is_longueur_product', '>', 0)]}"/>
+                    <field name="is_epaisseur_saisie" attrs="{'invisible': [('is_longueur_product', '>', 0)]}"/>
+                    <field name="is_largeur_saisie"   attrs="{'invisible': [('is_longueur_product', '>', 0)]}"/>
+                    <field name="is_longueur_saisie"  attrs="{'invisible': [('is_longueur_product', '>', 0)]}"/>
+                    <field name="is_longueur"         attrs="{'invisible': [('is_longueur', '=', 0)]}"/>
+                    <field name="is_surface"          attrs="{'invisible': [('is_surface' , '=', 0)]}"/>
+                    <field name="is_volume"           attrs="{'invisible': [('is_volume'  , '=', 0)]}"/>
+                    <field name="is_detail_quantite"/>
+                    <field name="is_charge_id"        attrs="{'invisible': [('is_charge_id', '=', False)]}"/>
+                </group>
+                <group string="Tarif Jurabotec">
+                    <field name="is_prix_tarif"/>
+                    <field name="is_unite_tarif"/>
+                </group>
+             </xpath>
+
+        
+
+
+            <field name="client_order_ref" position="replace"/>
+            <field name="payment_term_id" position="before">
+                <field name="is_delai"/>
+                <field name="is_gestion_colisage"/>
+                <field name="is_detail_composants" attrs="{'invisible': [('is_gestion_colisage', '=', False)]}"/>
+            </field>
+            <field name="partner_id" position="after">
+                <field name="client_order_ref"/>
+                <field name="is_num_cde_client"/>
+                <field name="is_volume_total"/>
+            </field>
+
+
+            <xpath expr="//page[@name='order_lines']/field/tree/field[@name='product_uom_qty']" position="before">
+                <field name="is_charge_id"       optional="hide" widget="many2one_clickable"/>
+                <field name="is_longueur"        optional="hide"/>
+                <field name="is_surface"         optional="hide"/>
+                <field name="is_volume"          optional="hide"/>
+                <field name="is_detail_quantite" optional="hide"/>
+                <field name="is_prix_tarif"      optional="show"/>
+                <field name="is_unite_tarif"     optional="show"/>
+            </xpath>
+
+
+            <xpath expr="//page[@name='order_lines']/field/tree/field[@name='product_uom_qty']" position="after">
+                <field name="is_bareme_valobat_id" optional="hide"/>
+                <field name="is_eco_contribution"  optional="show"/>
+                <field name="is_longueur_totale"   optional="show"/>
+                <field name="is_surface_totale"    optional="show"/>
+                <field name="is_volume_total"      optional="show"/>
+                <field name="is_composants"        optional="hide"/>
+            </xpath>
+
+            <xpath expr="//page[@name='order_lines']" position="after">
+                <page string="Colis"  attrs="{'invisible': [('is_gestion_colisage', '=', False)]}">
+                    <field name="is_colis_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="sequence" widget="handle" />
+                            <button 
+                                title="Voir le colis" 
+                                name="voir_colis_action" 
+                                type="object" 
+                                icon="fa-search" 
+                            />
+                            <button 
+                                title="Fiche de colisage" 
+                                name="imprimer_fiche_colisage_action" 
+                                type="object" 
+                                icon="fa-print" 
+                            />
+                            <field name="name"/>
+                        </tree>
+                    </field>
+                    <div>
+                        <button 
+                            name="colisage_action" 
+                            string="Gestion du colisage des composants" type="object" 
+                            class="btn btn-primary"
+                        />
+                        <button 
+                            name="liste_colis_action" 
+                            string="Liste des colis" type="object" 
+                            class="btn btn-primary margin_left10"
+                        />
+                       <button 
+                            name="reinit_colisage_action" 
+                            string="Ré-initialiser le colisage" type="object" 
+                            class="btn btn-warning margin_left100"
+                            confirm="ATTENTION : Cela va supprimer les colis et le colisage"
+                        />
+                    </div>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <record id="is_view_order_tree" model="ir.ui.view">
+        <field name="name">is_view_order_tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="date_order" position="after">
+                <field name="is_delai" optional="show"  widget="date" />
+            </field>
+            <field name="user_id" position="before">
+                <field name="client_order_ref"  optional="show"/>
+                <field name="is_num_cde_client" optional="show"/>
+                <field name="is_volume_total"   optional="hide"/>
+            </field>
+            <field name="user_id" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="activity_ids" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+
+            <field name="state" position="replace"/>
+            <field name="invoice_status" position="before" optional="show">
+                <field name="state" widget="badge"  decoration-success="state in ('sale','done')" decoration-info="state in ('draft','sent')" optional="show"/>
+            </field>
+            <field name="amount_untaxed" position="before">
+                <field name="is_eco_contribution" sum="Total" optional="show"/>
+                <field name="is_nombre_unites"    sum="Total" optional="show"/>
+            </field>
+            <field name="invoice_status" position="after">
+                <field name="is_solde_commande" optional="hide"/>
+            </field>
+        </field>
+    </record>
+    <record id="is_view_quotation_tree" model="ir.ui.view">
+        <field name="name">is_view_quotation_tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <!-- <field name="name" position="after">
+                <field name="is_devis_id" optional="show"/>
+            </field> -->
+            <field name="user_id" position="before">
+                <field name="client_order_ref"  optional="hide"/>
+                <field name="is_num_cde_client" optional="hide"/>
+                <field name="is_solde_commande" optional="hide"/>
+            </field>
+        </field>
+    </record>
+    <record id="is_view_sales_order_filter" model="ir.ui.view">
+        <field name="name">is_view_sales_order_filter</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="client_order_ref"/>
+                <field name="is_num_cde_client"/>
+            </field>
+
+
+            <filter name="my_sale_orders_filter" position="before">
+                <filter string="Devis"    domain="[('state', 'in', ['draft','sent'])]"               name="devis"/>
+                <filter string="Commandes" domain="[('state', 'not in', ['draft','sent','cancel'])]" name="commandes"/>
+            </filter>
+
+
+
+        </field>
+    </record>
+
+    
+    <!-- sale.action_orders -->
+    <record id="sale.action_orders" model="ir.actions.act_window">
+        <field name="domain">[]</field>
+    </record>
+
+
+
+    <!-- Saisie des commandes en ligne pour Hekipia -->
+    <record id="is_view_order_hekipia_form" model="ir.ui.view">
+        <field name="name">is_view_order_hekipia_form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="is_jurabotec.is_view_order_form"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='order_lines']/field/tree" position="attributes">
+                <attribute name="edit">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="is_view_order_hekipia_action" model="ir.actions.act_window">
+        <field name="name">Commandes en ligne (Hekipia)</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('is_view_order_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('is_view_order_hekipia_form')}),
+            ]"
+        />
+        <field name="domain">[]</field>
+    </record>
+
+
+
+    <!-- Calendrier des livraisons -->
+    <record model="ir.ui.view" id="is_calendrier_livraison_calendar" >
+        <field name="name">is_calendrier_livraison_calendar</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <calendar 
+                date_start="is_delai" 
+                color="partner_id" 
+                hide_time="false" 
+                event_limit="100"
+                event_open_popup="false"
+                quick_add="false"
+                mode="month"
+                delete="false"
+            >
+                <field name="partner_id" filters="1" invisible="1"/>
+                <field name="partner_id"/> 
+                <field name="date_order"/> 
+                <field name="is_delai"/> 
+                <field name="client_order_ref"/> 
+                <field name="is_num_cde_client"/> 
+                <field name="amount_total"/> 
+            </calendar>
+        </field>
+    </record>
+    <record id="is_calendrier_livraison_action" model="ir.actions.act_window">
+        <field name="name">Calendrier des livraisons</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,form,calendar,kanban,pivot,graph,activity</field>
+        <field name="view_id" ref=""/>
+    </record>
+
+
+    <!--is.sale.order.colis -->
+    <record model="ir.ui.view" id="is_sale_order_colis_form_view">
+        <field name="name">is_sale_order_colis_form_view</field>
+        <field name="model">is.sale.order.colis</field>
+        <field name="arch" type="xml">
+        <form>
+            <header>
+                <button 
+                    string="Lignes de ce colis" 
+                    name="lignes_colis_action" 
+                    type="object" 
+                />
+                <!-- <button 
+                    string="Répartir les lignes de ce colis par le nombre indiqué dans le champ 'Répartition'" 
+                    name="repartir_par_x_colis_action" 
+                    type="object" 
+                    class="btn btn-info"
+                /> -->
+                <button 
+                    string="Répartir les lignes de ce colis par 8 maximum" 
+                    name="repartir_par8_colis_action" 
+                    type="object" 
+                />
+                <button 
+                    string="Répartir les lignes de ce colis par 1 maximum" 
+                    name="repartir_par1_colis_action" 
+                    type="object" 
+                />
+            </header>
+            <sheet>
+                <group>
+                    <field name="order_id" readonly="1"/>
+                    <field name="name"     readonly="1"/>
+                    <!-- <field name="repartition"/> -->
+                </group>
+            </sheet>
+        </form>
+        </field>
+    </record>
+
+
+    <!--is.sale.order.colisage.composant -->
+    <record id="composant_update_volume_actions_server" model="ir.actions.server">
+        <field name="name">Mise à jour du volume</field>
+        <field name="model_id" ref="is_jurabotec.model_is_sale_order_colisage_composant"/>
+        <field name="binding_model_id" ref="is_jurabotec.model_is_sale_order_colisage_composant"/>
+        <field name="state">code</field>
+        <field name="code">records._compute()</field>
+    </record>
+    <record model="ir.ui.view" id="is_sale_order_colisage_composant_tree_view">
+        <field name="name">is_sale_order_colisage_composant_tree_view</field>
+        <field name="model">is.sale.order.colisage.composant</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <button 
+                    title="Dupliquer" 
+                    name="dupliquer_colis_action" 
+                    type="object" 
+                    icon="fa-copy" 
+                />
+                <field name="colis_id" domain="[('id', 'in', colis_ids)]"  widget="selection"/>
+                <field name="product_id"    readonly="1" widget="many2one_clickable"/>
+                <field name="composant_id"  readonly="1" widget="many2one_clickable"/>
+                <field name="qty" sum="Total"/>
+
+                <field name="volume_article"/>
+                <field name="volume_total" sum="Total"/>
+
+                <field name="qty_bom"       readonly="1" optional="hide" />
+                <field name="qty_cde"       readonly="1" optional="hide" />
+                <field name="sale_line_id"  readonly="1" optional="hide" widget="many2one_clickable"/>
+                <field name="colis_ids"     readonly="1" optional="hide" widget="many2many_tags"/>
+                <field name="order_id"   optional="hide" widget="many2one_clickable"/>
+                <field name="date_order" optional="hide"/>
+                <field name="state"      optional="hide"/>
+                <field name="partner_id" optional="hide" widget="many2one_clickable"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="is_sale_order_colisage_composant_form_view">
+        <field name="name">is_sale_order_colisage_composant_form_view</field>
+        <field name="model">is.sale.order.colisage.composant</field>
+        <field name="arch" type="xml">
+        <form>
+            <style>
+                .o_form_label{
+                    white-space: nowrap;
+                }
+            </style>
+            <header>
+                <button 
+                    string="Créer les copies" 
+                    name="creer_copie_action" 
+                    type="object" 
+                />
+            </header>
+            <sheet>
+                <group>
+                    <group>
+                        <field name="colis_id" domain="[('id', 'in', colis_ids)]" widget="selection"/>
+                        <field name="product_id"   readonly="1"/>
+                        <field name="composant_id" readonly="1"/>
+                        <field name="sale_line_id" readonly="1"/>
+                        <field name="colis_ids"    invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="qty"/>
+                        <field name="qty_cde"/>
+                        <field name="qty_bom"/>
+                        <field name="nb_copies"/>
+                    </group>
+                </group>
+            </sheet>
+        </form>
+        </field>
+    </record>
+    <record id="is_sale_order_colisage_composant_kanban_view" model="ir.ui.view">
+        <field name="name">is_sale_order_colisage_composant_kanban_view</field>
+        <field name="model">is.sale.order.colisage.composant</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="colis_id" create="0" quick_create="0">
+                <field name="id"/>
+                <field name="colis_id"/>
+                <field name="product_id"/>
+                <field name="composant_id"/>
+                <field name="sale_line_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                             <div class="oe_kanban_details">
+                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="product_id"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div>Composant : <field name="composant_id"/></div>
+                                <div>Quantité :  <field name="qty"/></div>
+
+                                <div>
+                                    <button 
+                                        title="Dupliquer" 
+                                        name="dupliquer_colis_action" 
+                                        type="object" 
+                                        icon="fa-copy" 
+                                    />
+                                    <button 
+                                        title="Colis" 
+                                        name="voir_colis_action" 
+                                        type="object" 
+                                        icon="fa-archive" 
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="is_sale_order_colisage_composant_search_view" model="ir.ui.view">
+        <field name="name">is_sale_order_colisage_composant_search_view</field>
+        <field name="model">is.sale.order.colisage.composant</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id" />
+                <field name="colis_id" />
+                <field name="product_id" />
+                <field name="composant_id" />
+                <field name="sale_line_id" />
+            </search>
+        </field>
+    </record>
+
+
+
+
+    <record id="is_sale_order_colisage_composant_pivot_view" model="ir.ui.view">
+        <field name="name">is_sale_order_colisage_composant_pivot_view</field>
+        <field name="model">is.sale.order.colisage.composant</field>
+        <field name="arch" type="xml">
+            <pivot default_order="qty desc">
+                <field name="composant_id"         type="row"/>
+                <!-- <field name="invoice_date"       type="col"/> -->
+                <field name="qty"              type="measure"/>
+            </pivot>
+        </field>
+    </record>
+    <record id="is_sale_order_colisage_composant_graph_view" model="ir.ui.view">
+        <field name="name">is_account_invoice_line_graph_view</field>
+        <field name="model">is.sale.order.colisage.composant</field>
+        <field name="arch" type="xml">
+            <graph order="desc">
+                <field name="composant_id"/>
+                <!-- <field name="invoice_date"       type="col"/> -->
+                <field name="qty"              type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="is_sale_order_colisage_composant_action" model="ir.actions.act_window">
+        <field name="name">Lignes des colis (Hekipia)</field>
+        <field name="res_model">is.sale.order.colisage.composant</field>
+        <field name="view_mode">graph,pivot,tree,form</field>
+        <field name="domain">[('state', '=', 'sale')]</field>
+    </record>
+
+</odoo>

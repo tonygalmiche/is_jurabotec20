@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="is_scan_inventaire_form" model="ir.ui.view">
+            <field name="name">is_scan_inventaire_form</field>
+            <field name="model">is.scan.inventaire</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button 
+                            name="vers_saisie_action" 
+                            string="Saisie" 
+                            type="object" 
+                            class="btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'emplacement')]}"
+                        />
+                        <button 
+                            name="terminer_inventaire_action" 
+                            string="Terminer" 
+                            type="object" 
+                            class="btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'saisie')]}"
+                            confirm="Êtes-vous sûr de vouloir terminer cet inventaire ? Les lots seront déplacés vers l'emplacement de destination."
+                        />
+                        <button 
+                            name="voir_lots_action" 
+                            string="Lots" 
+                            type="object" 
+                            class="btn-secondary"
+                            attrs="{'invisible': [('nb_lignes', '=', 0)]}"
+                        />
+                        <button 
+                            name="voir_stock_detaille_action" 
+                            string="Stock" 
+                            type="object" 
+                            class="btn-secondary"
+                            attrs="{'invisible': [('nb_lignes', '=', 0)]}"
+                        />
+                        <button 
+                            name="voir_lignes_mouvements_action" 
+                            string="Mouvements" 
+                            type="object" 
+                            class="btn-secondary"
+                            attrs="{'invisible': [('state', '!=', 'termine')]}"
+                        />
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <style>
+                            .o_form_label{
+                                white-space: nowrap;
+                            }
+                        </style>
+                        <group>
+                            <field 
+                                name="barcode_input" 
+                                widget="barcode_scan_widget" nolabel="1" colspan="2"
+                                attrs="{'invisible': [('state', '=', 'termine')]}"
+                            />
+                            <field name="barcode_scan" invisible="1"/>
+                            <field name="emplacement_dst_id"  force_save="1" attrs="{'readonly': [('state', '!=', 'emplacement')]}"/>
+                            <field name="nb_lignes" attrs="{'invisible': [('state', '=', 'emplacement')]}"/>
+                        </group>
+                        
+                        <field name="ligne_ids" attrs="{'invisible': [('state', '=', 'emplacement')], 'readonly': [('state', '=', 'termine')]}">
+                            <tree editable="bottom">
+                                <field name="lot_id"/>
+                                <field name="product_id"      force_save="1" optional="show"/>
+                                <field name="quantite"        force_save="1" optional="show" readonly="1"/>
+                                <field name="emplacement_ids" force_save="1" optional="hide" widget="many2many_tags" readonly="1"/>
+                                <field name="heure_ajout"     force_save="1" optional="hide"/>
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="is_scan_inventaire_tree" model="ir.ui.view">
+            <field name="name">is_scan_inventaire_tree</field>
+            <field name="model">is.scan.inventaire</field>
+            <field name="arch" type="xml">
+                <tree decoration-info="state == 'emplacement'" decoration-warning="state == 'saisie'" decoration-success="state == 'termine'">
+                    <field name="id"/>
+                    <field name="emplacement_dst_id" optional="show"/>
+                    <field name="nb_lignes"          optional="show"/>
+                    <field name="create_uid"         optional="hide"/>
+                    <field name="create_date"        optional="hide"/>
+                    <field name="write_uid"          optional="hide"/>
+                    <field name="write_date"         optional="hide"/>
+                    <field name="state" widget="badge" decoration-info="state == 'emplacement'" decoration-warning="state == 'saisie'" decoration-success="state == 'termine'"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="is_scan_inventaire_search" model="ir.ui.view">
+            <field name="name">is_scan_inventaire_search</field>
+            <field name="model">is.scan.inventaire</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="emplacement_dst_id"/>
+                    <field name="state"/>
+                    <filter string="À saisir" name="filter_saisie"  domain="[('state','=','saisie')]"/>
+                    <filter string="Terminé"  name="filter_termine" domain="[('state','=','termine')]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="is_scan_inventaire_action" model="ir.actions.act_window">
+            <field name="name">Inventaire par scan</field>
+            <field name="res_model">is.scan.inventaire</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
+</odoo>

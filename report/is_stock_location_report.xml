@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="is_stock_location_report_document">
+        <t t-call="web.html_container">
+            <div class="footer" style="text-align:center; font-size:9pt; border-top:1px solid #ccc; padding-top:3px;">
+                Imprimé le <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                &amp;nbsp;&amp;nbsp;—&amp;nbsp;&amp;nbsp;
+                Page <span class="page"/> / <span class="topage"/>
+            </div>
+            <div class="article">
+                <div class="page">
+                    <h2>Liste des emplacements</h2>
+                    <table class="table table-sm table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th style="width:15%">Code</th>
+                                <th class="text-center" style="width:35%">Code barre</th>
+                                <th style="width:50%">Nom de l'emplacement</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="loc">
+                                <tr style="vertical-align:middle">
+                                    <td class="text-center"><span t-field="loc.is_code_emplacement"/></td>
+                                    <td class="text-center">
+                                        <t t-if="loc.is_code_emplacement">
+                                            <img t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', loc.is_code_emplacement, 300, 60)"
+                                                 style="max-height:45px"/>
+                                        </t>
+                                    </td>
+                                    <td><span t-field="loc.name"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

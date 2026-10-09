@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="is_sale_order_colis_external_layout_standard">
+        <t t-set="company" t-value="res_company"/>
+        <div t-attf-class="header" t-att-style="report_header_style">
+
+
+            <div class="row"  style="border-bottom: 1px solid black">
+                <div class="col-3 mb4">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 45px;" alt="Logo"/>
+                </div>
+                <div class="col-9 text-end" style="margin-top:22px;">
+                    <h1 style="font-size:24pt">Colis <span t-field="o.name"/></h1>
+                </div>
+            </div>
+
+
+        </div>
+        <div t-attf-class="article o_report_layout_standard" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-out="0"/>
+        </div>
+        <div t-attf-class="footer o_standard_footer">
+            <div class="text-center" style="border-top: 1px solid black;font-size:10pt">
+                 <div t-if="report_type == 'pdf'" class="text-muted">
+                    Page: <span class="page"/> / <span class="topage"/>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="is_sale_order_colis_external_layout">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+        <t t-call="is_jurabotec.is_sale_order_colis_external_layout_standard"><t t-out="0"/></t>
+    </template>
+
+    <template id="is_sale_order_colis_report_document">
+        <t t-call="is_jurabotec.is_sale_order_colis_external_layout">
+            <div class="page">
+                <style>
+                    th{
+                        padding:2pt;
+                        font-size:8pt;
+                    }
+                    td{
+                        padding:2pt;
+                        font-size:9pt
+                    }
+                </style>
+ 
+                <table style="border:1px solid black; width:100%">
+                    <thead>
+                        <tr>
+                            <th style="border:1px solid black;text-align:center">Référence client</th>
+                            <th style="border:1px solid black;text-align:center">N° commande client</th>
+                            <th style="border:1px solid black;text-align:center">N° commande Jurabotec</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border:1px solid black;text-align:center"><span t-field="o.order_id.client_order_ref"/></td>
+                            <td style="border:1px solid black;text-align:center"><span t-field="o.order_id.is_num_cde_client"/></td>
+                            <td style="border:1px solid black;text-align:center"><span t-field="o.order_id.name"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                <table style="border:1px solid black; width:100%">
+                    <thead>
+                        <tr>
+                            <th style="border:1px solid black;text-align:left">Article</th>
+                            <th style="border:1px solid black;text-align:left">Composant</th>
+                            <th style="border:1px solid black;text-align:right">Quantité</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="o.colisage_ids" t-as="line">
+                            <tr>
+                                <td style="border:1px solid black;text-align:left"><span t-field="line.product_id.name"/></td>
+                                <td style="border:1px solid black;text-align:left"><span t-field="line.composant_id.name"/></td>
+                                <td style="border:1px solid black;text-align:right"><span t-field="line.qty"/></td>
+                             </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+
+
+            </div>
+        </t>
+    </template>
+    
+    <template id="is_sale_order_colis_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="is_jurabotec.is_sale_order_colis_report_document"/>
+            </t>
+        </t>
+    </template>
+</odoo>

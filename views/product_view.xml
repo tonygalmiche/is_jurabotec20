@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- is.calculateur.operation -->
+        <record model="ir.ui.view" id="is_calculateur_operation_tree_view">
+            <field name="name">is.calculateur.operation.tree</field>
+            <field name="model">is.calculateur.operation</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="prix_revient"/>
+                    <field name="unite"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="is_calculateur_operation_form_view">
+            <field name="name">is.calculateur.operation.form</field>
+            <field name="model">is.calculateur.operation</field>
+            <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="prix_revient"/>
+                        <field name="unite"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="is_calculateur_operation_search_view" >
+            <field name="name">is.calculateur.operation.search</field>
+            <field name="model">is.calculateur.operation</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="unite"/>
+                </search>
+            </field>
+        </record>
+        <record id="is_calculateur_operation_action" model="ir.actions.act_window">
+            <field name="name">Opérations calculateur</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">is.calculateur.operation</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <!-- is.bois -->
+        <record model="ir.ui.view" id="is_bois_tree_view">
+            <field name="name">is.bois.tree</field>
+            <field name="model">is.bois</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="sequence" widget="handle" />
+                    <field name="name"/>
+                    <field name="prix_revient"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="is_bois_form_view">
+            <field name="name">is.bois.form</field>
+            <field name="model">is.bois</field>
+            <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="prix_revient"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="is_bois_search_view" >
+            <field name="name">is.bois.search</field>
+            <field name="model">is.bois</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+        <record id="is_bois_action" model="ir.actions.act_window">
+            <field name="name">Bois</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">is.bois</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+
+        <!-- is.qualite.bois -->
+        <record model="ir.ui.view" id="is_qualite_bois_tree_view">
+            <field name="name">is.qualite.bois.tree</field>
+            <field name="model">is.qualite.bois</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="color" widget="color_picker"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="is_qualite_bois_form_view">
+            <field name="name">is.qualite.bois.form</field>
+            <field name="model">is.qualite.bois</field>
+            <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="color" widget="color_picker"/>
+                    </group>
+                </sheet>
+            </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="is_qualite_bois_search_view" >
+            <field name="name">is.qualite.bois.search</field>
+            <field name="model">is.qualite.bois</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+        <record id="is_qualite_bois_action" model="ir.actions.act_window">
+            <field name="name">Profil</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">is.qualite.bois</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <!-- is.product.template.etiquette -->
+        <record id="is_product_template_etiquette_form" model="ir.ui.view">
+            <field name="name">is_product_template_etiquette_form</field>
+            <field name="model">is.product.template.etiquette</field>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="nb_etiquettes"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="imprimer" string="Imprimer les étiquette" type="object" class="btn-primary"/>
+                        <button string="Annuler" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="is_product_template_etiquette_action" model="ir.actions.act_window">
+            <field name="name">Impression des étiquettes</field>
+            <field name="res_model">is.product.template.etiquette</field>
+            <field name="target">new</field>
+            <field name="view_mode">form</field>
+        </record>
+
+
+        <!-- product.template -->
+        <record id="init_cout_actions_server" model="ir.actions.server">
+            <field name="name">Initialisation coût avec calculateur</field>
+            <field name="model_id" ref="product.model_product_template"/>
+            <field name="binding_model_id" ref="product.model_product_template"/>
+            <field name="state">code</field>
+            <field name="code">records.init_cout_actions_server()</field>
+        </record>
+        <record id="is_import_plan_actions_server" model="ir.actions.server">
+            <field name="name">Importation plan</field>
+            <field name="model_id" ref="product.model_product_template"/>
+            <field name="binding_model_id" ref="product.model_product_template"/>
+            <field name="state">code</field>
+            <field name="code">records.import_plan_action()</field>
+        </record>
+        <record id="is_product_template_form_view" model="ir.ui.view">
+            <field name="name">is_product_template_form_view</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <button name="action_open_label_layout" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </button>
+                <button name="action_open_label_layout" position="after">
+                    <button string="Imprimer étiquette" type="action" name="%(is_product_template_etiquette_action)d"/>
+                </button>
+                <field name="detailed_type" position="after">
+                    <field name="is_bois_id"/>
+                    <field name="is_qualite_bois_ids" widget="many2many_tags"  options="{'color_field': 'color'}"/>
+                    <field name="is_epaisseur"/>
+                    <field name="is_largeur"/>
+                    <field name="is_longueur_modele"/>
+                </field>
+                <field name="product_variant_id" position="after">
+                     <field name="is_ref_plan"/>
+                    <field name="is_plan_ids" widget="many2many_binary"/>
+                    <field name="is_fds_ids"  widget="many2many_binary"/>
+                     <field name="is_ligne_etiquette1"/>
+                     <field name="is_ligne_etiquette2"/>
+                </field>
+                <page name="general_information" position="after">
+                    <page name="calculateur" string="Calculateur">
+                        <group>
+                            <group>
+                                <field name="is_largeur_brute"/>
+                                <field name="is_epaisseur_brute"/>
+                            </group>
+                            <group>
+                                <field name="is_litre_metre"/>
+                            </group>
+                        </group>
+                        <field name="is_operation_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle" />
+                                <field name="product_id" invisible="1"/>
+                                <field name="operation_id"/>
+                                <field name="prix_revient"/>
+                                <field name="unite"/>
+                                <field name="montant" sum="Total"/>
+                            </tree>
+                        </field>
+                        <group>
+                            <field name="is_prix_revient_bois"/>
+                            <field name="is_montant_bois"/>
+                            <field name="is_prix_revient"/>
+                            <field name="is_cout_fixe"/>
+                        </group>
+                        <button name="init_cout_action" string="Initialisation coût" type="object"/>
+                    </page>
+                </page>
+            </field>
+        </record>
+        <record id="is_product_template_tree_view" model="ir.ui.view">
+            <field name="name">is_product_template_tree_view</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="is_bois_id"           optional="show"/>
+                    <field name="is_qualite_bois_ids"  optional="show" widget="many2many_tags"  options="{'color_field': 'color'}"/>
+                    <field name="is_epaisseur"         optional="show"/>
+                    <field name="is_largeur"           optional="show"/>
+                    <field name="is_longueur_modele"   optional="hide"/>
+                    <field name="is_largeur_brute"     optional="hide"/>
+                    <field name="is_epaisseur_brute"   optional="hide"/>
+                    <field name="is_litre_metre"       optional="hide"/>
+                    <field name="is_prix_revient"      optional="hide"/>
+                    <field name="is_cout_fixe"         optional="hide"/>
+                </field>
+                <field name="default_code" position="after">
+                    <field name="is_ref_plan" optional="show"/>
+                    <!-- <field name="is_plan_ids" widget="many2many_binary" optional="hide"/> -->
+                </field>
+            </field>
+        </record>
+        <record id="is_view_stock_product_template_tree" model="ir.ui.view">
+            <field name="name">is_view_stock_product_template_tree</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.view_stock_product_template_tree"/>
+            <field name="arch" type="xml">
+                <field name="responsible_id" position="replace"/>
+            </field>
+        </record>
+        <record id="is_product_template_search_view" model="ir.ui.view">
+            <field name="name">is_product_template_search_view</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+               <field name="name" position="after">
+                    <field name="is_ref_plan"/>
+                    <field name="is_bois_id"/>
+                    <field name="is_qualite_bois_ids"/>
+                    <field name="is_epaisseur"/>
+                    <field name="is_largeur"/>
+                </field>
+            </field>
+        </record>
+        <record id="is_product_normal_form_view" model="ir.ui.view">
+            <field name="name">is_product_normal_form_view</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <field name="default_code" position="before">
+                    <field name="is_bareme_valobat_id"/>
+                    <field name="is_eco_contribution" attrs="{'invisible':[('is_bareme_valobat_id', '=', False)]}"/>
+                    <field name="is_longueur"/>
+                    <field name="is_surface"/>
+                    <field name="is_volume"/>
+                    <field name="is_litre_metre"/>
+                    <field name="product_tmpl_id"/>
+                </field>
+                <field name="is_prix_revient" position="after">
+                    <field name="is_prix_revient_variante"/>
+                </field>
+            </field>
+        </record>
+        <record id="is_product_variant_easy_edit_view" model="ir.ui.view">
+            <field name="name">is_product_variant_easy_edit_view</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+            <field name="arch" type="xml">
+                <group name="weight" position="replace">
+                    <group name="weight" string="Logistique" attrs="{'invisible':[('type', 'not in', ['product', 'consu'])]}">
+                        <field name="is_epaisseur"/>
+                        <field name="is_largeur"/>
+                        <field name="is_longueur"/>
+                        <field name="is_surface"/>
+                        <field name="is_volume"/>
+                        <field name="is_litre_metre"/>
+                        <field name="is_prix_revient_variante"/>
+                    </group>
+                </group>
+                <group name="packaging" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </group>
+                <group name="tags" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </group>
+            </field>
+        </record>
+        <record id="is_product_product_tree_view" model="ir.ui.view">
+            <field name="name">is_product_product_tree_view</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="product_template_variant_value_ids" position="after">
+                    <field name="is_epaisseur"   optional="hide"/>
+                    <field name="is_largeur"     optional="hide"/>
+                    <field name="is_longueur"    optional="hide"/>
+                    <field name="is_surface"     optional="hide"/>
+                    <field name="is_volume"      optional="hide"/>
+                    <field name="is_litre_metre" optional="hide"/>
+                    <field name="is_prix_revient"          optional="hide"/>
+                    <field name="is_cout_fixe"             optional="hide"/>
+                    <field name="is_prix_revient_variante" optional="hide"/>
+                </field>
+
+                <field name="qty_available" position="after">
+                    <field name="is_volume_stock" optional="show" sum="Total"/>
+
+                </field>
+
+                <field name="qty_available" position="attributes">
+                    <attribute name="sum">Total</attribute>
+                </field>
+                <field name="virtual_available" position="attributes">
+                    <attribute name="sum">Total</attribute>
+                </field>
+
+
+
+            </field>
+        </record>
+
+
+
+        <!-- product.product -->
+        <record id="is_product_product_tablette_tree" model="ir.ui.view" >
+            <field name="name">is_product_product_tablette_tree</field>
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="default_code"/>
+                    <field name="product_template_variant_value_ids" widget="many2many_tags"/>
+                    <field name="qty_available"/>
+                </tree>
+            </field>
+        </record>
+        <record id="is_product_product_tablette_kanban" model="ir.ui.view">
+            <field name="name">is_product_product_tablette_kanban</field>
+            <field name="model">product.product</field>
+            <field name="priority">1000</field>
+            <field name="arch" type="xml">
+                <kanban sample="1" create="0" quick_create="0">
+                    <field name="id"/>
+                    <field name="activity_state"/>
+                    <field name="color"/>
+                    <progressbar field="activity_state" colors='{"planned": "success", "today": "warning", "overdue": "danger"}'/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <!-- <div class="o_kanban_image">
+                                    <img t-att-src="kanban_image('product.product', 'image_128', record.id.raw_value)" alt="Product" class="o_image_64_contain"/>
+                                </div> -->
+                                <div class="oe_kanban_details">
+                                    <!-- <field name="priority" widget="priority" readonly="1"/> -->
+                                    <strong class="o_kanban_record_title">
+                                        <field name="name"/>
+                                        <small t-if="record.default_code.value">[<field name="default_code"/>]</small>
+                                    </strong>
+                                    <div class="o_kanban_tags_section">
+                                        <field name="product_template_variant_value_ids" groups="product.group_product_variant" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                    </div>
+                                    <ul>
+                                        <li><strong>Stock: <field name="qty_available"></field></strong></li>
+                                    </ul>
+                                    <div name="tags"/>
+                                    <button name="liste_charges_action" string="Charges" type="object" class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <record id="is_product_product_tablette_search" model="ir.ui.view" >
+            <field name="name">is_product_product_tablette_search</field>
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="default_code"/>
+                    <field name="product_template_variant_value_ids"/>
+                </search>
+            </field>
+        </record>
+        <record id="is_product_product_tablette_action" model="ir.actions.act_window">
+            <field name="name">Articles</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">kanban</field>
+            <field name="search_view_id" ref="is_product_product_tablette_search"/>
+            <field name="domain">[('qty_available', '&gt;', 0)]</field>
+        </record>
+        <record id="is_product_product_tablette_kanban_act_window" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="is_product_product_tablette_kanban"/>
+            <field name="act_window_id" ref="is_product_product_tablette_action"/>
+        </record>
+        <!-- <record id="is_product_product_tablette_tree_act_window" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="is_product_product_tablette_tree"/>
+            <field name="act_window_id" ref="is_product_product_tablette_action"/>
+        </record> -->
+
+
+
+
+
+
+
+        <!--    = fields.Many2one('product.template', 'Article', required=True, ondelete='cascade')
+             = fields.Integer("Ordre")
+         = fields.Many2one('is.calculateur.operation', 'Opération', required=True)
+         = fields.Float(related="operation_id.prix_revient")
+                = fields.Selection(related="operation_id.unite")
+              = fields.Float(string="Montant", digits="Product Price", compute='_compute_montant', store=True) -->
+    
+
+        <!-- is.product.template.calculateur.operation -->
+        <record model="ir.ui.view" id="is_product_template_calculateur_operation_tree_view">
+            <field name="name">is.product.template.calculateur.operation.tree</field>
+            <field name="model">is.product.template.calculateur.operation</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="product_id" widget="many2one_clickable"/>
+                    <field name="sequence"/>
+                    <field name="operation_id"/>
+                    <field name="prix_revient"/>
+                    <field name="unite"/>
+                    <field name="montant"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="is_product_template_calculateur_operation_form_view">
+            <field name="name">is.product.template.calculateur.operation.form</field>
+            <field name="model">is.product.template.calculateur.operation</field>
+            <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="product_id"/>
+                        <field name="sequence"/>
+                        <field name="operation_id"/>
+                        <field name="prix_revient"/>
+                        <field name="unite"/>
+                        <field name="montant"/>
+                    </group>
+                </sheet>
+            </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="is_product_template_calculateur_operation_search_view" >
+            <field name="name">is.product.template.calculateur.operation.search</field>
+            <field name="model">is.product.template.calculateur.operation</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="product_id"/>
+                    <field name="operation_id"/>
+                </search>
+            </field>
+        </record>
+        <record id="is_product_template_calculateur_operation_action" model="ir.actions.act_window">
+            <field name="name">Lignes des opérations du calculateur</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">is.product.template.calculateur.operation</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <!-- is.bareme.valobat -->
+        <record model="ir.ui.view" id="is_bareme_valobat_tree_view">
+            <field name="name">is.bareme.valobat.tree</field>
+            <field name="model">is.bareme.valobat</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="designation"/>
+                    <field name="prix"/>
+                    <field name="unite"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="is_bareme_valobat_form_view">
+            <field name="name">is.bareme.valobat.form</field>
+            <field name="model">is.bareme.valobat</field>
+            <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="designation"/>
+                        <field name="prix"/>
+                        <field name="unite"/>
+                    </group>
+                </sheet>
+            </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="is_bareme_valobat_search_view" >
+            <field name="name">is.bareme.valobat.search</field>
+            <field name="model">is.bareme.valobat</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="designation"/>
+                    <field name="unite"/>
+                </search>
+            </field>
+        </record>
+        <record id="is_bareme_valobat_action" model="ir.actions.act_window">
+            <field name="name">Barème Valobat</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">is.bareme.valobat</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+    </data>
+</odoo>

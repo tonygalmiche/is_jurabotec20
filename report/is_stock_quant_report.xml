@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="is_stock_quant_report_document">
+        <t t-call="web.html_container">
+            <div class="footer" style="text-align:center; font-size:9pt; border-top:1px solid #ccc; padding-top:3px;">
+                Imprimé le <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                &amp;nbsp;&amp;nbsp;—&amp;nbsp;&amp;nbsp;
+                Page <span class="page"/> / <span class="topage"/>
+            </div>
+            <div class="article">
+                <div class="page">
+                    <h2>État du stock</h2>
+                    <table class="table table-sm table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Lieu</th>
+                                <th>Article</th>
+                                <th>Lot</th>
+                                <th class="text-end">Qté en stock</th>
+                                <th class="text-center">Code barre lot</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="quant">
+                                <tr>
+                                    <td><span t-field="quant.location_id"/></td>
+                                    <td>
+                                        <span t-field="quant.product_id"/>
+                                        <t t-if="quant.product_id.default_code"> - <span t-field="quant.product_id.default_code"/></t>
+                                    </td>
+                                    <td><span t-field="quant.lot_id"/></td>
+                                    <td class="text-end">
+                                        <span t-field="quant.quantity"/><br/>
+                                        <i t-esc="'(%.1f m3)' % quant.is_volume_total"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-if="quant.lot_id.name">
+                                            <img t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', quant.lot_id.name, 300, 60)"
+                                                 style="max-height:45px"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="is_account_view_partner_property_form" model="ir.ui.view">
+            <field name="name">is_account_view_partner_property_form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.view_partner_property_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//sheet[1]" position="inside">
+                    <style>
+                        .o_form_label{
+                            white-space: nowrap;
+                        }
+                    </style>
+                </xpath>
+                <field name="vat" position="after">
+                    <field name="is_gestion_colisage"/>
+                </field>
+                <field name="property_account_receivable_id" position="after">
+                    <field name="is_code_comptable_client"/>
+                </field>
+                <field name="property_account_payable_id" position="after">
+                    <field name="is_code_comptable_fournisseur"/>
+                </field>
+
+                <xpath expr="//page[@name='sales_purchases']/group/group/field[@name='user_id']" position="before">
+                    <field name="is_emplacement_charge_id"/>
+                </xpath>
+
+            </field>
+
+
+
+
+
+        </record>
+        <record id="is_view_partner_tree" model="ir.ui.view">
+            <field name="name">is_view_partner_tree</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree" />
+            <field name="arch" type="xml">
+                 <field name="active" position="after">
+                    <field name="is_code_comptable_client"      optional="hide"/>
+                    <field name="is_code_comptable_fournisseur" optional="hide"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

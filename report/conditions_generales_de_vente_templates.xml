@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+<template id="conditions_generales_de_vente">
+
+    <style>
+        .cgv p{
+            font-size:7.5pt;
+            text-align: justify;
+            padding:0;
+            margin:0;
+            margin-bottom:0.1em;
+        }
+        .cgv h1{
+            text-align: center;
+            font-size:10pt;
+            font-weight:bold;
+            padding:0;
+            margin:0;
+            margin-bottom:0;
+        }
+
+        .cgv h2{
+            font-size:9pt;
+            font-weight:bold;
+            padding:0;
+            margin-top:0.2em;
+            margin-bottom:0;
+        }
+    </style>
+
+
+    <div style="page-break-before:always"/>
+
+
+<div class="cgv">
+
+<h1>CONDITIONS GENERALES</h1>
+
+
+
+<h2>1. PREAMBULE</h2>
+        <p>1.1 Toute commande implique de la part de l’acheteur l’acceptation des présentes conditions réputées connues de celui-ci et auxquelles il ne peut opposer aucune clause qui n’aurait pas fait l’objet de notre part d’une acceptation expresse et écrite.</p>
+        <p>1.2 Si l’une quelconque des clauses de ces conditions générales ou des dérogations se révélait nulle pour quelque motif que ce soit, seules la ou les clauses seraient réputées non écrites, la convention étant maintenue intégralement pour tous ses autres effets. </p>
+
+
+
+<h2>2. COMMANDES</h2>
+
+    
+        <p>2.1 En cas d’acceptation, le client s’engage à verser un acompte d’un minimum de 30% du montant dû de la commande. </p>
+        <p>2.2 En cas de de désistement après la date limite de rétractation, les 30% versés seront conservés à titre de dédommagement.</p>
+
+<h2>3. PRIX</h2>
+
+    
+        <p>3.1 Nos devis constituent un engagement ferme sur les prix des travaux de fabrication et de vente indiqués. Ils sont libellés en euros et calculés hors taxes. Par voie de conséquence, ils seront majorés du taux de TVA et des frais de transport applicables au jour de la commande. En principe, les frais de douanes et d’assurances seront également à la charge du client et viendront majorer le prix des marchandises.</p>
+        <p>3.2 La société Jurabotec s'accorde le droit de modifier ses tarifs à tout moment.</p>
+        <p>3.3 Les travaux de fabrication non mentionnés aux devis sont qualifiés de travaux supplémentaires et au cas où en cours d’exécution de telles réparations apparaissent nécessaires, ils doivent faire l’objet d’un devis supplémentaire et d’une approbation préalable du client.</p>
+
+<h2>4. RABAIS ET RISTOURNES</h2>
+    
+        <p>4.1 Les tarifs proposés comprennent les rabais et ristournes que Jurabotec serait amené à octroyer en fonction des quantité acquises par l’acheteur, ou de la régularité de ses commandes.</p>
+
+<h2>5. MODALITES DE PAIEMENT</h2>
+    
+        <p>5.1 Jurabotec se réserve le droit d’appliquer les conditions de paiements selon les clients. </p>
+        <p>5.2 Les règlements seront effectués selon les mentions indiquées sur la facture. Dans tous les cas, le délai de paiement ne peut pas excéder 60 jours.</p>
+
+<h2>6. RETARD DE PAIEMENT</h2>
+    
+        <p>6.1 Conformément à la loi Macron du 6 août 2015, le délai convenu de règlement des sommes dues ne peut dépasser 60 jours à compter de la date d’émission de la facture. Aussi, passé ce délai, la pénalité de retard est de plein droit et sans qu’il soit besoin de mise en demeure, de pénalités d’un montant résultant de l’application d’un taux égal à 5 fois le taux d’intérêt légal, majoré de 5 points. Cette pénalité est calculée sur le montant TTC de la somme restant due, et court à compter de la date d'échéance du prix sans qu'aucune mise en demeure préalable ne soit nécessaire.</p>
+        <p>6.2 En sus des indemnités de retard, en vertu de la Loi du 22 mars 2012 et du Décret du 2 octobre 2012, des Art.L.441-3, L.441-6 et D.441-5 du Code de Commerce, l’acheteur est de plein droit redevable de l’indemnité forfaitaire pour frais de recouvrement de 40 €. En cas de dépassement, une indemnité complémentaire pourra être demandée sur présentation des justifications. </p>
+        <p>6.3 En cas de défaut d’acceptation d’une traite, les frais de rejet seront à la charge du client en plus des intérêts de retard et des pénalités.</p>
+
+<h2>7. RESERVE DE PROPRIETE</h2>
+    
+        <p>7.1 Conformément aux termes de la Loi du 26 Juillet 2005, Jurabotec conserve la propriété des biens vendus jusqu'au paiement intégral de des marchandises, en principal et en accessoires, majoré de ses frais de pénalités éventuels.</p>
+        <p>7.2 A défaut de paiement d’une seule échéance, Jurabotec pourra purement et simplement reprendre les produits et/ou matériaux objet de la vente.</p>
+        <p>7.3 Si l’acheteur fait l'objet d'un redressement ou d'une liquidation judiciaire, Jurabotec se réserve le droit de revendiquer, dans le cadre de la procédure collective, les marchandises vendues et restées impayées.</p>
+        <p>7.4 Si les produits ou matériaux avaient péri ou subi des détériorations pendant qu’ils demeurent sous la garde de l’acheteur, celui-ci subirait toutes les conséquences. </p>
+
+<h2>8. GARANTIE ET NON-RESPOSABILITE DE CONCEPTION</h2>
+    
+        <p>8.1 Jurabotec décline toute responsabilité autre que celles résultant des normes et cahier des charges expressément acceptés comme faisant partie intégrante du marché. </p>
+        <p>8.2 Les matériaux ou produits vendus sont conformes aux conditions et spécifications prévues par le bon de commande ou de livraison. Jurabotec ne pourra être tenu responsable des déformations, gauchissement, ou retraits des bois, survenus par suite d’hygrométrie anormale. Dans la mesure où la bonne tenue de nos bois dépend du degré hygrométrique des locaux ou lieux dans lesquels ils sont entreposés. </p>
+        <p>8.3 Aussi, une réclamation sur la qualité des marchandises reçues ne peut s’exercer que sur les marchandises correctement stockées, protégées ou emballées, demeurées en l’état. Une anomalie visible à l’œil ou à l’aide d’un simple instrument de mesure (dimensions…) doit être signalée par écrit dans un délai de 8 jours de la date de réception, de préférence par LRAR. Passé ce délai, aucune réclamation ne sera acceptée et aucun remplacement des marchandises ne sera effectué en cas de non-respect des conditions de stockage, de conservation et d'utilisation.</p>
+        <p>8.4 Les produits rabotés en bois résineux ne sont géométriquement pas parfaits. Ainsi, selon le cintre présenté par les lames, un faux équerrage de 1 à 2’ peut être constaté lors de la mise en œuvre. Aucune technique ne permet de s’affranchir de ce phénomène que vous acceptez en commandant les produits rainés en bout. </p>
+
+<h2>9. LIVRAISON</h2>
+    
+        <p>9.1 Le délai de livraison indiqué lors de l’acceptation de la commande n’est donné qu’à titre indicatif et n’est en aucun cas garanti. Le dépassement raisonnable des délais de livraison ne pourra donner lieu à quelques dommages et intérêts, retenue ou annulation de commandes en cours. </p>
+        <p>9.2 L’acquéreur demeure responsable des conséquences dommageables affectant les marchandises (notamment pertes, détériorations) au cours du transport ou après la livraison. Toute marchandise réceptionnée par le client sur le site de Jurabotec ne peut faite l’objet d’un quelconque litige. </p>
+        <p>9.3 En cas de marchandises manquantes ou détériorées lors du transport, l’acheteur devra formuler toutes les réserves nécessaires sur le bon de livraison à réception desdites marchandises. Ces réserves devront être, en outre, confirmées par écrit dans les cinq jours suivant la livraison, par LRAR adressé à la société Jurabotec.</p>
+
+<h2>10. FORCE MAJEURE</h2>
+    
+        <p>10.1  La responsabilité de Jurabotec ne pourra pas être mise en œuvre si la non-exécution ou le retard dans l'exécution de l'une de ses obligations décrites dans les présentes conditions générales de vente découle d'un cas de force majeure. À ce titre, la force majeure s'entend de tout événement extérieur, imprévisible et irrésistible au sens de l'article 1148 du Code civil.</p>
+
+<h2>11. TRIBUNAL COMPETENT</h2>
+    
+        <p>11.1  Tout litige relatif à l'interprétation et à l'exécution des présentes conditions générales de vente est soumis au droit français. À défaut de résolution amiable, le litige sera porté devant le Tribunal de commerce de la ville de LONS-LE-SAUNIER (39000).</p>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+</template>
+
+
+</odoo>

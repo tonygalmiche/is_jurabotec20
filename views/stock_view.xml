@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- stock.picking -->
+    <record id="is_view_picking_form" model="ir.ui.view">
+        <field name="name">is_view_picking_form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet[1]" position="inside">
+                <style>
+                    .o_form_label{
+                        white-space: nowrap;
+                    }
+                </style>
+            </xpath>
+            <button name="action_open_label_type" position="replace">
+                <button 
+                    string="Imprimer étiquette" 
+                    name="imprime_etiquette_action" 
+                    type="object" 
+                />
+            </button>
+            <button name="action_cancel" position="after">
+                <button name="liste_charges_action" string="Liste des charges" type="object"/>
+            </button>
+            <xpath expr="//group/group/field[@name='origin']" position="after">
+                <field name="sale_id" attrs="{'invisible': [('sale_id', '=', False)]}"/>
+                <field name="is_bl_fournisseur"/>
+            </xpath>
+            <xpath expr="//group/field[@name='backorder_id']" position="after">
+                <field name="is_volume_total"/>
+                <field name="is_detail_charge"/>
+            </xpath>
+            <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='description_picking']" position="after">
+                <field name="is_description_cde" optional="show"/>
+                <field name="is_lot_id"          optional="hide" widget="many2one_clickable"/>
+            </xpath>
+            <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='lot_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="is_vpicktree" model="ir.ui.view">
+        <field name="name">is_vpicktree</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="is_bl_fournisseur" optional="show"/>
+                <field name="is_volume_total"   optional="hide"/>
+                <field name="is_detail_charge"  optional="hide"/>
+            </field>
+        </field>
+    </record>
+    <record id="is_view_picking_internal_search" model="ir.ui.view">
+        <field name="name">is_view_picking_internal_search</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="is_bl_fournisseur"/>
+            </field>
+        </field>
+    </record>
+
+
+    
+
+    <!--stock.location -->
+    <record id="is_view_location_tree2" model="ir.ui.view">
+        <field name="name">is_view_location_tree2</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_tree2"/>
+        <field name="arch" type="xml">
+            <field name="complete_name" position="after">
+                <field name="is_code_emplacement" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="is_stock_location_kanban_view" model="ir.ui.view">
+        <field name="name">is_stock_location_kanban_view</field>
+        <field name="model">stock.location</field>
+        <field name="arch" type="xml">
+            <kanban create="0" quick_create="0">
+                <field name="name"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                             <div class="oe_kanban_details">
+                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <div style="font-size:24pt;text-align:center">
+                                                <field name="name"/><br />
+                                                <button name="emplacement_charge_action" string="Sélectionner cet emplacement d'origine" type="object" class="btn btn-primary"/>
+                                            </div>
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="is_stock_location_kanban_view2" model="ir.ui.view">
+        <field name="name">is_stock_location_kanban_view2</field>
+        <field name="model">stock.location</field>
+        <field name="arch" type="xml">
+            <kanban create="0" quick_create="0">
+                <field name="name"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                             <div class="oe_kanban_details">
+                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <div style="font-size:24pt;text-align:center">
+                                                <field name="name"/><br />
+                                                <button name="destination_charge_action" string="Sélectionner cet emplacement de destinaton" type="object" class="btn btn-primary"/>
+                                            </div>
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="is_emplacement_charge_action" model="ir.actions.act_window">
+        <field name="name">Emplacement  charge</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.location</field>
+        <field name="view_mode">kanban</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('is_stock_location_kanban_view')}),
+            ]"/>
+        <field name="domain">[('usage', '=', 'internal')]</field>
+    </record>
+
+
+
+    <record id="is_emplacement_origine_charge_action_server" model="ir.actions.server">
+        <field name="name">Emplacement d'origine de la charge</field>
+        <field name="model_id" ref="stock.model_stock_location"/>
+        <field name="binding_model_id" ref=""/>
+        <field name="state">code</field>
+        <field name="code">action = model.emplacement_origine_charge_action()</field>
+    </record>
+
+
+
+    <!--is.deplacement.charge -->
+    <record model="ir.ui.view" id="is_deplacement_charge_form_view">
+        <field name="name">is_deplacement_charge_form_view</field>
+        <field name="model">is.deplacement.charge</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Form">
+                <sheet>
+                    <group>
+                        <field name="origine_id"/>
+                        <field name="destination_id"/>
+                        <field name="quantity"/>
+                        <field name="lot_id"/>
+                        <field name="product_id"/>
+                    </group>
+                    <group>
+                        <button 
+                            name="valider_deplacement_charge_action" 
+                            string="Valider le déplacement de cette charge" 
+                            type="object" class="btn btn-primary text-nowrap"
+                        />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- is.creation.charge -->
+    <record model="ir.ui.view" id="is_creation_charge_tree_view">
+        <field name="name">is.creation.charge.tree</field>
+        <field name="model">is.creation.charge</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="product_id"/>
+                <field name="quantity"/>
+                <field name="destination_id"/>
+                <field name="lot_id"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="is_creation_charge_form_view">
+        <field name="name">is.creation.charge.form</field>
+        <field name="model">is.creation.charge</field>
+        <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <field name="product_id"/>
+                    <field name="quantity"       widget="plus_moins10"/>
+                    <field name="destination_id" widget="selection"/>
+                    <field name="lot_id"/>
+                </group>
+                <button 
+                    name="creer_charge_action" 
+                    string="Créer cette charge" 
+                    type="object" 
+                    class="btn btn-primary"
+                    attrs="{'invisible':['|','|',
+                        ('product_id', '=', False),
+                        ('quantity'  , '=', 0),
+                        ('lot_id'    , '!=', False),
+                    ]}"
+                />
+            </sheet>
+        </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="is_creation_charge_search_view" >
+        <field name="name">is.creation.charge.search</field>
+        <field name="model">is.creation.charge</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="product_id"/>
+                <field name="destination_id"/>
+                <field name="lot_id"/>
+            </search>
+        </field>
+    </record>
+    <record id="is_creation_charge_action" model="ir.actions.act_window">
+        <field name="name">Bois</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">is.creation.charge</field>
+        <field name="view_mode">form,tree</field>
+    </record>
+
+
+
+    <!-- stock.move.line -->
+    <record id="is_view_move_line_tree" model="ir.ui.view">
+        <field name="name">is_view_move_line_tree</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_move_line_tree"/>
+        <field name="arch" type="xml">
+            <field name="product_id" position="attributes">
+                <attribute name="widget">many2one_clickable</attribute>
+            </field>
+            <field name="lot_id" position="attributes">
+                <attribute name="widget">many2one_clickable</attribute>
+            </field>
+            <field name="lot_id" position="before">
+                <field name="move_id" optional="hide" widget="many2one_clickable"/>
+            </field>
+            <field name="create_uid" position="after">
+                <field name="create_date" optional="hide"/>
+                <field name="write_uid"   optional="hide"/>
+                <field name="write_date"   optional="hide"/>
+            </field>
+        </field>
+    </record>
+    <record id="is_stock_move_line_view_search" model="ir.ui.view">
+        <field name="name">is_stock_move_line_view_search</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.stock_move_line_view_search"/>
+        <field name="arch" type="xml">
+            <filter name="groupby_product_id" position="after">
+                <filter string="Lot" name="groupby_lot_id" domain="[]" context="{'group_by': 'lot_id'}"/>
+            </filter>
+        </field>
+    </record>
+</odoo>

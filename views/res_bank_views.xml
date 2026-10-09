@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="is_res_bank_action" model="ir.actions.act_window">
+            <field name="name">Banques</field>
+            <field name="res_model">res.bank</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="is_res_partner_bank_action" model="ir.actions.act_window">
+            <field name="name">Comptes banquaires</field>
+            <field name="res_model">res.partner.bank</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

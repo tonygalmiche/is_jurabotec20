@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+
+
+
+    <!-- Modifier une charge -->
+    <record id="modifier_charge_stock_quant_kanban_view" model="ir.ui.view">
+        <field name="name">modifier_charge_stock_quant_kanban_view</field>
+        <field name="model">stock.quant</field>
+        <field name="arch" type="xml">
+            <kanban default_order="lot_id,location_id,product_id" create="0" quick_create="0">
+                <field name="product_id"/>
+                <field name="quantity"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                             <div class="oe_kanban_details">
+                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <div style="text-align:center">
+                                                <div style="background-color:#e5e7e9">
+                                                    <field name="lot_id" style="font-size:14pt"/>
+                                                </div>
+                                                <div style="background-color:#ebf5fb">
+                                                    <field name="location_id" style="font-size:13pt"/>
+                                                </div>
+                                                <field name="product_id"/><br />
+                                                <div style="background-color:#ebf5fb">
+                                                    <field name="quantity" style="font-size:16pt"/>
+                                                </div>
+                                                <br />
+                                                <field name="inventory_quantity" widget="plus_moins10"/>
+                                                <br />
+                                                <div 
+                                                    style="background-color:#e5e7e9;margin-top:0.5em;margin-bottom:0.5em" 
+                                                    attrs="{'invisible': ['|',
+                                                        ('inventory_quantity_set', '=', 0),
+                                                        ('inventory_quantity_set', '=', False),
+                                                    ]}
+                                                ">
+                                                    Différence : <field name="inventory_diff_quantity"/>
+                                                </div>
+                                                <field name="inventory_quantity_set"  invisible="1"/>
+                                                <div>
+                                                    <button 
+                                                        string="Appliquer la modification"
+                                                        name="action_apply_inventory" 
+                                                        groups="stock.group_stock_manager"
+                                                        type="object"
+                                                        class="btn btn-primary"
+                                                        attrs="{'invisible': [('inventory_quantity_set', '=', False)]}"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <!-- stock.quant -->
+    <record id="is_stock_quant_imprime_etiquette_actions_server" model="ir.actions.server">
+        <field name="name">Imprimer les étiquettes</field>
+        <field name="model_id" ref="stock.model_stock_quant"/>
+        <field name="binding_model_id" ref="stock.model_stock_quant"/>
+        <field name="state">code</field>
+        <field name="code">records.imprime_etiquette_action()</field>
+    </record>
+    <record id="charge_stock_quant_kanban_view" model="ir.ui.view">
+        <field name="name">charge_stock_quant_kanban_view</field>
+        <field name="model">stock.quant</field>
+        <field name="arch" type="xml">
+            <kanban default_order="location_id,lot_id,product_id" create="0" quick_create="0">
+                <field name="product_id"/>
+                <field name="lot_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                             <div class="oe_kanban_details">
+                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <div style="text-align:center">
+                                                <div style="background-color:#e5e7e9">
+                                                    <field name="lot_id" style="font-size:14pt"/>
+                                                </div>
+                                                <div style="background-color:#ebf5fb">
+                                                    <field name="location_id" style="font-size:13pt"/>
+                                                </div>
+                                                <field name="product_id"/><br />
+                                                <field name="quantity"/><br />
+                                                <button name="deplacer_quant_action" string="Déplacer cette charge" type="object" class="btn btn-primary"/>
+
+
+                                            </div>
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="modifier_charge_stock_quant_action" model="ir.actions.act_window">
+        <field name="name">Charges</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.quant</field>
+        <field name="view_mode">kanban</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('modifier_charge_stock_quant_kanban_view')}),
+            ]"/>
+        <field name="domain">[('quantity', '&gt;', 0),('location_id.usage', '=', 'internal')]</field>
+    </record>
+
+
+    <record id="is_view_stock_quant_tree_editable" model="ir.ui.view">
+        <field name="name">is_view_stock_quant_tree_editable</field>
+        <field name="model">stock.quant</field>
+        <field name="inherit_id" ref="stock.view_stock_quant_tree_editable"/>
+        <field name="arch" type="xml">
+            <field name="value" position="replace">
+                <field name="quantity"         optional="hide"/>
+                <field name="is_volume"        optional="show"/>
+                <field name="is_volume_total"  optional="show" sum="Total"/>
+                <field name="is_cout"          optional="show"/>
+                <field name="is_cout_total"    optional="show" sum="Total"/>
+             </field>
+            <field name="lot_id" position="after">
+                <field name="is_sale_order_id" optional="show"  widget="many2one_clickable"/>
+                <field name="is_pefc" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="is_quant_search_view" model="ir.ui.view">
+        <field name="name">is_quant_search_view</field>
+        <field name="model">stock.quant</field>
+        <field name="inherit_id" ref="stock.quant_search_view"/>
+        <field name="arch" type="xml">
+            <search position="inside">
+                <filter name="filter_pefc" string="PEFC" domain="[('is_pefc', '=', True)]"/>
+                <filter name="filter_non_pefc" string="Non PEFC" domain="[('is_pefc', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+
+   <record id="is_view_stock_quant_pivot" model="ir.ui.view">
+        <field name="name">is_view_stock_quant_pivot</field>
+        <field name="model">stock.quant</field>
+        <field name="inherit_id" ref="stock.view_stock_quant_pivot"/>
+        <field name="arch" type="xml">
+            <field name="product_id" position="replace"/>
+            <field name="location_id" position="replace"/>
+            <field name="quantity" position="replace">
+                <field name="location_id" type="row"/>
+                <field name="is_volume_total" type="measure"/>
+            </field>
+        </field>
+    </record>
+
+<!-- 
+
+<pivot string="Inventory" sample="1">
+                <field name="product_id" type="row"/>
+                <field name="location_id" type="col"/>
+                <field name="quantity" type="measure"/>
+            </pivot>
+
+stock.view_stock_quant_pivot
+ -->
+
+</odoo>

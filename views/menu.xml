@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Ventes / Commandes -->
+    <menuitem 
+        id="is_view_order_hekipia_menu" 
+        sequence="21" 
+        name="Commandes en ligne (Hekipia)" 
+        parent="sale.sale_order_menu" 
+        action="is_view_order_hekipia_action"
+    />
+    <menuitem 
+        id="is_sale_order_colisage_composant_menu" 
+        sequence="22" 
+        name="Lignes des colis (Hekipia)" 
+        parent="sale.sale_order_menu" 
+        action="is_sale_order_colisage_composant_action"
+    />
+
+    <menuitem 
+        id="is_calendrier_livraison_menu" 
+        sequence="22" 
+        name="Calendrier des livraisons" 
+        parent="sale.sale_order_menu" 
+        action="is_calendrier_livraison_action"
+    />
+
+
+
+
+    <!-- Ventes / Articles -->
+    <menuitem 
+        id="is_product_pricelist_item_menu" sequence="90" 
+        name="Lignes listes de prix" parent="sale.product_menu_catalog" 
+        action="is_product_pricelist_item_action"
+    />
+    <menuitem 
+        id="is_product_template_calculateur_operation_menu" sequence="92" 
+        name="Lignes des opérations du calculateur" parent="sale.product_menu_catalog" 
+        action="is_product_template_calculateur_operation_action"
+    />
+
+    <!-- Ventes / Configuration -->
+    <menuitem id="is_ventes_tables_menu"         parent="sale.menu_sale_config"  sequence="900"  name="Tables"/>
+    <menuitem id="is_bois_menu"                  parent="is_ventes_tables_menu" name="Bois"                      action="is_bois_action"                  sequence="10"/>
+    <menuitem id="is_qualite_bois_menu"          parent="is_ventes_tables_menu" name="Profil"                    action="is_qualite_bois_action"          sequence="20"/>
+    <menuitem id="is_calculateur_operation_menu" parent="is_ventes_tables_menu" name="Opérations du calculateur" action="is_calculateur_operation_action" sequence="30"/>
+    <menuitem id="is_bareme_valobat_menu"        parent="is_ventes_tables_menu" name="Barème Valobat"            action="is_bareme_valobat_action"        sequence="40"/>
+
+
+    <!-- Achats -->
+    <menuitem 
+        id="is_contrat_fournisseur_menu" sequence="90" 
+        name="Contrats fournisseurs" parent="purchase.menu_procurement_management" 
+        action="is_contrat_fournisseur_action"
+    />
+
+    <!-- Facturation -->
+    <menuitem 
+        id="is_export_vente_compta_menu" 
+        sequence="900" 
+        name="Export compta"
+        action="is_export_vente_compta_action"
+        parent="account.menu_finance_receivables"
+    />
+
+    <!-- Facturation / Configuration -->
+    <menuitem 
+        id="is_res_bank_menu" 
+        sequence="900" 
+        name="Banques"
+        action="is_res_bank_action"
+        parent="account.account_banks_menu"
+    />
+    <menuitem 
+        id="is_res_partner_bank_menu" 
+        sequence="910" 
+        name="Comptes banquaires"
+        action="is_res_partner_bank_action"
+        parent="account.account_banks_menu"
+    />
+
+
+    
+    <!-- Stock / Inventaire -->
+    <menuitem 
+        id="stock_inventory_main_menu" 
+        sequence="10" 
+        name="Inventaires"
+        action="stock_inventory_action"
+        parent="stock.menu_stock_root"
+    />
+    <menuitem 
+        id="stock_inventory_menu" 
+        sequence="10" 
+        name="Inventaire par emplacement"
+        action="stock_inventory_action"
+        parent="stock_inventory_main_menu"
+    />
+    <menuitem 
+        id="is_inventaire_menu" 
+        sequence="20" 
+        name="Inventaire général"
+        action="is_inventaire_action"
+        parent="stock_inventory_main_menu"
+    />
+
+
+
+
+    <!-- Scan -->
+    <menuitem id="is_scan_main_menu"
+        name="Scan"
+        sequence="200" 
+    />
+
+    <menuitem id="is_scan_deplacement_charge_historique_menu"
+        action="is_scan_deplacement_charge_action"
+        name="Historique déplacements"
+        parent="is_scan_main_menu"
+        sequence="10" 
+    />
+
+
+
+    <menuitem id="is_scan_deplacement_charge_menu"
+        action="is_scan_deplacement_charge_new_action"
+        parent="is_scan_main_menu"
+        sequence="11" 
+    />
+    <menuitem id="is_scan_inventaire_menu"
+        action="is_scan_inventaire_action"
+        parent="is_scan_main_menu"
+        sequence="20" 
+    />
+
+
+
+
+    <!-- Tablette -->
+    <menuitem id="is_tablette_menu" sequence="146"  name="Tablette"/>
+    <menuitem id="is_product_product_tablette_menu" sequence="10" name="Articles"        action="is_product_product_tablette_action"          parent="is_tablette_menu"/>
+    <menuitem id="is_emplacement_charge_menu"       sequence="20" name="Déplacer charge" action="is_emplacement_origine_charge_action_server" parent="is_tablette_menu"/>
+    <menuitem id="is_creation_charge_menu"          sequence="30" name="Création charge" action="is_creation_charge_action"                   parent="is_tablette_menu"/>
+    <menuitem id="is_modifier_charge_menu"          sequence="40" name="Modifier charge" action="modifier_charge_stock_quant_action"          parent="is_tablette_menu"/>
+
+
+
+    <!-- Déplacer les menus non utilisés -->
+    <menuitem id="is_archive_menu"           parent="base.menu_custom" sequence="900" name="Archives"/>
+    <menuitem id="mail.menu_root_discuss"    parent="is_archive_menu"  sequence="20"/>
+    <menuitem id="sale.menu_sale_quotations" parent="is_archive_menu"  sequence="30"/>
+
+
+</odoo>

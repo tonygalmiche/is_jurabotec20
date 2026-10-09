@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--stock.location -->
+   <record id="stock_location_imprime_etiquette_actions_server" model="ir.actions.server">
+        <field name="name">Imprimer les étiquettes</field>
+        <field name="model_id" ref="stock.model_stock_location"/>
+        <field name="binding_model_id" ref="stock.model_stock_location"/>
+        <field name="state">code</field>
+        <field name="code">records.imprime_etiquette_action()</field>
+    </record>
+
+
+    <!--stock.lot -->
+    <record id="init_prix_achat_ir_cron" model="ir.cron">
+        <field name="name">Initialisation prix d'achat</field>
+        <field name="model_id" ref="stock.model_stock_lot"/>
+        <field name="state">code</field>
+        <field name="code">model.init_prix_achat_ir_cron()</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+    </record>
+    <record id="init_prix_achat_actions_server" model="ir.actions.server">
+        <field name="name">Initialisation prix d'achat</field>
+        <field name="model_id" ref="stock.model_stock_lot"/>
+        <field name="binding_model_id" ref="stock.model_stock_lot"/>
+        <field name="state">code</field>
+        <field name="code">records.init_prix_achat_action()</field>
+    </record>
+    <record id="stock_lot_imprime_etiquette_actions_server" model="ir.actions.server">
+        <field name="name">Imprimer les étiquettes</field>
+        <field name="model_id" ref="stock.model_stock_lot"/>
+        <field name="binding_model_id" ref="stock.model_stock_lot"/>
+        <field name="state">code</field>
+        <field name="code">records.imprime_etiquette_action()</field>
+    </record>
+
+    <record id="stock.action_production_lot_form" model="ir.actions.act_window">
+        <field name="context">{'display_complete': True, 'default_company_id': allowed_company_ids[0]}</field>
+    </record>
+     
+    <record id="is_view_production_lot_form" model="ir.ui.view">
+        <field name="name">is_view_production_lot_form</field>
+        <field name="model">stock.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet[1]" position="before">
+                <header>
+                    <button 
+                        string="Imprimer étiquette" 
+                        name="imprime_etiquette_action" 
+                        type="object" 
+                    />
+                </header>
+            </xpath>
+            <field name="ref" position="after">
+                <field name="is_purchase_order_id"/>
+                <field name="is_fournisseur_id"/>
+                <field name="is_prix_achat"/>
+                <field name="is_valeur"/>
+            </field>
+            <xpath expr="//group[@name='main_group']/group[2]" position="replace">
+               <group>
+                    <field name="is_charge_associee_a_commande"/>
+                    <field name="is_sale_order_id"/>
+                    <field name="is_num_interne_client"/>
+                    <field name="is_detail_charge_client"/>
+                    <field name="is_pefc"/>
+                </group>
+            </xpath>
+            <notebook position="attributes">
+                <attribute name="invisible">1</attribute>
+            </notebook>            
+        </field>
+    </record>
+    <record id="is_view_production_lot_tree" model="ir.ui.view">
+        <field name="name">is_view_production_lot_tree</field>
+        <field name="model">stock.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_tree"/>
+        <field name="arch" type="xml">
+            <field name="product_id" position="attributes">
+                <attribute name="widget">many2one_clickable</attribute>
+            </field>
+            <field name="create_date" position="before">
+                <field name="product_qty"             optional="show" sum="Total"/>
+                <field name="is_purchase_order_id"    optional="show" widget="many2one_clickable"/>
+                <field name="is_fournisseur_id"       optional="show" widget="many2one_clickable"/>
+                <field name="is_prix_achat"           optional="show"/>
+                <field name="is_sale_order_id"        optional="show" widget="many2one_clickable" sum="Total"/>
+                <field name="is_num_interne_client"   optional="show"/>
+                <field name="is_detail_charge_client" optional="show"/>
+                <field name="is_pefc"                 optional="show"/>
+            </field>
+
+        </field>
+    </record>
+    <record id="is_search_product_lot_filter" model="ir.ui.view">
+        <field name="name">is_search_product_lot_filter</field>
+        <field name="model">stock.lot</field>
+        <field name="inherit_id" ref="stock.search_product_lot_filter"/>
+        <field name="arch" type="xml">
+            <field name="product_id" position="after">
+                <field name="is_purchase_order_id"/>
+                <field name="is_fournisseur_id"/>
+                <field name="is_sale_order_id"/>
+                <field name="is_num_interne_client"/>
+                <field name="is_detail_charge_client"/>
+            </field>
+            <filter name="group_by_product" position="after">
+                <filter name="filter_pefc"     string="PEFC"     domain="[('is_pefc', '=', True)]"/>
+                <filter name="filter_non_pefc" string="non PEFC" domain="[('is_pefc', '=', False)]"/>
+                <filter name="group_by_is_sale_order_id"  string="Cde Client" domain="[]"  context="{'group_by': 'is_sale_order_id'}"/>
+                <filter name="group_by_is_fournisseur_id" string="Fournisseur" domain="[]" context="{'group_by': 'is_fournisseur_id'}"/>
+            </filter>
+        </field>
+    </record>
+    <record id="is_stock_lot_kanban_view" model="ir.ui.view">
+        <field name="name">is_stock_lot_kanban_view</field>
+        <field name="model">stock.lot</field>
+        <field name="arch" type="xml">
+            <kanban create="0" quick_create="0">
+                <field name="name"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                             <div class="oe_kanban_details">
+                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <div style="font-size:24pt;text-align:center">
+                                                <field name="name"/><br />
+                                                <field name="product_id"/><br />
+                                                <field name="is_qt_lot_emplacement"/><br />
+                                                <button name="deplacer_cette_charge_action" string="Déplacer cette charge" type="object" class="btn btn-primary"/>
+                                            </div>
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+   <record id="is_stock_lot_sale_order_kanban_view" model="ir.ui.view">
+        <field name="name">is_stock_lot_sale_order_kanban_view</field>
+        <field name="model">stock.lot</field>
+        <field name="priority">1000</field>
+        <field name="arch" type="xml">
+            <!-- <kanban create="0" quick_create="0"> -->
+
+            <kanban default_group_by="is_charge_associee_a_commande" create="0" quick_create="0">
+                <field name="name"/>
+                <field name="is_sale_order_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                             <div class="oe_kanban_details">
+                                <div class="o_kanban_record_top mb-0">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <div style="text-align:left">
+                                                <div style="background-color:LightYellow;font-weight: bold;">
+                                                    <field name="name"/> (<field name="product_qty"/>) (<field name="is_sale_order_id"/>)
+                                                </div>
+                                                <field name="product_id"/><br />
+                                                <field name="is_num_interne_client"/>
+                                            </div>
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+
+
+</odoo>
