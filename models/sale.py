@@ -676,7 +676,7 @@ class sale_order_line(models.Model):
             obj.is_detail_quantite = x
 
 
-    @api.depends('product_id', 'product_uom', 'product_uom_qty','is_prix_tarif','is_unite_tarif','product_uom_qty')
+    @api.depends('product_id', 'product_uom_id', 'product_uom_qty','is_prix_tarif','is_unite_tarif','product_uom_qty')
     def _compute_price_unit(self):
         for line in self:
             price = 0

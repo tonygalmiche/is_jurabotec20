@@ -15,13 +15,13 @@ class StockPicking(models.Model):
     is_detail_charge         = fields.Boolean("Imprimer le détail des charges")
 
 
-    @api.depends('move_ids_without_package','is_bl_fournisseur','state','is_detail_charge')
+    @api.depends('move_ids','is_bl_fournisseur','state','is_detail_charge')
     def _compute_is_volume_total(self):
         for obj in self:
             volume = 0
-            for line in obj.move_ids_without_package:
+            for line in obj.move_ids:
                 if obj.state=='done':
-                    qty=line.quantity_done
+                    qty=line.quantity
                 else:
                     qty=line.product_uom_qty
                 if line.sale_line_id.product_uom_qty>0:
@@ -33,7 +33,7 @@ class StockPicking(models.Model):
     def liste_charges_action(self):
         for obj in self:
             ids=[]
-            for move in obj.move_ids_without_package:
+            for move in obj.move_ids:
                 for lot in move.lot_ids:
                     ids.append(lot.id)
             return {
@@ -50,7 +50,7 @@ class StockPicking(models.Model):
     def imprime_etiquette_action(self):
         for obj in self:
             ZPL=""
-            for line in obj.move_ids_without_package:
+            for line in obj.move_ids:
                 for move_line in line.move_line_ids:
                     if move_line.lot_id:
                         ZPL+=move_line.lot_id.get_zpl()
