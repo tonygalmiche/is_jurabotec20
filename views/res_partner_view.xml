@@ -13,9 +13,10 @@
                         }
                     </style>
                 </xpath>
-                <field name="vat" position="after">
+                <!-- En v20, la TVA est dans le bloc des identifiants : ancré sur ce bloc -->
+                <div name="identifiers" position="after">
                     <field name="is_gestion_colisage"/>
-                </field>
+                </div>
                 <field name="property_account_receivable_id" position="after">
                     <field name="is_code_comptable_client"/>
                 </field>
@@ -39,10 +40,11 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_tree" />
             <field name="arch" type="xml">
-                 <field name="active" position="after">
+                <!-- Plus de colonne active en v20 : en fin de liste -->
+                <list position="inside">
                     <field name="is_code_comptable_client"      optional="hide"/>
                     <field name="is_code_comptable_fournisseur" optional="hide"/>
-                </field>
+                </list>
             </field>
         </record>
     </data>
