@@ -48,6 +48,7 @@ class IsContratFournisseur(models.Model):
     _name='is.contrat.fournisseur'
     _description = "Contrat fournisseur"
     _order = "name desc"
+    _rec_names_search = ['name', 'contrat_fournisseur']
 
 
     @api.depends('ligne_ids')
@@ -79,32 +80,10 @@ class IsContratFournisseur(models.Model):
         return super().create(vals_list)
 
 
-    def name_get(self):
-        result = []
+    @api.depends('name', 'contrat_fournisseur')
+    def _compute_display_name(self):
         for obj in self:
-
-            name = "[%s] %s"%(obj.name,(obj.contrat_fournisseur or ''))
-            result.append((obj.id, name))
-        return result
-
-
-    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
-        if args is None:
-            args = []
-
-        ids = []
-        if len(name) >= 1:
-            filtre=[
-                '|',
-                ('name', 'ilike', name),
-                ('contrat_fournisseur', 'ilike', name),
-            ]
-            ids = list(self._search(filtre + args, limit=limit))
-        search_domain = [('name', operator, name)]
-        if ids:
-            search_domain.append(('id', 'not in', ids))
-        ids += list(self._search(search_domain + args, limit=limit))
-        return ids
+            obj.display_name = "[%s] %s"%(obj.name,(obj.contrat_fournisseur or ''))
 
 
 class PurchaseOrder(models.Model):

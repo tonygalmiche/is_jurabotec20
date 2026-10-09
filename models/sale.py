@@ -257,7 +257,7 @@ class sale_order(models.Model):
                         vals={
                             'order_id': obj.id,
                             'product_id': product.id,
-                            'name': product.name_get()[0][1],
+                            'name': product.display_name,
                             'product_uom_qty': 1,
                             'price_unit':obj.is_eco_contribution,
                             'sequence': sequence,
@@ -593,7 +593,7 @@ class sale_order(models.Model):
                 vals={
                     'order_id'    : obj.id,
                     'product_id'  : charge.product_id.id,
-                    'name'        : charge.product_id.name_get()[0][1],
+                    'name'        : charge.product_id.display_name,
                     'sequence'    : sequence,
                     'is_charge_id': charge.id,
                 }

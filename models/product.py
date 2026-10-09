@@ -288,8 +288,8 @@ class ProductProduct(models.Model):
 
 
     @api.model
-    def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
-        product_ids=[]
+    def name_search(self, name='', domain=None, operator='ilike', limit=100):
+        domain = list(domain or [])
         contrat_id = self.env.context.get('contrat_id')
         if contrat_id:
             lines = self.env['is.contrat.fournisseur.ligne'].search([('contrat_id','=',contrat_id)])
@@ -297,9 +297,8 @@ class ProductProduct(models.Model):
             for line in lines:
                 for product in line.product_id.product_variant_ids:
                     ids.append(product.id)
-            args.append(['id','in',ids])
-        product_ids = super()._name_search(name, args, operator, limit, name_get_uid)
-        return product_ids
+            domain.append(('id','in',ids))
+        return super().name_search(name, domain, operator, limit)
 
 
 class ProductTemplateAttributeValue(models.Model):
