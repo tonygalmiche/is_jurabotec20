@@ -91,12 +91,12 @@
                     <field name="is_contrat_id" domain="[('partner_id','=',partner_id),('state', '=', 'en_cours')]"/>
                 </field>
                 <xpath expr="//page[@name='products']/field/list/field[@name='product_id']" position="attributes">
+                    <!-- Contexte d'Odoo 20 sur ce champ, plus le contrat fournisseur (filtre des articles, name_search) -->
                     <attribute name="context">
                         {
-                            'partner_id':parent.partner_id, 
+                            'partner_id':partner_id,
                             'quantity':product_qty,
-                            'uom':product_uom, 
-                            'company_id': parent.company_id, 
+                            'company_id': parent.company_id,
                             'contrat_id': parent.is_contrat_id,
                         }
                     </attribute>
@@ -109,7 +109,8 @@
                     <field name="is_surface_totale" sum="Total" optional="hide"/>
                     <field name="is_volume_total"   sum="Total" optional="hide"/>
                 </xpath>
-                <xpath expr="//page[@name='products']/field/list/field[@name='price_tax']" position="after">
+                <!-- price_tax n'est plus une colonne en v20 : ancré sur discount, juste avant les montants -->
+                <xpath expr="//page[@name='products']/field/list/field[@name='discount']" position="after">
                     <field name="is_ligne_contrat_id" optional="hide"/>
                     <field name="is_qt_contrat"       optional="hide"/>
                     <field name="is_prix_contrat"     optional="hide"/>
