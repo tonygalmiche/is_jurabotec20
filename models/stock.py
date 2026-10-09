@@ -386,7 +386,8 @@ class IsDeplacementCharge(models.Model):
                 "location_id"     : context["origine_id"],
                 "location_dest_id": context["destination_id"],
                 "lot_id"          : context["lot_id"],
-                "qty_done"        : obj.quantity,
+                "quantity"        : obj.quantity,
+                "picked"          : True,
                 "product_id"      : context["product_id"],
             }
             move_vals={
@@ -394,7 +395,7 @@ class IsDeplacementCharge(models.Model):
                 "location_dest_id": context["destination_id"],
                 "product_uom_qty" : obj.quantity,
                 "product_id"      : context["product_id"],
-                "name"            : "Tablette",
+                "description_picking": "Tablette",
             }
             #TODO : La création du picking est facultative, mais je la garde pour avoir un exemple complet
             filtre=[('code', '=', 'internal')]
@@ -454,7 +455,8 @@ class IsCreationCharge(models.Model):
                 "location_id"     : location_id,
                 "location_dest_id": location_dest_id,
                 "lot_id"          : lot.id,
-                "qty_done"        : obj.quantity,
+                "quantity"        : obj.quantity,
+                "picked"          : True,
                 "product_id"      : obj.product_id.id,
             }
             move_vals={
@@ -462,7 +464,7 @@ class IsCreationCharge(models.Model):
                 "location_dest_id": location_dest_id,
                 "product_uom_qty" : obj.quantity,
                 "product_id"      : obj.product_id.id,
-                "name"             : "Création charge %s"%(lot.name),
+                "description_picking": "Création charge %s"%(lot.name),
                 "move_line_ids"   : [[0,False,line_vals]],
             }
             move=self.env['stock.move'].with_context({}).create(move_vals) # Il faut effacer le context, sinon erreur avec le champ product_qty

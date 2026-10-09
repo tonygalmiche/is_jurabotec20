@@ -223,7 +223,7 @@ class sale_order(models.Model):
                 ]
                 pickings = self.env['stock.picking'].search(domain,limit=1)
                 for picking in pickings:
-                    picking.move_line_ids_without_package.unlink()
+                    picking.move_line_ids.unlink()
                     for line in obj.order_line:
                         if line.is_charge_id:
                             vals={
@@ -231,10 +231,10 @@ class sale_order(models.Model):
                                 "product_id"        : line.product_id.id,
                                 "lot_id"            : line.is_charge_id.id,
                                 "company_id"        : picking.company_id.id,
-                                "product_uom_id"    : line.product_id.uom_id.id,
+                                "uom_id"            : line.product_id.uom_id.id,
                                 "location_id"       : obj.is_emplacement_charge_id.id,
-                                "qty_done"          : line.product_uom_qty,
-                                "reserved_uom_qty"  : line.product_uom_qty,
+                                "quantity"          : line.product_uom_qty,
+                                "picked"            : True,
                             }
                             self.env['stock.move.line'].create(vals)
         return res

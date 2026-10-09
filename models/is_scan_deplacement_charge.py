@@ -135,9 +135,9 @@ class IsScanDeplacementCharge(models.Model):
                 'location_dest_id': self.emplacement_dst_id.id,
                 'origin': f'Déplacement charge {real_id}',
                 'move_ids': [(0, 0, {
-                    'name': f'Déplacement charge - {self.lot_id.name}',
+                    'description_picking': f'Déplacement charge - {self.lot_id.name}',
                     'product_id': self.product_id.id,
-                    'product_uom': self.product_id.uom_id.id,
+                    'uom_id': self.product_id.uom_id.id,
                     'product_uom_qty': quant.quantity,
                     'location_id': self.emplacement_src_id.id,
                     'location_dest_id': self.emplacement_dst_id.id,
@@ -147,8 +147,9 @@ class IsScanDeplacementCharge(models.Model):
             })
             picking.move_ids[0].move_line_ids = [(0, 0, {
                 'product_id': self.product_id.id,
-                'product_uom_id': self.product_id.uom_id.id,
-                'qty_done': quant.quantity,
+                'uom_id': self.product_id.uom_id.id,
+                'quantity': quant.quantity,
+                'picked': True,
                 'location_id': self.emplacement_src_id.id,
                 'location_dest_id': self.emplacement_dst_id.id,
                 'lot_id': self.lot_id.id,

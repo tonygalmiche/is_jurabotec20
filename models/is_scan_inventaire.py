@@ -186,9 +186,9 @@ class IsScanInventaire(models.Model):
                     
                     # Créer les valeurs pour le mouvement de stock
                     move_vals = {
-                        'name': f'Inventaire par scan - {ligne.lot_id.name}',
+                        'description_picking': f'Inventaire par scan - {ligne.lot_id.name}',
                         'product_id': ligne.product_id.id,
-                        'product_uom': ligne.product_id.uom_id.id,
+                        'uom_id': ligne.product_id.uom_id.id,
                         'product_uom_qty': quant.quantity,
                         'location_id': quant.location_id.id,
                         'location_dest_id': obj.emplacement_dst_id.id,
@@ -199,8 +199,9 @@ class IsScanInventaire(models.Model):
                     # Créer les valeurs pour la ligne de mouvement
                     move_line_vals = {
                         'product_id': ligne.product_id.id,
-                        'product_uom_id': ligne.product_id.uom_id.id,
-                        'qty_done': quant.quantity,
+                        'uom_id': ligne.product_id.uom_id.id,
+                        'quantity': quant.quantity,
+                        'picked': True,
                         'location_id': quant.location_id.id,
                         'location_dest_id': obj.emplacement_dst_id.id,
                         'lot_id': ligne.lot_id.id,
