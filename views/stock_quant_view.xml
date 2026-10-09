@@ -14,50 +14,43 @@
                 <field name="product_id"/>
                 <field name="quantity"/>
                 <templates>
-                    <t t-name="kanban-box">
-                        <div class="oe_kanban_card oe_kanban_global_click">
-                             <div class="oe_kanban_details">
-                                <div class="o_kanban_record_top mb-0">
-                                    <div class="o_kanban_record_headings">
-                                        <strong class="o_kanban_record_title">
-                                            <div style="text-align:center">
-                                                <div style="background-color:#e5e7e9">
-                                                    <field name="lot_id" style="font-size:14pt"/>
-                                                </div>
-                                                <div style="background-color:#ebf5fb">
-                                                    <field name="location_id" style="font-size:13pt"/>
-                                                </div>
-                                                <field name="product_id"/><br />
-                                                <div style="background-color:#ebf5fb">
-                                                    <field name="quantity" style="font-size:16pt"/>
-                                                </div>
-                                                <br />
-                                                <field name="inventory_quantity" widget="plus_moins10"/>
-                                                <br />
-                                                <div 
-                                                    style="background-color:#e5e7e9;margin-top:0.5em;margin-bottom:0.5em" 
-                                                    attrs="{'invisible': ['|',
-                                                        ('inventory_quantity_set', '=', 0),
-                                                        ('inventory_quantity_set', '=', False),
-                                                    ]}
-                                                ">
-                                                    Différence : <field name="inventory_diff_quantity"/>
-                                                </div>
-                                                <field name="inventory_quantity_set"  invisible="1"/>
-                                                <div>
-                                                    <button 
-                                                        string="Appliquer la modification"
-                                                        name="action_apply_inventory" 
-                                                        groups="stock.group_stock_manager"
-                                                        type="object"
-                                                        class="btn btn-primary"
-                                                        attrs="{'invisible': [('inventory_quantity_set', '=', False)]}"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </strong>
+                    <t t-name="card">
+                        <div class="o_kanban_record_top mb-0">
+                            <div class="o_kanban_record_headings">
+                                <strong class="o_kanban_record_title">
+                                    <div style="text-align:center">
+                                        <div style="background-color:#e5e7e9">
+                                            <field name="lot_id" style="font-size:14pt"/>
+                                        </div>
+                                        <div style="background-color:#ebf5fb">
+                                            <field name="location_id" style="font-size:13pt"/>
+                                        </div>
+                                        <field name="product_id"/><br />
+                                        <div style="background-color:#ebf5fb">
+                                            <field name="quantity" style="font-size:16pt"/>
+                                        </div>
+                                        <br />
+                                        <field name="inventory_quantity" widget="plus_moins10"/>
+                                        <br />
+                                        <div
+                                            style="background-color:#e5e7e9;margin-top:0.5em;margin-bottom:0.5em"
+                                            invisible="not inventory_quantity_set"
+                                        >
+                                            Différence : <field name="inventory_diff_quantity"/>
+                                        </div>
+                                        <field name="inventory_quantity_set"  invisible="1"/>
+                                        <div>
+                                            <button
+                                                string="Appliquer la modification"
+                                                name="action_apply_inventory"
+                                                groups="stock.group_stock_manager"
+                                                type="object"
+                                                class="btn btn-primary"
+                                                invisible="not inventory_quantity_set"
+                                            />
+                                        </div>
                                     </div>
-                                </div>
+                                </strong>
                             </div>
                         </div>
                     </t>
@@ -83,28 +76,24 @@
                 <field name="product_id"/>
                 <field name="lot_id"/>
                 <templates>
-                    <t t-name="kanban-box">
-                        <div class="oe_kanban_card oe_kanban_global_click">
-                             <div class="oe_kanban_details">
-                                <div class="o_kanban_record_top mb-0">
-                                    <div class="o_kanban_record_headings">
-                                        <strong class="o_kanban_record_title">
-                                            <div style="text-align:center">
-                                                <div style="background-color:#e5e7e9">
-                                                    <field name="lot_id" style="font-size:14pt"/>
-                                                </div>
-                                                <div style="background-color:#ebf5fb">
-                                                    <field name="location_id" style="font-size:13pt"/>
-                                                </div>
-                                                <field name="product_id"/><br />
-                                                <field name="quantity"/><br />
-                                                <button name="deplacer_quant_action" string="Déplacer cette charge" type="object" class="btn btn-primary"/>
+                    <t t-name="card">
+                        <div class="o_kanban_record_top mb-0">
+                            <div class="o_kanban_record_headings">
+                                <strong class="o_kanban_record_title">
+                                    <div style="text-align:center">
+                                        <div style="background-color:#e5e7e9">
+                                            <field name="lot_id" style="font-size:14pt"/>
+                                        </div>
+                                        <div style="background-color:#ebf5fb">
+                                            <field name="location_id" style="font-size:13pt"/>
+                                        </div>
+                                        <field name="product_id"/><br />
+                                        <field name="quantity"/><br />
+                                        <button name="deplacer_quant_action" string="Déplacer cette charge" type="object" class="btn btn-primary"/>
 
 
-                                            </div>
-                                        </strong>
                                     </div>
-                                </div>
+                                </strong>
                             </div>
                         </div>
                     </t>
@@ -137,7 +126,7 @@
                 <field name="is_cout_total"    optional="show" sum="Total"/>
              </field>
             <field name="lot_id" position="after">
-                <field name="is_sale_order_id" optional="show"  widget="many2one_clickable"/>
+                <field name="is_sale_order_id" optional="show"/>
                 <field name="is_pefc" optional="show"/>
             </field>
         </field>
