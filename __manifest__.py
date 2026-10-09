@@ -22,6 +22,7 @@ Reprise d'is_jurabotec (Odoo 16).
         "l10n_fr_account",  # siret sur res.partner (rapport facture)
     ],
     'data' : [
+        "security/ir.access.csv",
 
         # Migration v20 : vues, menus et rapports désactivés pour installer d'abord les modèles
         # "views/product_view.xml",
@@ -48,7 +49,6 @@ Reprise d'is_jurabotec (Odoo 16).
         # "report/report_stockpicking_operations.xml",
         # "report/report_invoice.xml",
         # "report/report.xml",
-        'security/ir.access.csv',
     ],
     'installable': True,
     'application': True,
