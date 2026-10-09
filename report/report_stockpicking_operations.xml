@@ -56,7 +56,7 @@
                                  </td>
                                 <td style="white-space: nowrap;">
                                     <span t-field="move.product_uom_qty"/>
-                                    <span t-field="move.product_uom"/>
+                                    <span t-field="move.uom_id"/>
                                 </td>
                             </tr>
                         </tbody>
