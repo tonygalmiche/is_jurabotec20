@@ -33,9 +33,9 @@ class IsContratFournisseurLigne(models.Model):
 
     contrat_id   = fields.Many2one('is.contrat.fournisseur', 'Contrat', required=True, ondelete='cascade')
     product_id   = fields.Many2one('product.template', 'Article', required=True)
-    qt_prevue    = fields.Float(string="Quantité prévue"   , digits='Product Unit of Measure', required=True)
-    qt_commandee = fields.Float(string="Quantité commandée", digits='Product Unit of Measure', compute='_compute_qt_commandee')
-    prix_achat   = fields.Float(string="Prix d'achat"      , digits='Product Unit of Measure', required=True)
+    qt_prevue    = fields.Float(string="Quantité prévue"   , digits='Product Unit', required=True)
+    qt_commandee = fields.Float(string="Quantité commandée", digits='Product Unit', compute='_compute_qt_commandee')
+    prix_achat   = fields.Float(string="Prix d'achat"      , digits='Product Unit', required=True)
     unite = fields.Selection([
         ('m' , 'm'),
         ('m2', 'm2'),
@@ -96,8 +96,8 @@ class PurchaseOrderLine(models.Model):
     _inherit = "purchase.order.line"
 
     is_ligne_contrat_id = fields.Many2one('is.contrat.fournisseur.ligne', 'Ligne contrat')
-    is_qt_contrat       = fields.Float(string="Qt contrat", digits='Product Unit of Measure')
-    is_prix_contrat     = fields.Float(string="Prix contrat"   , digits='Product Unit of Measure')
+    is_qt_contrat       = fields.Float(string="Qt contrat", digits='Product Unit')
+    is_prix_contrat     = fields.Float(string="Prix contrat"   , digits='Product Unit')
     is_unite_contrat    = fields.Selection([
         ('m' , 'm'),
         ('m2', 'm2'),
@@ -107,7 +107,7 @@ class PurchaseOrderLine(models.Model):
     is_volume_total = fields.Float(string="Volume total", digits='Volume', compute='_compute_is_volume_total')
 
     is_surface         = fields.Float(string="Surface"    , related="product_id.is_surface")
-    is_surface_totale  = fields.Float(string="Surface cde", digits='Product Unit of Measure', compute='_compute_is_surface_totale')
+    is_surface_totale  = fields.Float(string="Surface cde", digits='Product Unit', compute='_compute_is_surface_totale')
 
 
     def _compute_price_unit_and_date_planned_and_name(self):

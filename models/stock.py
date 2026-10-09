@@ -426,7 +426,7 @@ class IsCreationCharge(models.Model):
 
 
     product_id     = fields.Many2one('product.product', 'Article'    , required=True)
-    quantity       = fields.Float('Quantité'                         , required=True, digits='Product Unit of Measure')
+    quantity       = fields.Float('Quantité'                         , required=True, digits='Product Unit')
     destination_id = fields.Many2one('stock.location' , 'Destination', required=True, default=_get_destination_id, domain=[('usage','=','internal')])
     lot_id         = fields.Many2one('stock.lot'      , 'Lot créé'   , readonly=True)
 

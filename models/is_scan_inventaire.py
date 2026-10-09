@@ -253,7 +253,7 @@ class IsScanInventaireLigne(models.Model):
     scan_id         = fields.Many2one('is.scan.inventaire', 'Inventaire scan', required=True, ondelete='cascade')
     lot_id          = fields.Many2one('stock.lot', 'Lot/Série')
     product_id      = fields.Many2one('product.product', 'Article')
-    quantite        = fields.Float('Quantité', digits='Product Unit of Measure', default=1.0)
+    quantite        = fields.Float('Quantité', digits='Product Unit', default=1.0)
     heure_ajout     = fields.Char('Heure d\'ajout', size=8, readonly=True)
     emplacement_ids = fields.Many2many('stock.location', compute='_compute_emplacement_ids', string='Emplacements du lot', store=True)
 

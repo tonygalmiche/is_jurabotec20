@@ -45,7 +45,7 @@ class IsCalculateurOperation(models.Model):
     _description = "Opérations du calculateur"
 
     name         = fields.Char("Opération", required=True)
-    prix_revient = fields.Float(string="Prix de revient", digits="Product Unit of Measure", required=True)
+    prix_revient = fields.Float(string="Prix de revient", digits="Product Unit", required=True)
     unite = fields.Selection([
             ('litre', 'litre'),
             ('ml'   , 'ml'),
@@ -128,13 +128,13 @@ class ProductTemplate(models.Model):
     is_prix_revient_bois = fields.Float("Prix de revient du bois", related="is_bois_id.prix_revient")
     is_montant_bois      = fields.Float("Montant bois", compute='_compute_is_montant_bois', store=True)
     is_qualite_bois_ids  = fields.Many2many('is.qualite.bois', column1='product_id', column2='qualite_id', string='Profil')
-    is_largeur           = fields.Float("Largeur (mm)"  , digits='Product Unit of Measure')
-    is_epaisseur         = fields.Float("Epaisseur (mm)", digits='Product Unit of Measure')
-    is_longueur_modele   = fields.Float("Longueur modèle (m)", digits='Product Unit of Measure', help="Ce champ est utilisé si la longueure n'est pas indiquée dans la variante")
+    is_largeur           = fields.Float("Largeur (mm)"  , digits='Product Unit')
+    is_epaisseur         = fields.Float("Epaisseur (mm)", digits='Product Unit')
+    is_longueur_modele   = fields.Float("Longueur modèle (m)", digits='Product Unit', help="Ce champ est utilisé si la longueure n'est pas indiquée dans la variante")
     is_ref_plan          = fields.Char("Référence plan")
     is_plan_ids          = fields.Many2many('ir.attachment', 'product_template_is_plan_rel', 'product_id', 'attachment_id', 'Plan')
     is_fds_ids           = fields.Many2many('ir.attachment', 'product_template_is_fds_rel' , 'product_id', 'attachment_id', 'FDS', help="Fiche de sécurité")
-    is_litre_metre       = fields.Float("L/m ", digits='Product Unit of Measure', compute='_compute_is_litre_metre', store=True, 
+    is_litre_metre       = fields.Float("L/m ", digits='Product Unit', compute='_compute_is_litre_metre', store=True, 
                                         help="Litre / mètre => Unité fictive pour faciliter le calcul des devis(Largeur brute x Epaisseur brute / 1000)")
     is_operation_ids     = fields.One2many('is.product.template.calculateur.operation', 'product_id', 'Opérations')
     is_prix_revient      = fields.Float("Prix de revient (€/ml)", compute='_compute_is_prix_revient', store=False, help="Montant des opérations + Montant bois")
@@ -142,8 +142,8 @@ class ProductTemplate(models.Model):
     is_bareme_valobat_id = fields.Many2one('is.bareme.valobat', 'Barème Valobat')
     is_ligne_etiquette1  = fields.Char("Ligne étiquette 1")
     is_ligne_etiquette2  = fields.Char("Ligne étiquette 2")
-    is_largeur_brute     = fields.Float("Largeur brute (mm)"  , digits='Product Unit of Measure')
-    is_epaisseur_brute   = fields.Float("Epaisseur brute (mm)", digits='Product Unit of Measure')
+    is_largeur_brute     = fields.Float("Largeur brute (mm)"  , digits='Product Unit')
+    is_epaisseur_brute   = fields.Float("Epaisseur brute (mm)", digits='Product Unit')
 
 
 
@@ -223,8 +223,8 @@ class is_product_template_etiquette(models.TransientModel):
 class ProductProduct(models.Model):
     _inherit = "product.product"
  
-    is_longueur              = fields.Float("Longueur (m)", digits='Product Unit of Measure', compute='_compute_longueur')
-    is_surface               = fields.Float("Surface (m2)", digits='Product Unit of Measure', compute='_compute_longueur')
+    is_longueur              = fields.Float("Longueur (m)", digits='Product Unit', compute='_compute_longueur')
+    is_surface               = fields.Float("Surface (m2)", digits='Product Unit', compute='_compute_longueur')
     is_volume                = fields.Float("Volume (m3) ", digits='Volume'                 , compute='_compute_longueur')
     is_prix_revient_variante = fields.Float("Prix de revient variante"                      , compute='_compute_is_prix_revient_variante')
     is_volume_stock          = fields.Float("Volume en stock (m3) ", digits='Volume'        , compute='_compute_is_volume_stock')

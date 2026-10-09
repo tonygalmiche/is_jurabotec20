@@ -110,8 +110,8 @@ class IsSaleOrderColisageComposant(models.Model):
     colis_id     = fields.Many2one('is.sale.order.colis', 'Colis', group_expand='_group_expand_colis_id', required=True)
     product_id   = fields.Many2one("product.product", string="Article", related="sale_line_id.product_id", readonly=True)
     composant_id = fields.Many2one('product.product', 'Composant')
-    qty          = fields.Float(string='Quantité', digits='Product Unit of Measure')
-    qty_bom      = fields.Float(string='Qt nomenclature', digits='Product Unit of Measure')
+    qty          = fields.Float(string='Quantité', digits='Product Unit')
+    qty_bom      = fields.Float(string='Qt nomenclature', digits='Product Unit')
     qty_cde      = fields.Float(related='sale_line_id.product_uom_qty')
     sale_line_id = fields.Many2one('sale.order.line', 'Ligne de commande', required=True)
     colis_ids    = fields.Many2many('is.sale.order.colis', 'is_sale_order_line_colis_ids', 'line_id', 'colis_id', store=False, readonly=True, compute='_compute_colis_ids', string="Colis autorisés")
@@ -477,7 +477,7 @@ class sale_order_line(models.Model):
 
     is_composants     = fields.Html(string='Composants', compute='_compute_is_composants')
     is_composants_ids = fields.One2many('is.sale.order.colisage.composant', 'sale_line_id', 'Lignes des composants')
-    is_prix_tarif  = fields.Float(string="Prix tarif", digits='Product Unit of Measure', help="Tarif de la liste de prix")
+    is_prix_tarif  = fields.Float(string="Prix tarif", digits='Product Unit', help="Tarif de la liste de prix")
     is_unite_tarif = fields.Selection([
         ('m'    , 'm'),
         ('m2'   , 'm2'),
@@ -485,19 +485,19 @@ class sale_order_line(models.Model):
         ('unite', 'Unité'),
     ], "Unité", help="Unité de la liste de prix")
 
-    is_longueur        = fields.Float(string="Longueur",      digits='Product Unit of Measure', compute='_compute_longeur')
-    is_surface         = fields.Float(string="Surface",       digits='Product Unit of Measure', compute='_compute_longeur')
+    is_longueur        = fields.Float(string="Longueur",      digits='Product Unit', compute='_compute_longeur')
+    is_surface         = fields.Float(string="Surface",       digits='Product Unit', compute='_compute_longeur')
     is_volume          = fields.Float(string="Volume",        digits='Volume'                 , compute='_compute_longeur')
 
-    is_longueur_totale = fields.Float(string="Longueur cde",  digits='Product Unit of Measure')
-    is_surface_totale  = fields.Float(string="Surface cde",   digits='Product Unit of Measure')
+    is_longueur_totale = fields.Float(string="Longueur cde",  digits='Product Unit')
+    is_surface_totale  = fields.Float(string="Surface cde",   digits='Product Unit')
     is_volume_total    = fields.Float(string="Volume cde",    digits='Volume')
-    is_longueur_product = fields.Float(string="Longueur product", digits='Product Unit of Measure', related="product_id.is_longueur", readonly=True)
+    is_longueur_product = fields.Float(string="Longueur product", digits='Product Unit', related="product_id.is_longueur", readonly=True)
 
-    is_quantite_saisie  = fields.Float("Quantité saisie"      , digits='Product Unit of Measure')
-    is_largeur_saisie   = fields.Float("Largeur saisie (mm)"  , digits='Product Unit of Measure')
-    is_epaisseur_saisie = fields.Float("Epaisseur saisie (mm)", digits='Product Unit of Measure')
-    is_longueur_saisie  = fields.Float("Longueur saisie (m)"  , digits='Product Unit of Measure')
+    is_quantite_saisie  = fields.Float("Quantité saisie"      , digits='Product Unit')
+    is_largeur_saisie   = fields.Float("Largeur saisie (mm)"  , digits='Product Unit')
+    is_epaisseur_saisie = fields.Float("Epaisseur saisie (mm)", digits='Product Unit')
+    is_longueur_saisie  = fields.Float("Longueur saisie (m)"  , digits='Product Unit')
 
     is_detail_quantite  = fields.Text(string='Détail quantité', compute='_compute_is_detail_quantite')
     is_num_palette      = fields.Char(string='N°Palette')
