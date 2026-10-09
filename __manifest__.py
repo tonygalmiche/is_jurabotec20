@@ -38,9 +38,9 @@ Reprise d'is_jurabotec (Odoo 16).
         "views/stock_inventory_view.xml",
         "views/is_scan_inventaire_view.xml",
         "views/is_scan_deplacement_charge_view.xml",
+        "views/menu.xml",
 
         # Migration v20 : vues, menus et rapports désactivés pour installer d'abord les modèles
-        # "views/menu.xml",
         # "report/conditions_generales_de_vente_templates.xml",
         # "report/is_sale_order_colis_report.xml",
         # "report/is_stock_quant_report.xml",

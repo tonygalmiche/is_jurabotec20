@@ -64,20 +64,20 @@
         parent="account.menu_finance_receivables"
     />
 
-    <!-- Facturation / Configuration -->
-    <menuitem 
-        id="is_res_bank_menu" 
-        sequence="900" 
+    <!-- Facturation / Configuration (sous-menu Banques supprimé en v20) -->
+    <menuitem
+        id="is_res_bank_menu"
+        sequence="900"
         name="Banques"
         action="is_res_bank_action"
-        parent="account.account_banks_menu"
+        parent="account.menu_finance_configuration"
     />
-    <menuitem 
-        id="is_res_partner_bank_menu" 
-        sequence="910" 
+    <menuitem
+        id="is_res_partner_bank_menu"
+        sequence="910"
         name="Comptes banquaires"
         action="is_res_partner_bank_action"
-        parent="account.account_banks_menu"
+        parent="account.menu_finance_configuration"
     />
 
 
