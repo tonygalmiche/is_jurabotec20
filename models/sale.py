@@ -278,7 +278,7 @@ class sale_order(models.Model):
         for obj in self:
             volume = 0
             for line in obj.order_line:
-                line._onchange_product_uom_qty()
+                line._onchange_product_uom_qty(force=True)
                 volume+=line.is_volume_total
             obj.is_volume_total = volume
 
@@ -467,7 +467,7 @@ class sale_order(models.Model):
                 line = self.env['sale.order.line'].create(vals)
                 line._onchange_product_id()
                 line.product_uom_qty = charge.product_qty
-                line._onchange_product_uom_qty()
+                line._onchange_product_uom_qty(force=True)
                 line._compute_longeur()
                 sequence+=10
 
@@ -628,8 +628,9 @@ class sale_order_line(models.Model):
 
 
     @api.onchange('product_uom_qty')
-    def _onchange_product_uom_qty(self):
-        if self._onchange_autorise('product_uom_qty'):
+    def _onchange_product_uom_qty(self, force=False):
+        # force : appel direct depuis le code, toujours exécuté (contexte noonchange=False en v16)
+        if force or self._onchange_autorise('product_uom_qty'):
             longueur, largeur, epaisseur = self._get_dimensions()
             unite = self._get_type_unite()
             surface  = volume   = 0
