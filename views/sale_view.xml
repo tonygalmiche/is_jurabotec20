@@ -46,7 +46,7 @@
                     confirm="ATTENTION : Cela va supprimer les lignes de la commandes et les re-créer à partir des charges!"
                 />
             </button>
-            <xpath expr="//page[@name='order_lines']/field/tree" position="attributes">
+            <xpath expr="//page[@name='order_lines']/field/list" position="attributes">
                 <attribute name="edit">0</attribute>
             </xpath>
             <xpath expr="//page[@name='order_lines']/field/form/div[@name='invoice_lines']" position="attributes">
@@ -140,7 +140,7 @@
             </field>
 
 
-            <xpath expr="//page[@name='order_lines']/field/tree/field[@name='product_uom_qty']" position="before">
+            <xpath expr="//page[@name='order_lines']/field/list/field[@name='product_uom_qty']" position="before">
                 <field name="is_charge_id"       optional="hide" widget="many2one_clickable"/>
                 <field name="is_longueur"        optional="hide"/>
                 <field name="is_surface"         optional="hide"/>
@@ -151,7 +151,7 @@
             </xpath>
 
 
-            <xpath expr="//page[@name='order_lines']/field/tree/field[@name='product_uom_qty']" position="after">
+            <xpath expr="//page[@name='order_lines']/field/list/field[@name='product_uom_qty']" position="after">
                 <field name="is_bareme_valobat_id" optional="hide"/>
                 <field name="is_eco_contribution"  optional="show"/>
                 <field name="is_longueur_totale"   optional="show"/>
@@ -163,7 +163,7 @@
             <xpath expr="//page[@name='order_lines']" position="after">
                 <page string="Colis"  attrs="{'invisible': [('is_gestion_colisage', '=', False)]}">
                     <field name="is_colis_ids" nolabel="1">
-                        <tree editable="bottom">
+                        <list editable="bottom">
                             <field name="sequence" widget="handle" />
                             <button 
                                 title="Voir le colis" 
@@ -178,7 +178,7 @@
                                 icon="fa-print" 
                             />
                             <field name="name"/>
-                        </tree>
+                        </list>
                     </field>
                     <div>
                         <button 
@@ -283,7 +283,7 @@
         <field name="inherit_id" ref="is_jurabotec20.is_view_order_form"/>
         <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='order_lines']/field/tree" position="attributes">
+            <xpath expr="//page[@name='order_lines']/field/list" position="attributes">
                 <attribute name="edit">1</attribute>
             </xpath>
         </field>
@@ -292,9 +292,9 @@
         <field name="name">Commandes en ligne (Hekipia)</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order</field>
-        <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+        <field name="view_mode">list,kanban,form,calendar,pivot,graph,activity</field>
         <field name="view_ids" eval="[(5, 0, 0),
-                (0, 0, {'view_mode': 'tree', 'view_id': ref('is_view_order_tree')}),
+                (0, 0, {'view_mode': 'list', 'view_id': ref('is_view_order_tree')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('is_view_order_hekipia_form')}),
             ]"
         />
@@ -332,7 +332,7 @@
         <field name="name">Calendrier des livraisons</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order</field>
-        <field name="view_mode">tree,form,calendar,kanban,pivot,graph,activity</field>
+        <field name="view_mode">list,form,calendar,kanban,pivot,graph,activity</field>
         <field name="view_id" ref=""/>
     </record>
 
@@ -384,7 +384,7 @@
         <field name="model">is.sale.order.colisage.composant</field>
         <field name="type">tree</field>
         <field name="arch" type="xml">
-            <tree editable="bottom">
+            <list editable="bottom">
                 <button 
                     title="Dupliquer" 
                     name="dupliquer_colis_action" 
@@ -407,7 +407,7 @@
                 <field name="date_order" optional="hide"/>
                 <field name="state"      optional="hide"/>
                 <field name="partner_id" optional="hide" widget="many2one_clickable"/>
-            </tree>
+            </list>
         </field>
     </record>
     <record model="ir.ui.view" id="is_sale_order_colisage_composant_form_view">
@@ -533,7 +533,7 @@
     <record id="is_sale_order_colisage_composant_action" model="ir.actions.act_window">
         <field name="name">Lignes des colis (Hekipia)</field>
         <field name="res_model">is.sale.order.colisage.composant</field>
-        <field name="view_mode">graph,pivot,tree,form</field>
+        <field name="view_mode">graph,pivot,list,form</field>
         <field name="domain">[('state', '=', 'sale')]</field>
     </record>
 

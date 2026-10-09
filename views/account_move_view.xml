@@ -24,7 +24,7 @@
                     type="object" 
                 />
             </field>
-            <xpath expr="//page/field[@name='invoice_line_ids']/tree" position="attributes">
+            <xpath expr="//page/field[@name='invoice_line_ids']/list" position="attributes">
                 <attribute name="limit">500</attribute>
             </xpath>
             <!-- Suppression de l'apercu PDF sur la droite -->
@@ -34,11 +34,11 @@
                     <group>
                         <group>
                             <field name="is_eco_contribution_ids" nolabel="1" colspan="2">
-                                <tree>
+                                <list>
                                     <field name="valobat_id"/>
                                     <field name="eco_contribution"/>
                                     <field name="currency_id" invisible="1"/>
-                                </tree>
+                                </list>
                             </field>    
                         </group>    
                     </group>

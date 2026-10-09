@@ -7,11 +7,11 @@
             <field name="name">is.calculateur.operation.tree</field>
             <field name="model">is.calculateur.operation</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="name"/>
                     <field name="prix_revient"/>
                     <field name="unite"/>
-                </tree>
+                </list>
             </field>
         </record>
         <record model="ir.ui.view" id="is_calculateur_operation_form_view">
@@ -44,7 +44,7 @@
             <field name="name">Opérations calculateur</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">is.calculateur.operation</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
 
 
@@ -53,11 +53,11 @@
             <field name="name">is.bois.tree</field>
             <field name="model">is.bois</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="sequence" widget="handle" />
                     <field name="name"/>
                     <field name="prix_revient"/>
-                </tree>
+                </list>
             </field>
         </record>
         <record model="ir.ui.view" id="is_bois_form_view">
@@ -88,7 +88,7 @@
             <field name="name">Bois</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">is.bois</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
 
 
@@ -98,10 +98,10 @@
             <field name="name">is.qualite.bois.tree</field>
             <field name="model">is.qualite.bois</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="name"/>
                     <field name="color" widget="color_picker"/>
-                </tree>
+                </list>
             </field>
         </record>
         <record model="ir.ui.view" id="is_qualite_bois_form_view">
@@ -131,7 +131,7 @@
             <field name="name">Profil</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">is.qualite.bois</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
 
 
@@ -214,14 +214,14 @@
                             </group>
                         </group>
                         <field name="is_operation_ids" nolabel="1">
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="sequence" widget="handle" />
                                 <field name="product_id" invisible="1"/>
                                 <field name="operation_id"/>
                                 <field name="prix_revient"/>
                                 <field name="unite"/>
                                 <field name="montant" sum="Total"/>
-                            </tree>
+                            </list>
                         </field>
                         <group>
                             <field name="is_prix_revient_bois"/>
@@ -362,12 +362,12 @@
             <field name="name">is_product_product_tablette_tree</field>
             <field name="model">product.product</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="name"/>
                     <field name="default_code"/>
                     <field name="product_template_variant_value_ids" widget="many2many_tags"/>
                     <field name="qty_available"/>
-                </tree>
+                </list>
             </field>
         </record>
         <record id="is_product_product_tablette_kanban" model="ir.ui.view">
@@ -435,14 +435,14 @@
             <field name="name">is.product.template.calculateur.operation.tree</field>
             <field name="model">is.product.template.calculateur.operation</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="product_id" widget="many2one_clickable"/>
                     <field name="sequence"/>
                     <field name="operation_id"/>
                     <field name="prix_revient"/>
                     <field name="unite"/>
                     <field name="montant"/>
-                </tree>
+                </list>
             </field>
         </record>
         <record model="ir.ui.view" id="is_product_template_calculateur_operation_form_view">
@@ -477,7 +477,7 @@
             <field name="name">Lignes des opérations du calculateur</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">is.product.template.calculateur.operation</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
 
 
@@ -486,12 +486,12 @@
             <field name="name">is.bareme.valobat.tree</field>
             <field name="model">is.bareme.valobat</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="name"/>
                     <field name="designation"/>
                     <field name="prix"/>
                     <field name="unite"/>
-                </tree>
+                </list>
             </field>
         </record>
         <record model="ir.ui.view" id="is_bareme_valobat_form_view">
@@ -525,7 +525,7 @@
             <field name="name">Barème Valobat</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">is.bareme.valobat</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
 
 

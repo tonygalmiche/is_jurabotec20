@@ -32,11 +32,11 @@
                 <field name="is_volume_total"/>
                 <field name="is_detail_charge"/>
             </xpath>
-            <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='description_picking']" position="after">
+            <xpath expr="//field[@name='move_ids_without_package']/list/field[@name='description_picking']" position="after">
                 <field name="is_description_cde" optional="show"/>
                 <field name="is_lot_id"          optional="hide" widget="many2one_clickable"/>
             </xpath>
-            <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='lot_ids']" position="attributes">
+            <xpath expr="//field[@name='move_ids_without_package']/list/field[@name='lot_ids']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
         </field>
@@ -190,12 +190,12 @@
         <field name="name">is.creation.charge.tree</field>
         <field name="model">is.creation.charge</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="product_id"/>
                 <field name="quantity"/>
                 <field name="destination_id"/>
                 <field name="lot_id"/>
-            </tree>
+            </list>
         </field>
     </record>
     <record model="ir.ui.view" id="is_creation_charge_form_view">
@@ -240,7 +240,7 @@
         <field name="name">Bois</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">is.creation.charge</field>
-        <field name="view_mode">form,tree</field>
+        <field name="view_mode">form,list</field>
     </record>
 
 

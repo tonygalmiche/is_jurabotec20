@@ -14,14 +14,14 @@
             <field name="name">is.contrat.fournisseur.tree</field>
             <field name="model">is.contrat.fournisseur</field>
             <field name="arch" type="xml">
-                <tree decoration-muted="state=='solde'">
+                <list decoration-muted="state=='solde'">
                     <field name="name"/>
                     <field name="contrat_fournisseur"/>
                     <field name="partner_id"/>
                     <field name="date_creation"/>
                     <field name="state"/>
                     <field name="montant" sum="Total"/>
-                </tree>
+                </list>
             </field>
         </record>
         <record model="ir.ui.view" id="is_contrat_fournisseur_form_view">
@@ -45,14 +45,14 @@
                     </group>
 
                     <field name="ligne_ids">
-                        <tree editable="bottom">
+                        <list editable="bottom">
                             <field name="product_id"/>
                             <field name="unite"/>
                             <field name="qt_prevue"    sum="Total"/>
                             <field name="qt_commandee" sum="Total"/>
                             <field name="prix_achat"/>
                             <field name="montant" sum="Total"/>
-                        </tree>
+                        </list>
                     </field>
                     <group>
                         <field name="commentaire"/>
@@ -78,7 +78,7 @@
             <field name="name">Contrats fournisseurs</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">is.contrat.fournisseur</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
 
         <!-- purchase.order -->
@@ -90,7 +90,7 @@
                 <field name="partner_ref" position="after">
                     <field name="is_contrat_id" domain="[('partner_id','=',partner_id),('state', '=', 'en_cours')]"/>
                 </field>
-                <xpath expr="//page[@name='products']/field/tree/field[@name='product_id']" position="attributes">
+                <xpath expr="//page[@name='products']/field/list/field[@name='product_id']" position="attributes">
                     <attribute name="context">
                         {
                             'partner_id':parent.partner_id, 
@@ -101,15 +101,15 @@
                         }
                     </attribute>
                 </xpath>
-                <xpath expr="//page[@name='products']/field/tree/field[@name='name']" position="after">
+                <xpath expr="//page[@name='products']/field/list/field[@name='name']" position="after">
                     <field name="is_surface"     optional="hide"/>
                     <field name="is_volume"      optional="hide"/>
                 </xpath>
-                <xpath expr="//page[@name='products']/field/tree/field[@name='product_qty']" position="after">
+                <xpath expr="//page[@name='products']/field/list/field[@name='product_qty']" position="after">
                     <field name="is_surface_totale" sum="Total" optional="hide"/>
                     <field name="is_volume_total"   sum="Total" optional="hide"/>
                 </xpath>
-                <xpath expr="//page[@name='products']/field/tree/field[@name='price_tax']" position="after">
+                <xpath expr="//page[@name='products']/field/list/field[@name='price_tax']" position="after">
                     <field name="is_ligne_contrat_id" optional="hide"/>
                     <field name="is_qt_contrat"       optional="hide"/>
                     <field name="is_prix_contrat"     optional="hide"/>
