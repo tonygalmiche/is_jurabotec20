@@ -279,7 +279,6 @@ class sale_order(models.Model):
         for obj in self:
             volume = 0
             for line in obj.order_line:
-                self.env.context = self.with_context(noonchange=False).env.context
                 line._onchange_product_uom_qty()
                 volume+=line.is_volume_total
             obj.is_volume_total = volume
@@ -637,6 +636,7 @@ class sale_order_line(models.Model):
     is_bareme_valobat_id = fields.Many2one(related='product_id.is_bareme_valobat_id')
     is_eco_contribution  = fields.Monetary("Eco contribution", compute='_compute_is_eco_contribution', store=True, readonly=True, currency_field='currency_id')
     is_charge_id         = fields.Many2one('stock.lot', string="Charge", readonly=True, copy=False)
+    is_onchange_origine  = fields.Char(store=False, help="Champ modifié par l'utilisateur, pour ne pas enchaîner les onchange des quantités (voir _onchange_autorise)")
 
 
     @api.depends('product_id', 'product_uom_qty')
@@ -732,11 +732,35 @@ class sale_order_line(models.Model):
         return longueur, largeur, epaisseur
 
 
+    def _get_type_unite(self):
+        """Type de l'unité de la ligne (les catégories d'unités ont été supprimées en v19) :
+        recherche de l'unité standard qui a la même unité de référence"""
+        for xmlid, type_unite in [
+            ('uom.product_uom_unit'        , 'Unité'),
+            ('uom.product_uom_meter'       , 'Longueur/distance'),
+            ('uom.product_uom_square_meter', 'Surface'),
+            ('uom.product_uom_cubic_meter' , 'Volume'),
+        ]:
+            uom = self.env.ref(xmlid, raise_if_not_found=False)
+            if uom and self.product_uom_id and self.product_uom_id._has_common_reference(uom):
+                return type_unite
+        return False
+
+
+    def _onchange_autorise(self, field_name):
+        """En v20, les onchange des champs modifiés par un onchange sont relancés : seul celui du champ
+        modifié par l'utilisateur doit recalculer les autres quantités (remplace le contexte noonchange)"""
+        if self.is_onchange_origine and self.is_onchange_origine != field_name:
+            return False
+        self.is_onchange_origine = field_name
+        return True
+
+
     @api.onchange('product_uom_qty')
     def _onchange_product_uom_qty(self):
-        if not self.env.context.get("noonchange"): 
+        if self._onchange_autorise('product_uom_qty'):
             longueur, largeur, epaisseur = self._get_dimensions()
-            unite = self.product_uom.category_id.name
+            unite = self._get_type_unite()
             surface  = volume   = 0
             if unite=='Unité':
                 longueur = self.product_uom_qty * self.is_longueur
@@ -760,15 +784,14 @@ class sale_order_line(models.Model):
             self.is_longueur_totale = longueur
             self.is_surface_totale  = surface
             self.is_volume_total    = volume
-            self.env.context = self.with_context(noonchange=True).env.context
 
 
     @api.onchange('is_longueur_totale')
     def _onchange_is_longueur_totale(self):
-        if not self.env.context.get("noonchange"): 
+        if self._onchange_autorise('is_longueur_totale'):
             qty = surface = volume = 0
             longueur, largeur, epaisseur = self._get_dimensions()
-            unite = self.product_uom.category_id.name
+            unite = self._get_type_unite()
             if unite=='Unité':
                 if longueur>0:
                     qty = self.is_longueur_totale/longueur
@@ -783,14 +806,13 @@ class sale_order_line(models.Model):
             self.product_uom_qty   = qty
             self.is_surface_totale = surface
             self.is_volume_total   = volume
-            self.env.context = self.with_context(noonchange=True).env.context
 
 
     @api.onchange('is_surface_totale')
     def _onchange_is_surface_totale(self):
-        if not self.env.context.get("noonchange"): 
+        if self._onchange_autorise('is_surface_totale'):
             longueur, largeur, epaisseur = self._get_dimensions()
-            unite = self.product_uom.category_id.name
+            unite = self._get_type_unite()
             qty = 0
             if unite=='Unité':
                 if self.is_surface>0:
@@ -810,14 +832,13 @@ class sale_order_line(models.Model):
             self.product_uom_qty    = qty
             self.is_longueur_totale = longueur_totale
             self.is_volume_total    = volume
-            self.env.context = self.with_context(noonchange=True).env.context
 
 
     @api.onchange('is_volume_total')
     def _onchange_is_volume_total(self):
-        if not self.env.context.get("noonchange"): 
+        if self._onchange_autorise('is_volume_total'):
             longueur, largeur, epaisseur = self._get_dimensions()
-            unite = self.product_uom.category_id.name
+            unite = self._get_type_unite()
             qty = longueur_totale = surface = 0
             if unite=='Unité':
                 if self.is_volume>0:
@@ -837,7 +858,6 @@ class sale_order_line(models.Model):
             self.product_uom_qty    = qty
             self.is_longueur_totale = longueur_totale
             self.is_surface_totale  = surface
-            self.env.context = self.with_context(noonchange=True).env.context
 
 
     def _compute_is_composants(self):
@@ -851,7 +871,7 @@ class sale_order_line(models.Model):
 
     @api.onchange('is_quantite_saisie','is_largeur_saisie', 'is_epaisseur_saisie','is_longueur_saisie')
     def _onchange_is_quantite_saisie(self):
-        unite = self.product_uom.category_id.name
+        unite = self._get_type_unite()
         if unite=='Unité':
             self.product_uom_qty = self.is_quantite_saisie
         if unite=='Volume':
