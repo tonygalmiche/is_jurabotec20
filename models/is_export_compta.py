@@ -63,8 +63,8 @@ class is_export_compta(models.Model):
                 sql="""
                     SELECT  
                         ai.invoice_date,
-                        aa.code, 
-                        ai.name piece, 
+                        aa.id account_id,
+                        ai.name piece,
                         rp.name libelle, 
                         ai.move_type, 
                         rp.is_code_comptable_client,
@@ -76,11 +76,15 @@ class is_export_compta(models.Model):
                                                inner join account_account aa   on aml.account_id=aa.id
                                                inner join res_partner rp       on ai.partner_id=rp.id
                     WHERE ai.id=%s
-                    GROUP BY ai.invoice_date, ai.id, ai.name, rp.id, rp.name, aa.code, ai.move_type, rp.is_code_comptable_client, ai.invoice_date_due
-                    ORDER BY ai.invoice_date, ai.id, ai.name, rp.id, rp.name, aa.code, ai.move_type, rp.is_code_comptable_client, ai.invoice_date_due
+                    GROUP BY ai.invoice_date, ai.id, ai.name, rp.id, rp.name, aa.id, ai.move_type, rp.is_code_comptable_client, ai.invoice_date_due
                 """
                 cr.execute(sql,[invoice.id])
-                for row in cr.dictfetchall():
+                rows = cr.dictfetchall()
+                # En v20, le code du compte n'est plus une colonne d'account_account (code_store par société) : lu par l'ORM
+                for row in rows:
+                    row["code"] = self.env['account.account'].browse(row["account_id"]).code
+                rows.sort(key=lambda row: row["code"] or '')
+                for row in rows:
                     invoice.is_export_compta_id = obj.id
                     compte=str(row["code"])
                     if obj.type_interface=='ventes' and compte=='411100':
