@@ -697,6 +697,8 @@ class sale_order_line(models.Model):
             line.price_unit = price
 
 
+    # Remplace volontairement (sans super) le _onchange_product_id ajouté par Odoo en v17 :
+    # il appelle _reset_price_unit(), qui écraserait le prix calculé par _compute_price_unit (m, m2, m3)
     @api.onchange('product_id','product_template_id', 'product_uom_qty')
     def _onchange_product_id(self):
         price = 0
