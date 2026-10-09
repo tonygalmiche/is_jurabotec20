@@ -142,8 +142,7 @@ class IsSaleOrderColisageComposant(models.Model):
 
 
     @api.model
-    def _group_expand_colis_id(self, stages, domain, order):
-        colis = self.env['is.sale.order.colis'].search([])
+    def _group_expand_colis_id(self, stages, domain):
         colis = stages.order_id.is_colis_ids
         return colis
 

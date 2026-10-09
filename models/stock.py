@@ -224,7 +224,7 @@ class StockLot(models.Model):
     is_charge_associee_a_commande = fields.Selection([
         ('non', 'Non associée'), 
         ('oui', 'Associée'),
-    ], string='Charge associée à une commande', group_expand='_group_expand_states', default='non')
+    ], string='Charge associée à une commande', group_expand=True, default='non')
     is_pefc = fields.Boolean('PEFC', default=True)
 
 
@@ -237,10 +237,6 @@ class StockLot(models.Model):
             vals['is_sale_order_id'] = order_id
         res = super(StockLot, self).write(vals)
         return res
-
-
-    def _group_expand_states(self, states, domain, order):
-        return [key for key, val in type(self).is_charge_associee_a_commande.selection]
 
 
     @api.depends('purchase_order_ids')
