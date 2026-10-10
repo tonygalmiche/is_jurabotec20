@@ -49,7 +49,7 @@
                     </div>
                 </xpath>
                 <xpath expr="//field[@name='function']" position="before">
-                    <field name="is_civilite" invisible="is_company" options="{'no_open': True}"/>
+                    <field name="is_civilite" options="{'no_open': True}"/>
                 </xpath>
                 <xpath expr="//field[@name='child_ids']/form//field[@name='phone']/.." position="after">
                     <label for="mobile" class="d-md-none"/>
@@ -59,8 +59,8 @@
                     </div>
                 </xpath>
                 <xpath expr="//field[@name='child_ids']/form//h3" position="before">
-                    <label for="is_civilite" class="d-md-none" invisible="type != 'contact'"/>
-                    <div class="w-md-50" invisible="type != 'contact'">
+                    <label for="is_civilite" class="d-md-none"/>
+                    <div class="w-md-50">
                         <field name="is_civilite" placeholder="Civilité" options="{'no_open': True}"/>
                     </div>
                 </xpath>
