@@ -46,6 +46,7 @@
     <menuitem id="is_qualite_bois_menu"          parent="is_ventes_tables_menu" name="Profil"                    action="is_qualite_bois_action"          sequence="20"/>
     <menuitem id="is_calculateur_operation_menu" parent="is_ventes_tables_menu" name="Opérations du calculateur" action="is_calculateur_operation_action" sequence="30"/>
     <menuitem id="is_bareme_valobat_menu"        parent="is_ventes_tables_menu" name="Barème Valobat"            action="is_bareme_valobat_action"        sequence="40"/>
+    <menuitem id="is_res_partner_title_menu"     parent="is_ventes_tables_menu" name="Civilités"                 action="is_res_partner_title_action"     sequence="50"/>
 
 
     <!-- Achats -->

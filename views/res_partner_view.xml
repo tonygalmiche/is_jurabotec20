@@ -35,17 +35,68 @@
 
 
         </record>
+        <!-- Mobile et civilité : supprimés d'Odoo en v20, remis dans le module -->
+        <record id="is_view_partner_form" model="ir.ui.view">
+            <field name="name">is_view_partner_form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='phone']/.." position="after">
+                    <label for="mobile" class="d-md-none"/>
+                    <div class="d-flex align-items-baseline w-md-50 gap-2">
+                        <i class="oi oi-filled d-none d-md-inline-flex" data-icon="smartphone" title="Mobile"/>
+                        <field name="mobile" widget="phone" placeholder="Mobile"/>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='function']" position="before">
+                    <field name="title" invisible="is_company" options="{'no_open': True}"/>
+                </xpath>
+                <xpath expr="//field[@name='child_ids']/form//field[@name='phone']/.." position="after">
+                    <label for="mobile" class="d-md-none"/>
+                    <div class="d-flex align-items-baseline w-md-50 gap-2">
+                        <i class="oi oi-filled d-none d-md-block" data-icon="smartphone" title="Mobile"/>
+                        <field name="mobile" widget="phone" placeholder="Mobile"/>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='child_ids']/form//h3" position="before">
+                    <label for="title" class="d-md-none" invisible="type != 'contact'"/>
+                    <div class="w-md-50" invisible="type != 'contact'">
+                        <field name="title" placeholder="Civilité" options="{'no_open': True}"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
         <record id="is_view_partner_tree" model="ir.ui.view">
             <field name="name">is_view_partner_tree</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_tree" />
             <field name="arch" type="xml">
                 <!-- Plus de colonne active en v20 : en fin de liste -->
+                <field name="phone" position="after">
+                    <field name="mobile" class="o_force_ltr" optional="show"/>
+                </field>
                 <list position="inside">
                     <field name="is_code_comptable_client"      optional="hide"/>
                     <field name="is_code_comptable_fournisseur" optional="hide"/>
                 </list>
             </field>
+        </record>
+
+        <!-- Civilités -->
+        <record id="is_res_partner_title_tree_view" model="ir.ui.view">
+            <field name="name">is_res_partner_title_tree_view</field>
+            <field name="model">res.partner.title</field>
+            <field name="arch" type="xml">
+                <list editable="bottom">
+                    <field name="name" />
+                    <field name="shortcut" />
+                </list>
+            </field>
+        </record>
+        <record id="is_res_partner_title_action" model="ir.actions.act_window">
+            <field name="name">Civilités</field>
+            <field name="res_model">res.partner.title</field>
+            <field name="view_mode">list</field>
         </record>
     </data>
 </odoo>
