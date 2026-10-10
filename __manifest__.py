@@ -20,6 +20,7 @@ Reprise d'is_jurabotec (Odoo 16).
         "account",
         "mrp",              # mrp.bom
         "l10n_fr_account",  # siret sur res.partner (rapport facture)
+        "is_theme_entreprise",
     ],
     'data' : [
         "security/ir.access.csv",
