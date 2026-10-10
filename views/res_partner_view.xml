@@ -49,7 +49,7 @@
                     </div>
                 </xpath>
                 <xpath expr="//field[@name='function']" position="before">
-                    <field name="title" invisible="is_company" options="{'no_open': True}"/>
+                    <field name="is_civilite" invisible="is_company" options="{'no_open': True}"/>
                 </xpath>
                 <xpath expr="//field[@name='child_ids']/form//field[@name='phone']/.." position="after">
                     <label for="mobile" class="d-md-none"/>
@@ -59,9 +59,9 @@
                     </div>
                 </xpath>
                 <xpath expr="//field[@name='child_ids']/form//h3" position="before">
-                    <label for="title" class="d-md-none" invisible="type != 'contact'"/>
+                    <label for="is_civilite" class="d-md-none" invisible="type != 'contact'"/>
                     <div class="w-md-50" invisible="type != 'contact'">
-                        <field name="title" placeholder="Civilité" options="{'no_open': True}"/>
+                        <field name="is_civilite" placeholder="Civilité" options="{'no_open': True}"/>
                     </div>
                 </xpath>
             </field>
@@ -83,9 +83,9 @@
         </record>
 
         <!-- Civilités -->
-        <record id="is_res_partner_title_tree_view" model="ir.ui.view">
-            <field name="name">is_res_partner_title_tree_view</field>
-            <field name="model">res.partner.title</field>
+        <record id="is_civilite_tree_view" model="ir.ui.view">
+            <field name="name">is_civilite_tree_view</field>
+            <field name="model">is.civilite</field>
             <field name="arch" type="xml">
                 <list editable="bottom">
                     <field name="name" />
@@ -93,9 +93,9 @@
                 </list>
             </field>
         </record>
-        <record id="is_res_partner_title_action" model="ir.actions.act_window">
+        <record id="is_civilite_action" model="ir.actions.act_window">
             <field name="name">Civilités</field>
-            <field name="res_model">res.partner.title</field>
+            <field name="res_model">is.civilite</field>
             <field name="view_mode">list</field>
         </record>
     </data>

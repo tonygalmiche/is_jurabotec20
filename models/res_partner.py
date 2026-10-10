@@ -2,9 +2,9 @@
 from odoo import api, fields, models, _
 
 
-class ResPartnerTitle(models.Model):
-    # Civilité : supprimée d'Odoo en v20, recréée à l'identique de la v16 (même modèle, même table)
-    _name='res.partner.title'
+class IsCivilite(models.Model):
+    # Civilité : supprimée d'Odoo en v20 (res.partner.title), recréée dans le module
+    _name='is.civilite'
     _description = "Civilité"
     _order='name'
 
@@ -15,8 +15,8 @@ class ResPartnerTitle(models.Model):
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    mobile = fields.Char('Mobile')                                # Supprimé d'Odoo en v20
-    title  = fields.Many2one('res.partner.title', 'Civilité')    # Supprimé d'Odoo en v20
+    mobile      = fields.Char('Mobile')                       # Supprimé d'Odoo en v20
+    is_civilite = fields.Many2one('is.civilite', 'Civilité')  # title supprimé d'Odoo en v20
 
     is_code_comptable_fournisseur = fields.Char("Code comptable fournisseur")
     is_code_comptable_client      = fields.Char("Code comptable client")
