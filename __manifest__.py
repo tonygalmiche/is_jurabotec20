@@ -51,6 +51,8 @@ Reprise d'is_jurabotec (Odoo 16).
         # "report/sale_report_templates.xml",
         # "report/report_invoice.xml",
         "report/report.xml",
+
+        "data/ir_module_module.xml",
     ],
     'installable': True,
     'application': True,

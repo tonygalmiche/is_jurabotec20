@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Modules à désinstaller, à chaque installation ou mise à jour d'is_jurabotec20 : marqués « à désinstaller »
+         (button_uninstall), Odoo les désinstalle à la fin du chargement (étape 5 de odoo/modules/loading.py).
+         Sans effet si le module est déjà désinstallé (recherche vide).
+         partner_autocomplete (installé automatiquement) : plante en passant d'un partenaire à l'autre
+         (« this.inputRef() is null » : une seule référence partagée par les champs des identifiants SIRET, SIREN...) -->
+    <function model="ir.module.module" name="button_uninstall">
+        <value model="ir.module.module" search="[('name', '=', 'partner_autocomplete'), ('state', 'in', ('installed', 'to upgrade'))]"/>
+    </function>
+</odoo>
