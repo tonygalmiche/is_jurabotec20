@@ -390,6 +390,7 @@ class IsDeplacementCharge(models.Model):
                 "location_id"     : context["origine_id"],
                 "location_dest_id": context["destination_id"],
                 "product_uom_qty" : obj.quantity,
+                "picked"          : True, # sinon picked=False (défaut) remet la ligne à « non fait » : mouvement non validé
                 "product_id"      : context["product_id"],
                 "description_picking": "Tablette",
             }
@@ -459,6 +460,7 @@ class IsCreationCharge(models.Model):
                 "location_id"     : location_id,
                 "location_dest_id": location_dest_id,
                 "product_uom_qty" : obj.quantity,
+                "picked"          : True, # sinon picked=False (défaut) remet la ligne à « non fait » : mouvement non validé
                 "product_id"      : obj.product_id.id,
                 "description_picking": "Création charge %s"%(lot.name),
                 "move_line_ids"   : [[0,False,line_vals]],

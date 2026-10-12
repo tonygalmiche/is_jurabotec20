@@ -59,10 +59,7 @@ Reprise d'is_jurabotec (Odoo 16).
    'assets': {
         'web.assets_backend': [
             'is_jurabotec20/static/src/scss/styles.scss',
-
-            # Migration v20 : composants OWL désactivés en attendant leur migration
-            # 'is_jurabotec20/static/src/script.js',
-            # 'is_jurabotec20/static/src/templates.xml',
+            'is_jurabotec20/static/src/fields/**/*',
         ],
 
         'web.report_assets_common': [

@@ -33,7 +33,7 @@
                                         <field name="inventory_quantity" widget="plus_moins10"/>
                                         <br />
                                         <div
-                                            style="background-color:#e5e7e9;margin-top:0.5em;margin-bottom:0.5em"
+                                            style="margin-top:0.5em;margin-bottom:0.5em"
                                             invisible="not inventory_quantity_set"
                                         >
                                             Différence : <field name="inventory_diff_quantity"/>

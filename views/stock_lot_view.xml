@@ -122,17 +122,17 @@
                 <field name="name"/>
                 <templates>
                     <t t-name="card">
-                        <div class="o_kanban_record_top mb-0">
-                            <div class="o_kanban_record_headings">
-                                <strong class="o_kanban_record_title">
-                                    <div style="font-size:24pt;text-align:center">
-                                        <field name="name"/><br />
-                                        <field name="product_id"/><br />
-                                        <field name="is_qt_lot_emplacement"/><br />
-                                        <button name="deplacer_cette_charge_action" string="Déplacer cette charge" type="object" class="btn btn-primary"/>
-                                    </div>
-                                </strong>
+                        <div style="font-size:11pt;text-align:center">
+                            <div class="fw-bold" style="background-color:#e5e7e9;font-size:12pt">
+                                <field name="name"/>
                             </div>
+                            <div class="my-1">
+                                <field name="product_id"/>
+                            </div>
+                            <div class="fw-bold mb-2" style="background-color:#ebf5fb">
+                                <field name="is_qt_lot_emplacement"/>
+                            </div>
+                            <button name="deplacer_cette_charge_action" string="Déplacer cette charge" type="object" class="btn btn-primary btn-sm"/>
                         </div>
                     </t>
                 </templates>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="is_jurabotec20.PlusMoins">
+        <button class="btn btn-primary" t-on-click="this.decrement">-</button>
+        <span style="margin-left:10px;margin-right:10px"><t t-out="this.value"/></span>
+        <button class="btn btn-primary" t-on-click="this.increment">+</button>
+    </t>
+
+</templates>
