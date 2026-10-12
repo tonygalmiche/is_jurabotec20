@@ -45,8 +45,9 @@
                     confirm="ATTENTION : Cela va supprimer les lignes de la commandes et les re-créer à partir des charges!"
                 />
             </button>
+            <!-- Lignes ouvertes dans un formulaire : en v20, une liste editable n'ouvre plus le formulaire (edit="0" de la v16 bloquait la ligne) -->
             <xpath expr="//page[@name='order_lines']/field/list" position="attributes">
-                <attribute name="edit">0</attribute>
+                <attribute name="editable"/>
             </xpath>
             <!-- Factures de la ligne : déjà invisibles en v20 (plus de bloc div invoice_lines) -->
             <xpath expr="//page[@name='order_lines']/field/form/group/group[1]" position="attributes">
@@ -285,7 +286,7 @@
         <field name="mode">primary</field>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='order_lines']/field/list" position="attributes">
-                <attribute name="edit">1</attribute>
+                <attribute name="editable">bottom</attribute>
             </xpath>
         </field>
     </record>
