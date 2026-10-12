@@ -5,12 +5,11 @@ from odoo.exceptions import UserError  # type: ignore
 
 class IsScanDeplacementCharge(models.Model):
     _name = 'is.scan.deplacement.charge'
+    _inherit = ['is.barcode.events.mixin']
     _description = 'Déplacement de charge par scan'
     _order = 'id desc'
     _rec_name = "id"
 
-    barcode_input = fields.Char(string='Input utilisé par le widget pour récupérer les données du scan')
-    barcode_scan  = fields.Char(string='Résultat du scan')
     alert_message = fields.Char(string='Message alerte')
     alert_type    = fields.Selection([('success', 'Succès'), ('warning', 'Avertissement')], string='Type alerte')
     lot_id = fields.Many2one('stock.lot', 'Lot/Charge', readonly=True)
@@ -41,9 +40,8 @@ class IsScanDeplacementCharge(models.Model):
             else:
                 record.message_scan = ''
 
-    @api.onchange('barcode_scan')
-    def _onchange_barcode_scan(self):
-        barcode = self.barcode_scan
+    def on_barcode_scanned(self, barcode):
+        """Appelée comme un onchange par is.barcode.events.mixin avec le code scanné"""
         if not barcode:
             return
 
@@ -182,10 +180,6 @@ class IsScanDeplacementCharge(models.Model):
                 "domain": [("move_id.is_scan_deplacement_charge_id", "=", obj.id)],
                 "type": "ir.actions.act_window",
             }
-
-    @api.model
-    def on_barcode_scanned(self, barcode):
-        return {'barcode': barcode}
 
 
 class StockMove(models.Model):

@@ -21,6 +21,7 @@ Reprise d'is_jurabotec (Odoo 16).
         "mrp",              # mrp.bom
         "l10n_fr_account",  # siret sur res.partner (rapport facture)
         "is_theme_entreprise",
+        "is_barcode_widget",  # scan d'inventaire et de déplacement de charge
     ],
     'data' : [
         "security/ir.access.csv",

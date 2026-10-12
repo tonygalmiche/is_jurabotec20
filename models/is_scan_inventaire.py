@@ -7,12 +7,11 @@ import time
 
 class IsScanInventaire(models.Model):
     _name = 'is.scan.inventaire'
+    _inherit = ['is.barcode.events.mixin']
     _description = 'Inventaire par scan'
     _order = 'id desc'
     _rec_name = "id"
 
-    barcode_input = fields.Char(string='Input utilisé par le widget pour récupérer les données du scan')
-    barcode_scan  = fields.Char(string='Résultat du scan')
     ligne_ids = fields.One2many('is.scan.inventaire.ligne', 'scan_id', string='Lignes d\'inventaire')
     emplacement_dst_id = fields.Many2one('stock.location', 'Emplacement de destination')
     nb_lignes = fields.Integer('Nombre de lignes', compute='_compute_nb_lignes', store=True)
@@ -35,10 +34,8 @@ class IsScanInventaire(models.Model):
         for record in self:
             record.nb_lignes = len(record.ligne_ids)
 
-    @api.onchange('barcode_scan')
-    def _onchange_barcode_scan(self):
-        barcode = self.barcode_scan
-
+    def on_barcode_scanned(self, barcode):
+        """Appelée comme un onchange par is.barcode.events.mixin avec le code scanné"""
         if barcode:
             if barcode.startswith('E'):
                 # Ne modifier l'emplacement que si l'état est 'emplacement'
@@ -230,13 +227,6 @@ class IsScanInventaire(models.Model):
             obj.state = 'termine'
             
         return True
- 
-    @api.model
-    def on_barcode_scanned(self, barcode):
-        """
-            Méthode appelée par le widget OWL après le scan pour retourner les valeurs
-        """
-        return {'barcode': barcode}
 
 
 # Extension du modèle stock.move pour ajouter la relation inverse
@@ -273,12 +263,13 @@ class IsScanInventaireLigne(models.Model):
             else:
                 ligne.emplacement_ids = [(5, 0, 0)]  # Vider la relation
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         # Définir l'heure française uniquement lors de la création si elle n'est pas déjà fournie
-        if 'heure_ajout' not in vals or not vals['heure_ajout']:
-            vals['heure_ajout'] = IsScanInventaire._get_heure_francaise()
-        return super().create(vals)
+        for vals in vals_list:
+            if 'heure_ajout' not in vals or not vals['heure_ajout']:
+                vals['heure_ajout'] = IsScanInventaire._get_heure_francaise()
+        return super().create(vals_list)
 
     @api.onchange('lot_id')
     def _onchange_lot_id(self):

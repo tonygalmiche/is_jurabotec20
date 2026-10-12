@@ -52,12 +52,11 @@
                             }
                         </style>
                         <group>
-                            <field 
-                                name="barcode_input" 
-                                widget="barcode_scan_widget" nolabel="1" colspan="2"
+                            <field
+                                name="is_barcode_scanned"
+                                widget="is_barcode_handler" options="{'afficher_etat': true}" nolabel="1" colspan="2"
                                 invisible="state == 'termine'"
                             />
-                            <field name="barcode_scan" invisible="1"/>
                             <field name="emplacement_dst_id"  force_save="1" readonly="state != 'emplacement'"/>
                             <field name="nb_lignes" invisible="state == 'emplacement'"/>
                         </group>
