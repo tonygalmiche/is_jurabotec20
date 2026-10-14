@@ -47,10 +47,8 @@ Reprise d'is_jurabotec (Odoo 16).
         "report/is_stock_location_report.xml",
         "report/report_deliveryslip.xml",
         "report/report_stockpicking_operations.xml",
-
-        # Migration v20 : rapports désactivés en attendant leur migration
-        # "report/sale_report_templates.xml",
-        # "report/report_invoice.xml",
+        "report/sale_report_templates.xml",
+        "report/report_invoice.xml",
         "report/report.xml",
 
         "data/ir_module_module.xml",

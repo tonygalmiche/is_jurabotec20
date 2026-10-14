@@ -28,6 +28,12 @@
             margin-top:0.2em;
             margin-bottom:0;
         }
+        /* Migration v20 : marge sous les titres imposée par l'agencement standard (.o_report_layout_standard h2 :
+           margin-bottom .5rem !important) annulée, sinon les CGV ne tiennent plus sur une page (en-tête du format A4
+           plus haut en v20 : marge du haut de 52 mm au lieu de 40 mm) */
+        .o_report_layout_standard .cgv h2{
+            margin-bottom:0 !important;
+        }
     </style>
 
 

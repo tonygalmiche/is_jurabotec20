@@ -1,191 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Migration v20 : la page du devis v16 (remplacée en entier) est abandonnée au profit du devis standard,
+         complété ici avec les mêmes ajouts et les mêmes éléments masqués qu'en v16 -->
     <template id="is_report_saleorder_document" inherit_id="sale.report_saleorder_document">
-        <div class="page" position="replace">
-            <div class="page jurabotec">
-                <style>
-                    h1{
-                        font-size:16pt;
-                        font-weight: bold;;
-                    }
-                </style>
-                <div class="oe_structure"/>
+        <!-- Titre de la v16 -->
+        <xpath expr="//t[@t-set='layout_document_title']" position="replace">
+            <t t-set="layout_document_title">
+                <span t-if="is_proforma">Facture Proforma n° </span>
+                <span t-elif="doc.state in ['draft','sent']">Devis n° </span>
+                <span t-else="">Confirmation de commande n° </span>
+                <span t-field="doc.name"/>
+            </t>
+        </xpath>
 
-                <t t-if="env.context.get('proforma', False) or is_pro_forma">
-                    <h1>Facture Proforma n° <span t-field="doc.name"/></h1>
-                </t>
-                <t t-else="">
-                    <t t-if="doc.state in ['draft','sent']">
-                        <h1>Devis n° <span t-field="doc.name"/></h1>
-                    </t>
-                    <t t-else="">
-                        <h1>Confirmation de commande n° <span t-field="doc.name"/></h1>
-                    </t>
-                </t>
-                <table class="table table-sm o_main_table mt-4">
-                    <thead style="display: table-row-group">
-                        <tr>
-                            <th>Date commande</th>
-                            <th>Code client</th>
-                            <th>Affaire suivie par</th>
-                            <th>Délai</th>
-                            <th>Ref. Cde client</th>
-                        </tr>
-                    </thead>
-                    <tbody class="sale_tbody">
-                        <tr>
-                            <td class="text-center"><span t-out="doc.date_order" t-options='{"widget": "date"}'/></td>
-                            <td class="text-center"><span t-field="doc.client_order_ref"/></td>
-                            <td class="text-center"><span t-field="doc.user_id"/></td>
-                            <td class="text-center"><span t-field="doc.is_delai" t-options='{"widget": "date"}'/></td>
-                            <td class="text-center"><span t-field="doc.is_num_cde_client"/></td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- Styles du rapport (report.scss) -->
+        <xpath expr="//div[hasclass('page')]" position="attributes">
+            <attribute name="class" add="jurabotec" separator=" "/>
+        </xpath>
 
-                <t t-set="lines_to_report" t-value="doc._get_order_lines_to_report()"/>
-                <t t-set="display_discount" t-value="any(l.discount for l in lines_to_report)"/>
-
-                <t t-set="affiche_palette" t-value="0"/>
-                <t t-foreach="lines_to_report" t-as="line">
-                    <div></div>
-                    <t t-if="line.is_num_palette">
-                        <t t-set="affiche_palette" t-value="1"/>
-                    </t>
-                </t>
-
-                <table class="table table-sm o_main_table mt-4">
-                    <thead style="display: table-row-group">
-                        <tr>
-                            <th name="th_description"  class="text-start">Désignation</th>
-                            <th t-if="affiche_palette" class="text-center">N°Palette</th>
-                            <th name="th_quantity"     class="text-end">Quantité</th>
-                            <th name="th_priceunit"    class="text-end">P.U. HT</th>
-                            <th name="th_subtotal"     class="text-end">Montant HT</th>
-                        </tr>
-                    </thead>
-                    <tbody class="sale_tbody">
-    
-
-
-
-
-                        <t t-set="current_subtotal" t-value="0"/>
-    
-                        <t t-foreach="lines_to_report" t-as="line">
-    
-                            <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
-                            <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
-    
-                            <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
-                                <t t-if="not line.display_type">
-                                    <td name="td_name">
-                                        <span t-field="line.name"/>
-                                        <div t-if="line.is_detail_quantite"  t-field="line.is_detail_quantite"/>
-
-                                        
-                                        <div t-if="line.is_prix_tarif and line.is_unite_tarif and line.is_unite_tarif!='unite'">
-                                            Soit <span t-field="line.is_prix_tarif"/> € HT / <span t-field="line.is_unite_tarif"/>
-                                        </div>
-
-
-
-                                        <div t-if="doc.is_detail_composants" t-field="line.is_composants"/>
-
-                                        <div t-if="line.is_eco_contribution"><i>(Eco-contribution de <span t-field="line.is_eco_contribution"/>)</i></div>
-
-
-                                    </td>
-                                    <td class="text-center" t-if="affiche_palette">
-                                        <span t-field="line.is_num_palette"/>
-                                    </td>
-                                    <td name="td_quantity" class="text-end">
-                                        <span t-field="line.product_uom_qty"/>
-                                        <span t-field="line.product_uom"/>
-                                    </td>
-                                    <td name="td_priceunit" class="text-end">
-                                        <span t-field="line.price_unit"/>
-                                    </td>
-                                    <td t-if="display_discount" class="text-end" groups="product.group_discount_per_so_line">
-                                        <span t-field="line.discount"/>
-                                    </td>
-                                    <td t-if="not line.is_downpayment" name="td_subtotal" class="text-end o_price_total">
-                                        <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
-                                        <span t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
-                                    </td>
-                                </t>
-                                <t t-elif="line.display_type == 'line_section'">
-                                    <td name="td_section_line" colspan="99">
-                                        <span t-field="line.name"/>
-                                    </td>
-                                    <t t-set="current_section" t-value="line"/>
-                                    <t t-set="current_subtotal" t-value="0"/>
-                                </t>
-                                <t t-elif="line.display_type == 'line_note'">
-                                    <td name="td_note_line" colspan="99">
-                                        <span t-field="line.name"/>
-                                    </td>
-                                </t>
-                            </tr>
-    
-                            <t t-if="current_section and (line_last or doc.order_line[line_index+1].display_type == 'line_section') and not line.is_downpayment">
-                                <tr class="is-subtotal text-end">
-                                    <td name="td_section_subtotal" colspan="99">
-                                        <strong class="mr16">Sous-total : </strong>
-                                        <span
-                                            t-out="current_subtotal"
-                                            t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'
-                                        />
-                                    </td>
-                                </tr>
-                            </t>
-                        </t>
-                    </tbody>
-                </table>
-    
-                <div class="clearfix" name="so_total_summary">
-                    <div id="total" class="row" name="total">
-                        <div class="col-6">
-                            <t t-if="doc.is_volume_total>0">
-                                <i>Volume total : <span t-out="round(doc.is_volume_total,3)"/> m3</i>
-                            </t>
-
-                        </div>
-                        <div class="col-6">
-                            <table class="table table-sm">
-                                <t t-set="tax_totals" t-value="doc.tax_totals"/>
-                                <t t-call="account.document_tax_totals"/>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-    
-                <div t-if="doc.signature" class="mt-4 ml64 mr4" name="signature">
-                    <div class="offset-8">
-                        <strong>Signature</strong>
-                    </div>
-                    <div class="offset-8">
-                        <img t-att-src="image_data_uri(doc.signature)" style="max-height: 4cm; max-width: 8cm;"/>
-                    </div>
-                    <div class="offset-8 text-center">
-                        <p t-field="doc.signed_by"/>
-                    </div>
-                </div>
-    
-                <div>
-                    <p t-field="doc.note" name="order_note"/>
-                    <p t-if="not is_html_empty(doc.payment_term_id.note)">
-                        <span t-field="doc.payment_term_id.note"/>
-                    </p>
-                    <p t-if="doc.fiscal_position_id and not is_html_empty(doc.fiscal_position_id.sudo().note)"
-                        id="fiscal_position_remark">
-                        <strong>Fiscal Position Remark:</strong>
-                        <span t-field="doc.fiscal_position_id.sudo().note"/>
-                    </p>
-                </div>
+        <!-- Informations : libellé de la v16 pour la référence client ; masqués en v16 : expiration, incoterm, date de
+             livraison ; ajoutés : délai et n° de commande du client -->
+        <xpath expr="//div[@name='informations_reference']/strong" position="replace">
+            <strong>Code client</strong>
+        </xpath>
+        <xpath expr="//div[@name='expiration_date']" position="attributes">
+            <attribute name="t-if">False</attribute>
+        </xpath>
+        <xpath expr="//div[@t-if='doc.incoterm']" position="attributes">
+            <attribute name="t-if">False</attribute>
+        </xpath>
+        <xpath expr="//div[@name='delivery_date']" position="attributes">
+            <attribute name="t-if">False</attribute>
+        </xpath>
+        <xpath expr="//div[@id='informations']" position="inside">
+            <div t-if="doc.is_delai" class="col" name="is_delai">
+                <strong>Délai</strong>
+                <div t-field="doc.is_delai" t-options='{"widget": "date"}'/>
             </div>
-            <t t-call="is_jurabotec20.conditions_generales_de_vente" />
+            <div t-if="doc.is_num_cde_client" class="col" name="is_num_cde_client">
+                <strong>Ref. Cde client</strong>
+                <div t-field="doc.is_num_cde_client"/>
+            </div>
+        </xpath>
 
-        </div>
+        <!-- Colonne N° palette si une ligne en a un ; masquée en v16 : colonne TVA -->
+        <xpath expr="//t[@t-set='display_discount']" position="after">
+            <t t-set="affiche_palette" t-value="any(l.is_num_palette for l in lines_to_report)"/>
+        </xpath>
+        <xpath expr="//t[@t-set='display_taxes']" position="attributes">
+            <attribute name="t-value">False</attribute>
+        </xpath>
+        <!-- Titres des colonnes désignation et quantité (vides dans le devis standard v20) -->
+        <xpath expr="//th[@name='th_description']" position="inside">Désignation</xpath>
+        <xpath expr="//th[@name='th_quantity']" position="inside">Quantité</xpath>
+        <xpath expr="//th[@name='th_description']" position="after">
+            <th t-if="affiche_palette" name="th_is_num_palette" class="text-center">
+                <t t-set="colspan_count" t-value="colspan_count + 1"/>
+                N°Palette
+            </th>
+        </xpath>
+        <xpath expr="//td[@name='td_product_name']" position="after">
+            <td t-if="affiche_palette" name="td_is_num_palette" class="text-center">
+                <span t-field="line.is_num_palette"/>
+            </td>
+        </xpath>
+
+        <!-- Détail des lignes : quantités, prix au tarif, composants, éco-contribution -->
+        <xpath expr="//td[@name='td_product_name']//div[hasclass('o_product_name_cell')]" position="inside">
+            <div t-if="line.is_detail_quantite" t-field="line.is_detail_quantite"/>
+            <div t-if="line.is_prix_tarif and line.is_unite_tarif and line.is_unite_tarif!='unite'">
+                Soit <span t-field="line.is_prix_tarif"/> € HT / <span t-field="line.is_unite_tarif"/>
+            </div>
+            <div t-if="doc.is_detail_composants" t-field="line.is_composants"/>
+            <div t-if="line.is_eco_contribution"><i>(Eco-contribution de <span t-field="line.is_eco_contribution"/>)</i></div>
+        </xpath>
+
+        <!-- Volume total, à gauche des totaux -->
+        <xpath expr="//div[@id='total']/div" position="attributes">
+            <attribute name="class" add="col-6 ms-auto" separator=" "/>
+        </xpath>
+        <xpath expr="//div[@id='total']/div" position="before">
+            <div class="col-6">
+                <i t-if="doc.is_volume_total>0">Volume total : <span t-out="round(doc.is_volume_total,3)"/> m3</i>
+            </div>
+        </xpath>
+
+        <!-- Conditions générales de vente, après le devis -->
+        <xpath expr="//div[hasclass('page')]" position="after">
+            <t t-call="is_jurabotec20.conditions_generales_de_vente"/>
+        </xpath>
     </template>
 </odoo>

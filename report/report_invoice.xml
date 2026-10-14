@@ -37,9 +37,10 @@
                 </t>
             </xpath>
 
-            <!-- Volume total, à gauche des totaux -->
-            <xpath expr="//div[@id='right-elements']" position="before">
-                <div class="float-start">
+            <!-- Volume total, à gauche des totaux (avant les conditions de règlement, sans flottement : sinon les
+                 conditions s'écrivent à sa droite) -->
+            <xpath expr="//div[@id='payment_term']" position="before">
+                <div>
                     <i>Volume total : <span t-out="round(o.is_volume_total,3)"/> m3</i>
                 </div>
             </xpath>
