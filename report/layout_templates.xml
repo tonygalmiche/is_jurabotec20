@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- En-tête de l'agencement Light comme celui du standard v16 : logo, devise à droite, trait, adresse de la société -->
+    <template id="is_external_layout_standard" inherit_id="web.external_layout_standard">
+        <!-- Seul le tableau de l'en-tête est remplacé (et non le bloc header) : account_edi_ubl_cii
+             hérite aussi de ce tableau (//div[contains(@t-attf-class, 'header')]/table) -->
+        <xpath expr="//div[contains(@t-attf-class, ' header')]/table" position="replace">
+            <table class="table-borderless w-100">
+                <tr>
+                    <td class="align-top" style="width: 25%;">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 45px;" alt="Logo"/>
+                    </td>
+                    <td class="align-top text-end" style="padding-top: 22px;">
+                        <div t-field="company.report_header" class="o_company_tagline"/>
+                    </td>
+                </tr>
+                <tr t-if="company.logo or company.report_header">
+                    <td colspan="2" style="border-bottom: 1px solid black;"/>
+                </tr>
+                <tr>
+                    <td colspan="2" class="align-top">
+                        <span t-if="company.company_details" t-field="company.company_details"/>
+                        <span t-else="" t-field="company.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'/>
+                    </td>
+                </tr>
+            </table>
+        </xpath>
+
+        <!-- Devise dans l'en-tête, plus dans le pied de page -->
+        <xpath expr="//t[@t-call='web.external_layout_footer_content']" position="attributes">
+            <attribute name="is_tagline_footer">False</attribute>
+        </xpath>
+    </template>
+</odoo>
