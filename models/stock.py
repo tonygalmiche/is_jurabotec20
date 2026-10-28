@@ -71,7 +71,7 @@ class StockMove(models.Model):
     is_lot_id          = fields.Many2one("stock.lot", "Charge", compute="_compute_is_lot_id")
 
 
-    @api.onchange('move_line_ids.lot_id')
+    @api.depends('move_line_ids.lot_id')
     def _compute_is_lot_id(self):
         for obj in self:
             lot_id=False
