@@ -6,13 +6,6 @@
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//sheet[1]" position="inside">
-                <style>
-                    .o_form_view.o_xxl_form_view .o_form_sheet_bg > .o_form_sheet {
-                        max-width: 1800px;
-                    }
-                </style>
-            </xpath>
              <div name="journal_div" position="after">
                 <field name="is_export_compta_id"/>
                 <field name="is_volume_total"/>
@@ -27,8 +20,9 @@
             <xpath expr="//page/field[@name='invoice_line_ids']/list" position="attributes">
                 <attribute name="limit">500</attribute>
             </xpath>
-            <!-- Suppression de l'apercu PDF sur la droite -->
+            <!-- Suppression de l'apercu PDF sur la droite (désactivée le 06/11/2026 : aperçu réaffiché)
             <xpath expr="//div[hasclass('o_attachment_preview')]" position="replace"/>
+            -->
             <xpath expr="//page[@name='invoice_tab']" position="after">
                 <page string="Synthèse Valobat">
                     <group>
