@@ -27,6 +27,7 @@ Reprise d'is_jurabotec (Odoo 16).
         "sale_mrp",         # kits vendus : quantités livrées des lignes de vente
         "calendar",         # agenda (utilisé en v16)
         "contacts",         # menu Contacts (installé en v16)
+        "is_llm2odoo",      # recherche par IA (is_vllm2odoo en v16), à installer avant le script de reprise
     ],
     'data' : [
         "security/ir.access.csv",
