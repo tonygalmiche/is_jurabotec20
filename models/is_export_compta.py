@@ -87,16 +87,15 @@ class is_export_compta(models.Model):
                 for row in rows:
                     invoice.is_export_compta_id = obj.id
                     compte=str(row["code"])
-                    if obj.type_interface=='ventes' and compte=='411100':
-                        if obj.format_export=='inqom' and not row["is_code_comptable_client"]:
-                            compte='411100'
-                        else:
-                            compte=str(row["is_code_comptable_client"])
+                    compte_auxiliaire=False
+                    if compte.startswith('411'):
+                        compte_auxiliaire=row["is_code_comptable_client"]
                     vals={
                         'export_compta_id'  : obj.id,
                         'date_facture'      : row["invoice_date"],
                         'journal'           : journal,
                         'compte'            : compte,
+                        'compte_auxiliaire' : compte_auxiliaire,
                         'libelle'           : row["libelle"],
                         'debit'             : row["debit"],
                         'credit'            : row["credit"],
@@ -191,10 +190,19 @@ class is_export_compta(models.Model):
             ])
             for row in obj.ligne_ids:
                 compte=row.compte or ''
-                compte_auxiliaire=row.partner_id.is_code_comptable_client or ''
+                compte_auxiliaire=row.compte_auxiliaire or ''
                 date_ecriture=row.date_facture.strftime('%d%m%y') if row.date_facture else ''
-                credit=('%.2f' % row.credit).replace('.', ',')
-                debit=('%.2f' % row.debit).replace('.', ',')
+
+                if row.credit!=0:
+                    credit=('%.2f' % row.credit).replace('.', ',')
+                else:
+                    credit=''
+
+                if row.debit!=0:
+                    debit=('%.2f' % row.debit).replace('.', ',')
+                else:
+                    debit=''
+
                 writer.writerow([
                     row.journal or '',
                     row.piece or '',
@@ -218,6 +226,7 @@ class is_export_compta_ligne(models.Model):
     date_facture     = fields.Date("Date")
     journal          = fields.Char("Journal", default='VTE')
     compte           = fields.Char("N°Compte")
+    compte_auxiliaire = fields.Char("Compte auxiliaire")
     piece            = fields.Char("Pièce")
     libelle          = fields.Char("Libellé")
     debit            = fields.Float("Débit")

@@ -11,6 +11,7 @@
                     <field name="journal" />
                     <field name="partner_id" />
                     <field name="compte" />
+                    <field name="compte_auxiliaire" />
                     <field name="piece" />
                     <field name="libelle" />
                     <field name="debit"  sum="Total"/>
@@ -34,6 +35,7 @@
                                 <field name="journal" />
                                 <field name="partner_id" />
                                 <field name="compte" />
+                                <field name="compte_auxiliaire" />
                                 <field name="piece" />
                                 <field name="libelle" />
                                 <field name="debit" />
@@ -52,6 +54,7 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="compte"/>
+                    <field name="compte_auxiliaire"/>
                     <field name="partner_id" />
                     <field name="piece"/>
                     <field name="libelle"/>
