@@ -29,6 +29,7 @@ Reprise d'is_jurabotec (Odoo 16).
         "contacts",         # menu Contacts (installé en v16)
         "is_llm2odoo",      # recherche par IA (is_vllm2odoo en v16), à installer avant le script de reprise
         "utm",              # menu Tracker de liens, masqué (views/menu.xml)
+        "web_search_with_and",  # Maj + Entrée : recherche en ET (OCA, PR OCA/web#3788 en attente de fusion)
     ],
     'data' : [
         "security/res.groups.xml",
