@@ -21,22 +21,22 @@
                     </div>
                     <br/>
                     <h1>Bon de préparation <span t-field="o.name" class="mt0"/></h1>
-                    <div class="row mt48 mb32">
-                        <div t-if="o.origin" class="col-auto" name="div_origin">
+                    <div id="informations" class="report-wrapping-flexbox clearfix row mt48 mb32">
+                        <div t-if="o.origin" class="col col-3 mw-100 mb-2" name="div_origin">
                             <strong>Commande:</strong>
-                            <p t-field="o.origin"/>
+                            <div t-field="o.origin" class="m-0"/>
                         </div>
-                        <div t-if="o.sale_id.client_order_ref" class="col-auto">
+                        <div t-if="o.sale_id.client_order_ref" class="col col-3 mw-100 mb-2">
                             <strong>Référence client:</strong>
-                            <p t-field="o.sale_id.client_order_ref"/>
+                            <div t-field="o.sale_id.client_order_ref" class="m-0"/>
                         </div>
-                        <div class="col-auto" name="div_sched_date">
+                        <div class="col col-3 mw-100 mb-2" name="div_sched_date">
                             <strong>Date prévue:</strong>
-                            <p t-field="o.scheduled_date"/>
+                            <div t-field="o.scheduled_date" class="m-0"/>
                         </div>
-                        <div t-if="o.sale_id.is_delai" class="col-auto">
+                        <div t-if="o.sale_id.is_delai" class="col col-3 mw-100 mb-2">
                             <strong>Délai commande:</strong>
-                            <p t-field="o.sale_id.is_delai"/>
+                            <div t-field="o.sale_id.is_delai" class="m-0"/>
                         </div>
                     </div>
 

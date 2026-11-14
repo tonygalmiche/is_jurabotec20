@@ -6,27 +6,23 @@
                 <h2>
                     <span t-field="o.name"/>
                 </h2>
-                <div class="row mt32 mb32">
-                    <div t-if="o.origin" class="col-auto" name="div_origin">
+                <div id="informations" class="report-wrapping-flexbox clearfix row mt32 mb32">
+                    <div t-if="o.origin" class="col col-3 mw-100 mb-2" name="div_origin">
                         <strong>Commande:</strong>
-                        <p t-field="o.origin"/>
+                        <div t-field="o.origin" class="m-0"/>
                     </div>
-                    <div t-if="o.sale_id.client_order_ref" class="col-auto">
+                    <div t-if="o.sale_id.client_order_ref" class="col col-3 mw-100 mb-2">
                         <strong>Référence client:</strong>
-                        <p t-field="o.sale_id.client_order_ref"/>
+                        <div t-field="o.sale_id.client_order_ref" class="m-0"/>
                     </div>
-                    <div t-if="o.sale_id.is_num_cde_client" class="col-auto">
+                    <div t-if="o.sale_id.is_num_cde_client" class="col col-3 mw-100 mb-2">
                         <strong>N° commande client:</strong>
-                        <p t-field="o.sale_id.is_num_cde_client"/>
+                        <div t-field="o.sale_id.is_num_cde_client" class="m-0"/>
                     </div>
-                    <div t-if="o.state" class="col-auto" name="div_sched_date">
+                    <div t-if="o.state" class="col col-3 mw-100 mb-2" name="div_sched_date">
                         <strong>Date:</strong>
-                        <t t-if="o.state == 'done'">
-                            <p t-field="o.date_done"/>
-                        </t>
-                        <t t-if="o.state != 'done'">
-                            <p t-field="o.scheduled_date"/>
-                        </t>
+                        <div t-if="o.state == 'done'" t-field="o.date_done" class="m-0"/>
+                        <div t-else="" t-field="o.scheduled_date" class="m-0"/>
                     </div>
                 </div>
                 <table class="table table-sm" name="stock_move_table">
