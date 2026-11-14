@@ -23,6 +23,7 @@ Reprise d'is_jurabotec (Odoo 16).
         "is_interface_epuree",
         "is_theme_entreprise",
         "is_barcode_widget",  # scan d'inventaire et de déplacement de charge
+        "project",          # projets et tâches (utilisés en v16)
     ],
     'data' : [
         "security/ir.access.csv",
