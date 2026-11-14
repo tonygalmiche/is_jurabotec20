@@ -143,7 +143,6 @@
 
     <!-- Déplacer les menus non utilisés -->
     <menuitem id="is_archive_menu"           parent="base.menu_custom" sequence="900" name="Archives"/>
-    <menuitem id="mail.menu_root_discuss"    parent="is_archive_menu"  sequence="20"/>
     <menuitem id="sale.menu_sale_quotations" parent="is_archive_menu"  sequence="30"/>
 
 
