@@ -66,16 +66,18 @@
                 <table style="border:1px solid black; width:100%">
                     <thead>
                         <tr>
-                            <th style="border:1px solid black;text-align:left">Article</th>
+                            <th style="border:1px solid black;text-align:left">Référence</th>
                             <th style="border:1px solid black;text-align:left">Composant</th>
+                            <th style="border:1px solid black;text-align:left">Article</th>
                             <th style="border:1px solid black;text-align:right">Quantité</th>
                         </tr>
                     </thead>
                     <tbody>
                         <t t-foreach="o.colisage_ids" t-as="line">
                             <tr>
-                                <td style="border:1px solid black;text-align:left"><span t-field="line.product_id.name"/></td>
+                                <td style="border:1px solid black;text-align:left"><span t-field="line.composant_id.default_code"/></td>
                                 <td style="border:1px solid black;text-align:left"><span t-field="line.composant_id.name"/></td>
+                                <td style="border:1px solid black;text-align:left"><span t-field="line.product_id.name"/></td>
                                 <td style="border:1px solid black;text-align:right"><span t-field="line.qty"/></td>
                              </tr>
                         </t>
