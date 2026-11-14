@@ -30,6 +30,7 @@ Reprise d'is_jurabotec (Odoo 16).
         "is_llm2odoo",      # recherche par IA (is_vllm2odoo en v16), à installer avant le script de reprise
     ],
     'data' : [
+        "security/res.groups.xml",
         "security/ir.access.csv",
 
         "views/product_view.xml",

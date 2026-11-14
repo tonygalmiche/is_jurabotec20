@@ -141,9 +141,10 @@
 
 
 
-    <!-- Déplacer les menus non utilisés -->
-    <menuitem id="is_archive_menu"           parent="base.menu_custom" sequence="900" name="Archives"/>
-    <menuitem id="sale.menu_sale_quotations" parent="is_archive_menu"  sequence="30"/>
+    <!-- Menus non utilisés, réservés au groupe vide « Afficher les menus non utilisés » -->
+    <record id="sale.menu_sale_quotations" model="ir.ui.menu">
+        <field name="group_ids" eval="[Command.set([ref('is_afficher_menus_non_utilises_group')])]"/>
+    </record>
 
 
 </odoo>
