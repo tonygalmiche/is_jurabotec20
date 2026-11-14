@@ -145,6 +145,9 @@
     <record id="sale.menu_sale_quotations" model="ir.ui.menu">
         <field name="group_ids" eval="[Command.set([ref('is_afficher_menus_non_utilises_group')])]"/>
     </record>
+    <record id="utm.menu_link_tracker_root" model="ir.ui.menu">
+        <field name="group_ids" eval="[Command.set([ref('is_afficher_menus_non_utilises_group')])]"/>
+    </record>
 
 
 </odoo>

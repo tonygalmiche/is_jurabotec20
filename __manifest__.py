@@ -28,6 +28,7 @@ Reprise d'is_jurabotec (Odoo 16).
         "calendar",         # agenda (utilisé en v16)
         "contacts",         # menu Contacts (installé en v16)
         "is_llm2odoo",      # recherche par IA (is_vllm2odoo en v16), à installer avant le script de reprise
+        "utm",              # menu Tracker de liens, masqué (views/menu.xml)
     ],
     'data' : [
         "security/res.groups.xml",
